@@ -7,7 +7,4 @@ $dbname = '';
 
 
 
-//$dbuser = 'root';
-//$dbpasswd = '';
-
 ?>
