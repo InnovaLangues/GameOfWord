@@ -1,9 +1,9 @@
 <?php
 
-$dbhost = 'localhost';
-$dbuser = 'tab';
-$dbpasswd = 'innovatab$1';
-$dbname = 'tab';
+$dbhost = '';
+$dbuser = '';
+$dbpasswd = '';
+$dbname = '';
 
 
 
