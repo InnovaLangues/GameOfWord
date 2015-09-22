@@ -1,9 +1,9 @@
 <?php
 
-$dbhost = 'localhost';
-$dbuser = 'tab';
-$dbpasswd = 'innovatab$1';
-$dbname = 'tab';
+$dbhost = '';
+$dbuser = '';
+$dbpasswd = '';
+$dbname = '';
 
 //Il faut enlever les commantaires à cette variable si sur le serveur 
 //une version de libav-tools >= 9 est installée
