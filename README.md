@@ -21,9 +21,9 @@ Requirements
 
 Contributors
 --------------
-*Cimpello Chloe
-*Reverdy Justine
-*Nejat Maryam
-*Graceffa David
+* Cimpello Chloe
+* Reverdy Justine
+* Nejat Maryam
+* Graceffa David
 
 # GameOfWord
