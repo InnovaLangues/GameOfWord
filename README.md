@@ -16,7 +16,7 @@ Requirements
 -------------
 * Apache Server with PHP 5.3+
 * MySQL
-* Chrome
+* Firefox (or chrome)
 * Javascript activated
 
 Contributors
@@ -26,4 +26,6 @@ Contributors
 * Nejat Maryam
 * Graceffa David
 
-# GameOfWord
+Installation
+------------
+See INSTALL.md
