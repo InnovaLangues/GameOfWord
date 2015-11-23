@@ -1,10 +1,8 @@
 <?php
 
-$dbhost = '';
-$dbuser = '';
-$dbpasswd = '';
-$dbname = '';
-
-
+$dbhost = 'localhost';
+$dbuser = 'GoW';
+$dbpasswd = 'mAz7MQj';
+$dbname = 'GoW';
 
 ?>

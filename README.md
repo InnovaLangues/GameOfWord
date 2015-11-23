@@ -26,4 +26,6 @@ Contributors
 * Nejat Maryam
 * Graceffa David
 
-# GameOfWord
+Installation
+------------
+See INSTALL.md

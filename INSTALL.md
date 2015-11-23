@@ -5,13 +5,13 @@ Requirements
 -------------
 * Apache Server with PHP 5.3+
 * MySQL
-* Chrome
+* Tested on firefox (and chrome)
 * Javascript activated
 
 Installation
 -------------
 
-*Download and unzip the file from GitHub
-*Inside, select the tab.sql file an import it on your server via your database management system
-*Select the file sys/db.config.php and insert your server identifying data
-*The web site is ready to work (don't forget to use Chrome)
+* Download from GitHub and unzip
+* Edit ./sys/db.config.sample.php, enter identification to your MySQL or MariaDB server and save the file as ./sys/db.config.php
+* Run initializeDB.php
+* You're good to go
