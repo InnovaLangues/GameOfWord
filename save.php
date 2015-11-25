@@ -25,7 +25,11 @@ foreach(array('audio') as $type) {
 	
 			
 	// convertit en mp3
-			if(isset($conversion)){
+			if($conversion!==false){
+				//#format
+				if($conversion=="mp3"){
+					$conversion = "avconv -i %source% -acodec libmp3lame -q:a 2 -ac 1 %target%";
+				}
 				$commande = audio_convert($conversion, $file['filename']);
 				exec($commande); 
 				// Supression du fichier.wav du serveur.	

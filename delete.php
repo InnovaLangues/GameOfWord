@@ -7,8 +7,8 @@ $ext = ".mp3";
 	//script pour supprimer le fichier sur le serveur
 	if (isset($_POST['delete-file'])) {
 		$fileName = 'enregistrements/'.$_POST['delete-file'];
-		if(isset($conversion)){
-			
+		if($conversion!==false){
+			//#format
 			if(!unlink($fileName.'.mp3')) {
 				echo $fileName;			
 				echo(' problem deleting files.');
