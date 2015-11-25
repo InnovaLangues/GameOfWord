@@ -1,6 +1,7 @@
 <?php
-
 session_start();
+error_reporting(E_ALL);//error_reporting(0); désactiver
+ini_set('display_errors', '1');
 header('Content-Type: text/html; charset=UTF-8');
 require('./sys/utils.func.php');
 require('./sys/db.class.php');

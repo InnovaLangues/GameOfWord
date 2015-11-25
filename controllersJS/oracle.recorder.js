@@ -181,28 +181,22 @@ function xhr(url, data, progress, percentage, callback) {
                       $("#form-cmd").show("slow");
 
               },false);
-
-		
 		}
 		else {
 			request.upload.onloadstart = function() {
 			percentage.innerHTML = 'Upload started...';
 			};
-			        request.upload.onprogress = function(event) {
-        		        progress.max = event.total;
-        		        progress.value = event.loaded;
-               			 percentage.innerHTML = 'Upload Progress ' + Math.round(event.loaded / event.total * 100) + "%";
-       				 };
+	        request.upload.onprogress = function(event) {
+		        progress.max = event.total;
+		        progress.value = event.loaded;
+       			percentage.innerHTML = 'Upload Progress ' + Math.round(event.loaded / event.total * 100) + "%";
+			};
 			request.upload.onload = function() {
-        	        percentage.innerHTML = 'Saved!';
-        	        $("#form-cmd").show("slow");
-
-	       		 };
-
+    	    	percentage.innerHTML = 'Saved!';
+    	    	$("#form-cmd").show("slow");
+       		};
 		}
-	
 	}
-
 	request.open('POST', url);
 	request.send(data); 
 }

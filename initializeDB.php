@@ -193,7 +193,7 @@ function split_sql_file($sql, $delimiter)
    return $output;
 }
 
-$dbms_schema = 'gow.sql';
+$dbms_schema = 'GoW.sql';
 
 $sql_query = @fread(@fopen($dbms_schema, 'r'), @filesize($dbms_schema)) or die('problem ');
 $sql_query = remove_remarks($sql_query);

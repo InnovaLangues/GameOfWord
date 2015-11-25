@@ -40,11 +40,11 @@ class druid_arbitrage
 	public function process()
 	{
 		if ( $this->init() )
-        {
-            $this->selectpartie();
-            return $this->display_et_scores();
-        }
-        return false;
+		{
+			$this->selectpartie();
+			return $this->display_et_scores();
+		}
+		return false;
 	}
 
 	private function init()
@@ -83,10 +83,10 @@ class druid_arbitrage
 
 		// récupération du pseudo du joueur arbitré
 		 $sql = 'SELECT 
-                    username
-                    FROM user WHERE userid ="'.$this->raisin['idOracle'].'"';	    
-         $this->result=$db->query($sql);
-         $this->res2= mysqli_fetch_assoc($this->result);
+					username
+					FROM user WHERE userid ="'.$this->raisin['idOracle'].'"';		
+		 $this->result=$db->query($sql);
+		 $this->res2= mysqli_fetch_assoc($this->result);
 
 			$sql ="SELECT *
 			FROM `carte`
@@ -95,7 +95,7 @@ class druid_arbitrage
 			$this->res3 = mysqli_fetch_assoc($resultat);
 
 			//construction de l'adresse de l'enregistrement à partir du nom du fichier
-		    $this->adresse = "enregistrements/".$this->raisin['cheminEnregistrement'];
+			$this->adresse = "enregistrements/".$this->raisin['cheminEnregistrement'];
 			$this->partie=true;
 
 			unset($_SESSION["idCard"]);	
@@ -111,65 +111,63 @@ class druid_arbitrage
 
 			$sql = 'SELECT 
 				*
-				FROM carte WHERE langue="'.$this->userlang.'"';	    
+				FROM carte WHERE langue="'.$this->userlang.'"';		
 
-    		$this->result1=$db->query($sql);
-    		$num_rows1 = $this->result1->num_rows;
-    		$i=0;
+			$this->result1=$db->query($sql);
+			$num_rows1 = $this->result1->num_rows;
+			$i=0;
 
-    		if($num_rows1 >0){
+			if($num_rows1 >0){
 				while(!$this->partie && $i < $num_rows1){
 					$sql = 'SELECT 
 						enregistrementID,cheminEnregistrement,idOracle,carteID,nivcarte 
-						FROM enregistrement WHERE idOracle!='.$this->druid.' AND OracleLang="'.$this->userlang.'" ORDER BY RAND() LIMIT 1';	    
-	        		$this->result=$db->query($sql);
-	        		$this->raisin = mysqli_fetch_assoc($this->result);
-	        		 
-	        		$this->enregistrement = "enregistrements/".$this->raisin['cheminEnregistrement'];
-				
+						FROM enregistrement WHERE idOracle!='.$this->druid.' AND OracleLang="'.$this->userlang.'" ORDER BY RAND() LIMIT 1';		
+					$this->result=$db->query($sql);
+					$this->raisin = mysqli_fetch_assoc($this->result);
+					 
+					$this->enregistrement = "enregistrements/".$this->raisin['cheminEnregistrement'];				
 					//On vérifie ici que l'enregistrement est bien sur le serveur
-					if (file_exists($this->enregistrement)){
+					if ($this->raisin['cheminEnregistrement'] && file_exists($this->enregistrement)){
 						$this->partie=true;
 					}
 					$i++;
-       			}
+	   			}
 				if(!$this->partie){
+
 					array_push($this->errors, 'noEnregistrement');
-        			return false;
+					return false;
 				}
-    			
+				
 				$sql = 'SELECT 
 					enregistrementID,cheminEnregistrement,idOracle,carteID,nivcarte 
-					FROM enregistrement WHERE cheminEnregistrement="'.$this->raisin['cheminEnregistrement'].'"';	    
-		        	$this->result=$db->query($sql);
-		        	$this->raisin = mysqli_fetch_assoc($this->result);
-
-	
+					FROM enregistrement WHERE cheminEnregistrement="'.$this->raisin['cheminEnregistrement'].'"';		
+					$this->result=$db->query($sql);
+					$this->raisin = mysqli_fetch_assoc($this->result);
 			
 				// récupération du pseudo du joueur arbitré
 				 $sql = 'SELECT 
-		                    username
-		                    FROM user WHERE userid ="'.$this->raisin['idOracle'].'"';	    
-		         $this->result=$db->query($sql);
-		         $this->res2= mysqli_fetch_assoc($this->result);
-		        
-		        //récupération de la carte jouée
+							username
+							FROM user WHERE userid ="'.$this->raisin['idOracle'].'"';		
+				 $this->result=$db->query($sql);
+				 $this->res2= mysqli_fetch_assoc($this->result);
+				
+				//récupération de la carte jouée
 				 $sql = 'SELECT 
-		                    niveau,mot,tabou1,tabou2,tabou3,tabou4,tabou5 
-		                    FROM carte WHERE carteID='.$this->raisin['carteID'].'';	    
-		        $this->result=$db->query($sql);
-		        $this->res3= mysqli_fetch_assoc($this->result);
-		        
+							niveau,mot,tabou1,tabou2,tabou3,tabou4,tabou5 
+							FROM carte WHERE carteID='.$this->raisin['carteID'].'';		
+				$this->result=$db->query($sql);
+				$this->res3= mysqli_fetch_assoc($this->result);
+				
 				//construction de l'adresse de l'enregistrement à partir du nom du fichier
-		        $this->adresse = "enregistrements/".$this->raisin['cheminEnregistrement'];
-		        
+				$this->adresse = "enregistrements/".$this->raisin['cheminEnregistrement'];
+				
 				$this->enregistrement = $this->raisin['enregistrementID'];
 						
 				return true;
 			}
 			else{
-				    array_push($this->errors, 'noCardBD');
-        			return false;
+					array_push($this->errors, 'noCardBD');
+					return false;
 			}
 		}
 	}
@@ -350,7 +348,7 @@ class druid_arbitrage
 		else{
 					include('./views/druid.arbitrage.html');
 		}
-        return true;
+		return true;
 	}
 
 }

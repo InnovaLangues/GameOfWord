@@ -1,4 +1,5 @@
 ﻿<?php
+require_once("./models/card.class.php");
 
 class diviner_game
 {
@@ -159,6 +160,8 @@ class diviner_game
                     FROM carte WHERE carteID='.$this->raisin['carteID'].'';	    
 				$res=$db->query($sql);
 				$this->res3= mysqli_fetch_assoc($res);
+				//$carte = new Card($this->raisin['carteID']);
+				//$this->res3 = $carte->dirtify();
 		
 				//récupération de l'éventuelle partie que le devin aurait fait sur cet enregistrement pour ne pas le re-proposer
 				$sql = 'SELECT reussie

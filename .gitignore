@@ -46,3 +46,4 @@ Temporary Items
 # =========================
 enregistrements/*
 sys/db.config.php
+sys/config.php

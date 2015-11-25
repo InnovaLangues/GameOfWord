@@ -1,5 +1,6 @@
 <?php
 require('./sys/config.php');
+require_once('./sys/db.class.php');
 
 $ext = ".mp3";
 
@@ -30,10 +31,10 @@ $ext = ".mp3";
 		
 		
 		//connexion à la BD et suppression de la ligne de l'enregistrement
-		$connect=new mysqli("localhost","tab","innovatab$1","tab");
-				$sql = 'DELETE FROM enregistrement
-						WHERE (cheminEnregistrement=\''.$_POST['delete-file'].$ext.'\')';
-				$connect->query($sql);
+		$db=db::getInstance();
+		$sql = 'DELETE FROM enregistrement
+				WHERE (cheminEnregistrement=\''.$_POST['delete-file'].$ext.'\')';
+		$db->query($sql);
 				
 		//suppression du fichier dans la serveur
 		

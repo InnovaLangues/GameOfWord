@@ -18,6 +18,7 @@ Requirements
 * MySQL
 * Firefox (or chrome)
 * Javascript activated
+* libavtools >= 9 (see INSTALL.md)
 
 Contributors
 --------------
