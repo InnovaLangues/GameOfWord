@@ -1,4 +1,5 @@
 <?php
+require_once("./models/card.class.php");
 
 class diviner_timeout
 {
@@ -70,9 +71,8 @@ class diviner_timeout
 	        $this->oracle = $res3['idOracle']; 
 	        
 			// récupération du contenu de la carte avec carteID
-	    	$sql = 'SELECT carteID,niveau,mot,tabou1,tabou2,tabou3,tabou4,tabou5 FROM carte WHERE carteID="'.$res3['carteID'].'"';
-	        $res4=$db->query($sql); 
-	        $this->res= mysqli_fetch_assoc($res4);
+			$carte = new Card($res3['carteID']);
+	        $this->res= $carte->dirtify();
 			
 		// Requête de modification des scores de l'Oracle qui a fait une description non trouvée par le devin
 		

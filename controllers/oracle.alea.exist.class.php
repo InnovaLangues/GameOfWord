@@ -49,6 +49,7 @@ class oracle_alea_exist
 	private function selectcarte()
 	{
 		// récupération de plusieurs cartes possibles
+		//TODO ICITE créer une sélection carte pour les oracles
 		$db = db::getInstance();
 		 $sql = 'SELECT 
                     carteID,niveau,mot,tabou1,tabou2,tabou3,tabou4,tabou5 

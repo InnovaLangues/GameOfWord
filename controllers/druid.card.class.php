@@ -1,5 +1,6 @@
 <?php
-
+//require_once('./sys/db.class.php'); not required is caled by card.class
+require_once('./models/card.class.php');
 class druid_card
 {
 	private $submit = false;
@@ -56,7 +57,7 @@ class druid_card
 		$this->et_c_est_le_temps_qui_court = date("d/m/Y H:i");
 		
 		//récupération des points druides
-		$this->pointsDr = variable::getPointsDruide();
+		$this->pointsDr = pointsDruid;
 
 
 
@@ -76,21 +77,15 @@ class druid_card
 		    $this->res['tabou6'] = isset($_POST['tabou6']) ? trim($_POST['tabou6']) : '';
 		}
 	
-	$db = db::getInstance();
-	$sql = 'SELECT *
-                    FROM carte ';
-        $result = $db->query($sql);
-	//$reponse = $result->fetch_array();
-        //$row = $result->fetch_assoc();
-      //  $result->free();
-      $this->theme_carte = '';
-	for ($i=0; $i<$result->num_rows; $i++) {
-		$row = $result->fetch_assoc();
-		$this->theme_carte .= $row['theme'] . ';';
-	     }
-     	return true;
-       
-	//$this->theme_carte = $row['theme'];
+		$db = db::getInstance();
+		//A theme object would not have been bad… notimenow
+		$sql = 'SELECT DISTINCT `themeFR` FROM `themes` ORDER BY `themes`.`themeFR` ASC';
+	    $db->query($sql);
+		$this->theme_carte = array();
+		while($theme = $db->fetch_object()){
+			array_push($this->theme_carte, $theme->themeFR);
+		}
+	    return true;
 	}
 
 	private function check()
@@ -112,27 +107,29 @@ class druid_card
 	private function validate()
 	{
         if ( $this->submit)
-        {
-			// connexion à la BD
-			$db = db::getInstance();
-
-			// insertion de la carte créée dans la BD
-			$sql = 'INSERT INTO carte
-                    (theme,idDruide,temps,niveau,langue,mot,tabou1,tabou2,tabou3,tabou4,tabou5,tabou6)
-					VALUES(' .
-						$db->escape((string) $this->res['theme_carte']) . ', ' .
-						$db->escape((string) $this->createur) . ', ' .
-						$db->escape((string) $this->et_c_est_le_temps_qui_court) . ', ' .
-						$db->escape((string) $this->res['nivcarte']) . ', ' .
-						$db->escape((string) $this->userlang) . ', ' .
-						$db->escape((string) $this->res['mot']) . ', ' .
-						$db->escape((string) $this->res['tabou1']) . ', ' .
-						$db->escape((string) $this->res['tabou2']) . ', ' .
-						$db->escape((string) $this->res['tabou3']) . ', ' .
-						$db->escape((string) $this->res['tabou4']) . ', ' .
-						$db->escape((string) $this->res['tabou5']) . ', ' .
-						$db->escape((string) $this->res['tabou6']) . ')';
-			$db->query($sql);
+        {	//Categorie always "nom" TODO…
+    		try{
+	    		$forbidden = array();
+	    		for($i=1;isset($this->res['tabou'.$i]);$i++){
+	    			array_push($forbidden,$this->res['tabou'.$i]);
+	    		}
+				$carte = new Card($this->userlang,
+								  NULL,
+								  $this->res['nivcarte'],
+								  "nom",
+								  $this->createur,
+								  $this->res['mot'],
+								  $forbidden,
+								  array($this->res['theme_carte']));
+				$carte->store();
+			//TODO probably better to do, but this is a quickfix see #newC
+				$_SESSION["LastStoredId"] = $carte->get_id();
+				$this->res['carteID'] = $_SESSION["LastStoredId"];/**/
+			}
+			catch(Exception $e){
+				echo $e;
+				return false;
+			}
 			return true;
 		}else{
 			return false;
@@ -147,45 +144,14 @@ class druid_card
         {
 			include('./sys/load_iso.php');
 			require_once('./controllers/update_score_coeff.php');
-			//récupération de la carte nouvellement créée.
-			$db = db::getInstance();
-
-			//récupération de l'ID de la carte
-			$sql = 'SELECT carteID FROM carte
-                    WHERE idDruide='.$this->createur.' AND theme="'.$this->res['theme_carte'].'"  AND mot="'.$this->res['mot'].'" AND tabou1="'.$this->res['tabou1'].'" AND tabou2="'.$this->res['tabou2'].'" AND tabou3="'.$this->res['tabou3'].'" AND tabou4="'.$this->res['tabou4'].'" AND tabou5="'.$this->res['tabou5'].'" AND tabou5="'.$this->res['tabou6'].'" ORDER BY RAND() LIMIT 1';	  
-			$this->result=$db->query($sql);
-			$this->res2= mysqli_fetch_assoc($this->result);
-
-			$db->query($sql);
-			$this->res['carteID'] = $this->res2['carteID'];
 			
-			
+			//TODO probably better to do, but this is a quickfix see #newC
+/**/echo "<script>console.log('".$this->res['carteID']."');</script>";
+			$this->res['carteID'] = $_SESSION["LastStoredId"] ;
+/**/echo "<script>console.log('".$this->res['carteID']."');</script>";
 			//Requête de modification du score du Druide l'accomplissement de son fastidieux travail de création de carte
-			
 			updateScoreDruideCreation($this->createur,$iso[$this->userlang],$this->pointsDr);
-		
-//~ 			//récupération du score précédent;
-//~ 			$sql = 'SELECT scoreGlobal,scoreDruide FROM score WHERE userid="'.$this->createur.'" AND langue="'.$iso[$this->userlang].'"';
-//~ 			$result=$db->query($sql);
-//~ 			$res= mysqli_fetch_assoc($result);
-
-//~ 			$this->previousSGDr= $res['scoreGlobal'];
-//~ 			$this->previousSDr= $res['scoreDruide'];
-//~ 			
-//~ 			//maj des variables de scores: le score ne doit jamais être négatif.
-
-//~ 			$this->previousSGDr= $this->previousSGDr+$this->pointsDr;
-//~ 			$this->previousSDr= $this->previousSDr+$this->pointsDr;
-//~ 			//maj du score dans la BD
-//~ 			$sql = 'UPDATE score 
-//~ 					SET  scoreGlobal='.$db->escape((string) $this->previousSGDr) . ', ' .
-//~ 					'scoreDruide='.$db->escape((string) $this->previousSDr) . '
-//~ 					WHERE userid='.$this->createur.' AND langue="'.$iso[$this->userlang].'"';
-//~ 			$db->query($sql);
-			
-
 			$_SESSION["notif"]["notification_done"]["Druide"] = 'pointsDruide';
-
 			$_SESSION["CreateCard"]=true;
 
 			//affichage de l'aperçu de la carte avec son identifiant

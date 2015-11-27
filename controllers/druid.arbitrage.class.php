@@ -1,4 +1,5 @@
 <?php
+require_once("./models/card.class.php");
 
 class druid_arbitrage
 {	
@@ -67,10 +68,8 @@ class druid_arbitrage
 	{
 		//connexion à la BD
 		$db = db::getInstance();
-	
 	//Dans le cas où le joueur souhaite arbitrer la carte après une partie en tant que devin
 		if(isset($_SESSION["idCard"]) && isset($_SESSION["idEnregistrement"])){
-
 			$idCarte = $_SESSION["idCard"];
 			$idEnregistrement = $_SESSION["idEnregistrement"];
 
@@ -82,17 +81,14 @@ class druid_arbitrage
 
 
 		// récupération du pseudo du joueur arbitré
-		 $sql = 'SELECT 
+			$sql = 'SELECT 
 					username
-					FROM user WHERE userid ="'.$this->raisin['idOracle'].'"';		
-		 $this->result=$db->query($sql);
-		 $this->res2= mysqli_fetch_assoc($this->result);
+					FROM user WHERE userid ="'.$this->raisin['idOracle'].'"';
+			$this->result=$db->query($sql);
+			$this->res2= mysqli_fetch_assoc($this->result);
 
-			$sql ="SELECT *
-			FROM `carte`
-			WHERE `carteID` = $idCarte";
-			$resultat = $db->query($sql);
-			$this->res3 = mysqli_fetch_assoc($resultat);
+			$carte = new Card($_SESSION["idCard"]);
+			$this->res3 = $carte->dirtify();
 
 			//construction de l'adresse de l'enregistrement à partir du nom du fichier
 			$this->adresse = "enregistrements/".$this->raisin['cheminEnregistrement'];
@@ -105,16 +101,12 @@ class druid_arbitrage
 		}
 		
 		else{
-
 			$this->partie=false;
 			// récupération d'une carte pour vérifier que la bdd n'est pas vide
 
-			$sql = 'SELECT 
-				*
-				FROM carte WHERE langue="'.$this->userlang.'"';		
-
-			$this->result1=$db->query($sql);
-			$num_rows1 = $this->result1->num_rows;
+			$sql = 'SELECT `idCarte` FROM `cartes` WHERE `langue`="'.$this->userlang.'"';
+			$db->query($sql);
+			$num_rows1 = $db->num_rows();
 			$i=0;
 
 			if($num_rows1 >0){
@@ -133,7 +125,6 @@ class druid_arbitrage
 					$i++;
 	   			}
 				if(!$this->partie){
-
 					array_push($this->errors, 'noEnregistrement');
 					return false;
 				}
@@ -152,11 +143,8 @@ class druid_arbitrage
 				 $this->res2= mysqli_fetch_assoc($this->result);
 				
 				//récupération de la carte jouée
-				 $sql = 'SELECT 
-							niveau,mot,tabou1,tabou2,tabou3,tabou4,tabou5 
-							FROM carte WHERE carteID='.$this->raisin['carteID'].'';		
-				$this->result=$db->query($sql);
-				$this->res3= mysqli_fetch_assoc($this->result);
+				$carte = new Card($this->raisin['carteID']);		
+				$this->res3 = $carte->dirtify();
 				
 				//construction de l'adresse de l'enregistrement à partir du nom du fichier
 				$this->adresse = "enregistrements/".$this->raisin['cheminEnregistrement'];
@@ -165,7 +153,7 @@ class druid_arbitrage
 						
 				return true;
 			}
-			else{
+			else{	
 					array_push($this->errors, 'noCardBD');
 					return false;
 			}

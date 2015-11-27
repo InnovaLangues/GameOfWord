@@ -1,5 +1,8 @@
 <?php
 
+require_once('./models/card.class.php');
+
+
 class oracle_card_alea
 {
 	private $submit = false;
@@ -229,39 +232,20 @@ class oracle_card_alea
 			
 			if(isset($_POST['submit_form'])) //carte validée, enregistrement dans la BD
 			{	
-					// connxion à la BD
-				    $db = db::getInstance();
-
 				if ( !$this->submit || $this->errors )
 				{
 					return false;
 				}
-;
-				// insertion de la carte
-				$sql = 'INSERT INTO carte
-				(idDruide,temps,niveau,langue,mot,tabou1,tabou2,tabou3,tabou4,tabou5)
-					VALUES(' .
-						$db->escape((string) $this->oracle) . ', ' .
-						$db->escape((string) $this->et_c_est_le_temps_qui_court) . ', ' .
-						$db->escape((string) $this->res['nivcarte']) . ', ' .
-						$db->escape((string) $this->userlang) . ', ' .
-						
-						$db->escape((string) $this->res['mot']) . ', ' .
-						$db->escape((string) $this->res['tabou1']) . ', ' .
-						$db->escape((string) $this->res['tabou2']) . ', ' .
-						$db->escape((string) $this->res['tabou3']) . ', ' .
-						$db->escape((string) $this->res['tabou4']) . ', ' .
-						$db->escape((string) $this->res['tabou5']) . ')';
 
-				$db->query($sql);
-				
-					// requête de récupération de l'indentifiant de la carte juste créee pour insertion dans la table enregistrement
-					$sql = "SELECT carteID,niveau FROM carte WHERE mot='".$this->res['mot']."'";
-					$resulto=$db->query($sql);
-					$reso= mysqli_fetch_assoc($resulto);
-				
-					$this->res['carteID'] = $reso['carteID'];
-					
+				// insertion de la carte
+				$forbidden = array();
+	    		for($i=1;isset($this->res['tabou'.$i]);$i++){
+	    			array_push($forbidden,$this->res['tabou'.$i]);
+	    		}
+				$carte = new Card($this->userlang, NULL,
+							$this->res['nivcarte'], "nom", $this->oracle, $this->res['mot'], $forbidden, Array());
+				$carte->store();
+				$this->res['carteID'] = $carte->get_id();	
 			// affichage de la carte
 				include('./views/oracle.card.display.html');	
 				

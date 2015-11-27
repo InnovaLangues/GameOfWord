@@ -5,7 +5,7 @@ ini_set('display_errors', '1');
 header('Content-Type: text/html; charset=UTF-8');
 require('./sys/utils.func.php');
 require('./sys/db.class.php');
-require('./sys/variable.php');
+require('./sys/constants.php');
 require('./models/user.class.php');
 require('./models/userlvl.class.php');
 require('./languages/language.php');

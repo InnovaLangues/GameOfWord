@@ -59,8 +59,16 @@ class db
 		return $this->handler->affected_rows;
 	}
 
-	public function has_results(){
+	public function has_result(){
 		return ((bool) $this->result);
+	}
+
+	public function num_rows(){
+		$res = 0;
+		if($this->has_result()){
+			$res = $this->result->num_rows;
+		}
+		return $res;
 	}
 
 	public function get_result(){

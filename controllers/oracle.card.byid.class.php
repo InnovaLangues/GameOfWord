@@ -1,4 +1,5 @@
 <?php
+require_once("./models/card.class.php");
 
 class oracle_card_byid
 {
@@ -62,10 +63,11 @@ class oracle_card_byid
 	{
 		return false;
 	}
-	// Sélection 
-	$sql = 'SELECT carteID,niveau,mot,tabou1,tabou2,tabou3,tabou4,tabou5 FROM carte WHERE idDruide!="'.$this->oracle.'" AND langue="'.$this->userlang.'" AND carteID="'.$this->carteId.'" ';
-        $this->result=$db->query($sql); 
-        $this->res= mysqli_fetch_assoc($this->result);
+	// Sélection "dans ce cas là on laisse les gens jouer avec n'importe quelle carte (pour le moment) à terme le rôle pourrait être fixé selon les besoins"
+
+	$carte = new Card($this->carteId);
+    $this->res = $carte->dirtify();
+
 
 	// ligne pour permettre la récupération du niveau de la carte dans la table enregistrement
 	$this->res['nivcarte'] = $this->res['niveau'];

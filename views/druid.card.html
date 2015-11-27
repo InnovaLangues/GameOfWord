@@ -32,9 +32,12 @@ include('./views/page.header.html');
 						<dt><label for="consigne"><?php echo $lang['word_direction']; ?></label></dt>
 						
 						<select id="nivcarte" name="nivcarte" >
-							<option value ="facile"><?php echo $lang['level_easy']; ?></option>
-							<option value ="moyen"><?php echo $lang['level_medium']; ?></option>
-							<option value ="difficile"><?php echo $lang['level_hard']; ?></option>
+							<option value ="A1">A1</option>
+							<option value ="A2">A2</option>
+							<option value ="B1">B1</option>
+							<option value ="B2">B2</option>
+							<option value ="C1">C1</option>
+							<option value ="C2">C2</option>
 						</select>
 					</dl>
 					
@@ -43,23 +46,15 @@ include('./views/page.header.html');
 						<dd><input type="text" id="theme_carte" name="theme_carte" required="required"  onFocus="blankList()"/></dd>
 						<dd><select id="theme_carte_list" name="theme_carte_list" onChange="copyThemeToInput()" >
 						<?php
-							$themes = array_unique(explode(';',strtolower($this->theme_carte)));
-							sort($themes);
-							foreach ($themes as $l) {
+							foreach ($this->theme_carte as $l) {
 								if (strlen($l) > 0) {
 									echo "<option value='" . $l . "'>" . $l . "</option>";
-									//echo "<tr><td align='center'>" . 
-											//"<input list='theme_carte' type='text' name='theme_list" . $l . "' required='required' size='10' \" value='" . $l . "'/>" ;
 								}
 							}
 					
 						?>
 						</select>
 						</dd>
-						<!--<select id="theme_carte" name="theme_carte" >
-							<option value =""></option>
-						
-						</select>-->
 					</dl>
 	
 					<dl>
@@ -111,8 +106,7 @@ include('./views/page.header.html');
 			var count = t.getElementsByTagName("tr").length;
 			if (count === 6) { return;}
 			var tr = t.insertRow(count);
-		//	var td = tr.insertCell(0);
-		//	td.align = "center";
+
 			var td = tr.insertCell(0);
 			td.align="center";
 			i = document.createElement('input');

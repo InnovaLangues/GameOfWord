@@ -62,7 +62,7 @@ class diviner_game
 		$this->time = $this->userlvl->get_time();
 
 		//récupération des points de sanction
-		$this->pointsSanction = variable::getloosePointsDevin();
+		$this->pointsSanction = loosePointsDevin;
 
 
 		if(isset($_SESSION["langDevin"])){
@@ -80,7 +80,7 @@ class diviner_game
 
 	private function sanctionLastPartie()
 	{ // fonction qui permet de vérifier l'état de la dernière partie et de sanctionner le joueur de 5 pts s'il a quitté la partitatut = "en cours")
-		include('./sys/load_iso.php');
+		include_once('./sys/load_iso.php');
 	    $db =  db::getInstance();
 		$sql =  "SELECT *
 			FROM parties WHERE idDevin = \"".$this->diviner."\"			
@@ -144,75 +144,73 @@ class diviner_game
         
         //pour chaque enregistrement:
         if($nb_result>0){
-      
-			while($this->raisin= mysqli_fetch_assoc($this->result)){
+      		try{
+				while($this->raisin= mysqli_fetch_assoc($this->result)){
+				
+					// construction de l'adresse de l'enregistrement à  partir du nom du fichier son
+					$this->adresse = "enregistrements/".$this->raisin['cheminEnregistrement'];
+				
+					//initialisation du booléen qui représentera la condition finale pour que la partie soit acceptée
+					// Il deviendra faux si le moindre crità¨re n'est pas rempli durant la procédure
+					$partieok=true;
+	       		
+					//récupération du contenu de la carte
+					$carte = new Card($this->raisin['carteID']);
+					$this->res3 = $carte->dirtify();
 			
-				// construction de l'adresse de l'enregistrement à  partir du nom du fichier son
-				$this->adresse = "enregistrements/".$this->raisin['cheminEnregistrement'];
-			
-				//initialisation du booléen qui représentera la condition finale pour que la partie soit acceptée
-				// Il deviendra faux si le moindre crità¨re n'est pas rempli durant la procédure
-				$partieok=true;
-       		
-				//récupération du contenu de la carte
-				$sql = 'SELECT 
-                   idDruide,niveau,mot,tabou1,tabou2,tabou3,tabou4,tabou5 
-                    FROM carte WHERE carteID='.$this->raisin['carteID'].'';	    
-				$res=$db->query($sql);
-				$this->res3= mysqli_fetch_assoc($res);
-				//$carte = new Card($this->raisin['carteID']);
-				//$this->res3 = $carte->dirtify();
+					//récupération de l'éventuelle partie que le devin aurait fait sur cet enregistrement pour ne pas le re-proposer
+					$sql = 'SELECT reussie
+	                    FROM parties WHERE idDevin ="'.$this->diviner.'" AND enregistrementID= "'.$this->raisin['enregistrementID'].'"';  
+					$res=$db->query($sql);
+					$this->res5= mysqli_fetch_assoc($res);
+
+					// si le créateur de la carte et le devin sont la màªme personne, on passe à  l'enregistrement suivant
+					if ($this->res3['idDruide'] == $this->diviner)
+					{
+						$partieok=false;
+					}
+					// si le devin a déjà  joué cette carte et a eu un résultat (faux ou juste), on passe à  l'enregistrement suivant.
+					//Si cette partie a été quitté précipitemment ou à  cause d'un pb technique (reussie=en cours), il peut la rejouer.
+
+					if(($this->res5['reussie']=="oui")||($this->res5['reussie']=="non")||($this->res5['reussie']=="en cours")) #A modifier!
+					{
+						$partieok=false;
+					}
+
+					//On vérifie ici que l'enregistrement est bien sur le serveur
+					if (!file_exists($this->adresse)){
+						$partieok=false;
+					} 
+
 		
-				//récupération de l'éventuelle partie que le devin aurait fait sur cet enregistrement pour ne pas le re-proposer
-				$sql = 'SELECT reussie
-                    FROM parties WHERE idDevin ="'.$this->diviner.'" AND enregistrementID= "'.$this->raisin['enregistrementID'].'"';  
-				$res=$db->query($sql);
-				$this->res5= mysqli_fetch_assoc($res);
+					// si rien de s'oppose à  ce que l'enregistrement soit proprosé
+					if ($partieok)
+					{
+						// récupération du pseudo de l'oracle pour savoir qui on écoute
+						$db = db::getInstance();
+						$sql = 'SELECT username
+								FROM user WHERE userid ="'.$this->raisin['idOracle'].'"';	    
+						$res=$db->query($sql);
+						$this->res2= mysqli_fetch_assoc($res);
+		         
+		   
+						//récupération du pseudo du créateur de la carte
+						$db = db::getInstance();
+						$sql = 'SELECT username
+								FROM user WHERE userid ="'.$this->res3['idDruide'].'"';	    
+						$res=$db->query($sql);
+						$this->res4= mysqli_fetch_assoc($res);
+						
+						$this->setcarteValide($partieok);
 
-				// si le créateur de la carte et le devin sont la màªme personne, on passe à  l'enregistrement suivant
-				if ($this->res3['idDruide'] == $this->diviner)
-				{
-					$partieok=false;
+						return true;
+						break;
+					}
 				}
-				// si le devin a déjà  joué cette carte et a eu un résultat (faux ou juste), on passe à  l'enregistrement suivant.
-				//Si cette partie a été quitté précipitemment ou à  cause d'un pb technique (reussie=en cours), il peut la rejouer.
-
-				if(($this->res5['reussie']=="oui")||($this->res5['reussie']=="non")||($this->res5['reussie']=="en cours")) #A modifier!
-				{
-					$partieok=false;
-				}
-
-				//On vérifie ici que l'enregistrement est bien sur le serveur
-				if (!file_exists($this->adresse)){
-					$partieok=false;
-				} 
-
-	
-				// si rien de s'oppose à  ce que l'enregistrement soit proprosé
-				if ($partieok)
-				{
-					// récupération du pseudo de l'oracle pour savoir qui on écoute
-					$db = db::getInstance();
-					$sql = 'SELECT username
-							FROM user WHERE userid ="'.$this->raisin['idOracle'].'"';	    
-					$res=$db->query($sql);
-					$this->res2= mysqli_fetch_assoc($res);
-	         
-	   
-					//récupération du pseudo du créateur de la carte
-					$db = db::getInstance();
-					$sql = 'SELECT username
-							FROM user WHERE userid ="'.$this->res3['idDruide'].'"';	    
-					$res=$db->query($sql);
-					$this->res4= mysqli_fetch_assoc($res);
-					
-					$this->setcarteValide($partieok);
-
-					return true;
-					break;
-				}
+				array_push($this->errors,'NoGame');
+			}catch(Exception $e){
+				array_push($this->errors,'NoGame');	
 			}
-			array_push($this->errors,'NoGame');
 		}
 		else{
 			array_push($this->errors,'noEnregistrement');

@@ -29,10 +29,13 @@ include('./views/page.header.html');
 						<h3><span id="countdown" class="timer"></span></h3>
 						
 						</br><select id="nivcarte" name="nivcarte" >
-							<option value ="facile"><?php echo $lang['level_easy']; ?></option>
-							<option value ="moyen"><?php echo $lang['level_medium']; ?></option>
-							<option value ="difficile"><?php echo $lang['level_hard']; ?></option>
-						</br></select>
+							<option value ="A1">A1</option>
+							<option value ="A2">A2</option>
+							<option value ="B1">B1</option>
+							<option value ="B2">B2</option>
+							<option value ="C1">C1</option>
+							<option value ="C2">C2</option>
+						</select>
 						
 						</br><dt><label for="tabou1"><?php echo $lang['taboo_1']; ?></label></dt>
 						<dd><input type="text" id="tabou1" name="tabou1" required="required" readonly value="<?php echo $this->res['tabou1']; ?>" /></dd>

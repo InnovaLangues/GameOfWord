@@ -55,7 +55,7 @@ class score
 		$db = db::getInstance();
 
 		//variable qui permet d'afficher les $this->scorE meilleurs scores
-		$this->scorE = variable::gethighscore();
+		$this->scorE = highscore;
 
 		//Récupération du score
 		$sql = "SELECT 
@@ -320,7 +320,7 @@ class score
 
 		$scoreclassement = array();
 		
-		$this->scoreOver = variable::gethighscoreOver();
+		$this->scoreOver = highscoreOver;
 		$this->scoreOver++;
 
 		$j = $userClassement-$this->scoreOver; //joueurs au dessus
