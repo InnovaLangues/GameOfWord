@@ -81,7 +81,7 @@ var monChrono = new MyTimer(renders, <?php echo $this->time; ?>, finChrono, 10,p
 					<legend class="form-jr-heading"><?php echo $lang['listen_diviner']; ?></legend>
 					<dl>
 						<dl>
-							<dt><label for="carteID"><?php echo $lang['id_card'];?></label>  <?php echo  $this->raisin['carteID'].'</br>'; ?></dt>
+							<dt><label for="carteID"><?php echo $lang['id_card'];?></label>  <?php echo  $this->raisin->carteID.'</br>'; ?></dt>
 							<dt><label for="createur"><?php echo $lang['card_creator'];?></label>  <?php echo $this->res4['username'].'</br>'; ?></dt>
 							<dt><label for="oracle"><?php echo $lang['card_oracle'];?></label>  <?php echo $this->res2['username'].'</br>'; ?></dt>						
 						</dl>
@@ -100,7 +100,7 @@ var monChrono = new MyTimer(renders, <?php echo $this->time; ?>, finChrono, 10,p
 					<!--	<input class="btn btn-lg btn-primary btn-block" type="submit" id="submit_form" name="submit_form" value="<?php// echo $lang['validate']; ?>" class="submit_buttons" /> -->
 						<input class="btn btn-lg btn-primary btn-block" type="button" id="valide" onclick="validate()" value="<?php echo $lang['validate']; ?>" />
 						<input type="hidden" name="mode" value="<?php echo $this->mode; ?>"/> 
-						<input type="hidden" id='motadeviner' value="<?php echo $this->res3['mot']; ?>"/>
+						<input type="hidden" id='motadeviner' value="<?php echo $this->card->get_word(); ?>"/>
 					</div>
 				</fieldset>
 				<?php } ?>

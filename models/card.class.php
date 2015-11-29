@@ -8,63 +8,85 @@ class Card
 	private $langPrecisions=false ; //this should complete the language class
 	private $level ; // should be an object
 	private $cat ; //should be an object
-	private $author ; //should be an object
-	private $guessWord ;
-	private $forbiddenWords = array();
+	private $author ; //should be an object 
 	private $themes = array() ;
 	private $cdate ;
 	private $db;
+	private $view = './views/card.table.display.php';
+	private $guessWord ;
+	private $forbiddenWords = array();
 
 	/**
 	 * The constructor can either create the object from scratch, or retrieve it in the database.
 	 * The one parameter constructor takes the card id and picks it up in db, whereas the regular one requires one value per attribute
 	 */
-	public function __construct($switchParam, $extLangueOrId=NULL, $niveau=NULL, $categorie=NULL, $idDruide=NULL, $mot=NULL, $forb=NULL, $themes=NULL){
+	public function __construct($idOrLang, $extLangueOrView=NULL, $niveau=NULL, $categorie=NULL, $idDruide=NULL, $mot=NULL, $forb=NULL, $themes=NULL,$aview=NULL){
 		$this->db = db::getInstance();
 		if(!isset($mot)){//db fetch
-			switch($switchParam){
-				case oracleRole :
-					if(is_int($extLangueOrId) || ($extLangueOrId === (string)(int)$extLangueOrId)){
-						$this->get_random_for_oracle($extLangueOrId);
-					}
-					else{
-						throw new Exception("$extLangueOrId (Oracle ID) is not an integer…");
-					}					
-					break;
-				case druidRole :
-					break;
-				case divinerRole :
-					break;
-				default:
-					if(is_int($switchParam) || ($switchParam === (string)(int)$switchParam)){
-						$this->get_from_id($switchParam);
-					}
-					else{
-						throw new Exception("$switchParam (Card ID) is not an integer…");
-					}
+			if(is_int($idOrLang) || ($idOrLang === (string)(int)$idOrLang)){
+				$this->get_from_id($idOrLang);
+				$this->set_view($extLangueOrView);
+			}
+			else{
+				throw new Exception("$idOrLang (Card ID) is not an integer…");
 			}
 		}
 		else{//plein de paramètres
 			//testing data types would not be entirely superfluous…
 			$this->id = false;
-			$this->lang = $switchParam;
-			$this->langPrecisions = $extLangueOrId;
+			$this->lang = $idOrLang;
+			$this->langPrecisions = $extLangueOrView;
 			$this->level = $niveau;
 			$this->cat = $categorie;
 			$this->author = $idDruide;
 			$this->guessWord = $mot;
-			$this->themes = $themes;
-			$this->forbiddenWords = array_keys(array_flip($forb));/*getting unique values in a simple array*/
+		/*getting unique values in a simple array (good to prevent duplicate key errors later on)*/
+			$this->themes = array_keys(array_flip($themes));
+			$this->forbiddenWords = array_keys(array_flip($forb));
+			$this->set_view($aview);
 		}
 	}
 
-	/*
-	 * So that the current card's data is replaced by that of card $cardId
-	 * an Oracle will get a random card within is reach level-wise that he has not created nor arbitrated or divined and of course never "oracled"
-	 */
-	public function get_random_for_oracle($oracleId){
-		
+	public function get_id(){
+		return $this->id;
+	}
 
+	public function get_level(){
+		return $this->level;
+	}
+
+	public function get_lang(){
+		return $this->lang;
+	}
+
+	public function get_cat(){
+		return $this->cat;
+	}
+
+	public function get_themes(){
+		return $this->themes;
+	}
+
+	public function get_forbidden_words(){
+		return $this->forbiddenWords;
+	}
+
+	public function get_author(){
+		return $this->author;
+	}
+
+	public function get_time(){
+		return $this->cdate;
+	}
+
+	public function get_word(){
+		return $this->guessWord;
+	}
+
+	public function set_view($aView){
+		if(isset($aView) && is_string($aView)){//more error testing such as existance of file ?
+			$this->view = $aView;
+		}
 	}
 
 	/*
@@ -168,7 +190,7 @@ class Card
 						$this->db->query("INSERT INTO `themes_cartes` (`idCarte`, `idTheme`) VALUES ('".$this->id."', '$idT');");
 					}
 					if(!$this->db->has_result() || ($idT <= 0)){
-						throw new Exception("Il y a un os dans les thèmes (".$this->themes[$i].").<br /><pre>$query</pre>");
+						throw new Exception("Il y a un os dans les thèmes (".$this->themes[$i].").<br /><pre>INSERT INTO `themes_cartes` (`idCarte`, `idTheme`) VALUES ('".$this->id."', '$idT');</pre>");
 					}
 				}
 		//handling the forbidden words
@@ -195,29 +217,8 @@ class Card
 	}
 
 	public function __toString(){
-		//TODO
-		$res = "<div  class='carte'><div>
-			<div class='niveauMin'>$this->level</div>
-			<div class='langue'>$this->id ($this->lang / $this->langPrecisions)</div>
-			<div class='categorie'>$this->cat</div>
-			<div class='themes'>\n";
-			foreach($this->themes as $theme){
-				$res .= "<div>$theme</div>";
-			}
-			$res.="</div>			
-		</div>
-		<div>
-			<div class='motCle motATrouver'>$this->guessWord</div>
-			<div class='tabous'>";
-			foreach($this->forbiddenWords as $word){
-				$res .= "<div class='motCle'>$word</div>\n";
-			}
-			$res .= "</div>
-		</div>
-		<div>
-			<div class='auteur'>$this->author ($this->cdate)</div>
-		</div>
-		</div></div>";
+		$card = $this;
+		include($this->view);
 		return $res;
 	}
 
@@ -238,10 +239,6 @@ class Card
 			$i++;
 		}
 		return $res;
-	}
-
-	public function get_id(){
-		return $this->id;
 	}
 }
 ?>

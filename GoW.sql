@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mer 25 Novembre 2015 à 00:34
--- Version du serveur: 5.5.46-MariaDB-1ubuntu0.14.04.2
+-- Généré le: Sam 28 Novembre 2015 à 13:41
+-- Version du serveur: 5.5.46-MariaDB-1ubuntu0.14.04.2-log
 -- Version de PHP: 5.5.9-1ubuntu4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -31,32 +31,11 @@ CREATE TABLE IF NOT EXISTS `arbitrage` (
   `enregistrementID` int(11) NOT NULL,
   `idDruide` int(11) NOT NULL,
   `tpsArbitrage` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `validation` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `validation` enum('valid','invalid') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`arbitrageID`),
-  KEY `validation` (`validation`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `carte`
---
-
-CREATE TABLE IF NOT EXISTS `carte` (
-  `carteID` int(11) NOT NULL AUTO_INCREMENT,
-  `theme` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `idDruide` int(30) NOT NULL,
-  `temps` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `niveau` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `langue` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `mot` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `tabou1` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `tabou2` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `tabou3` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `tabou4` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `tabou5` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `tabou6` varchar(128) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`carteID`)
+  KEY `validation` (`validation`),
+  KEY `enregistrementID` (`enregistrementID`),
+  KEY `idDruide` (`idDruide`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -67,15 +46,17 @@ CREATE TABLE IF NOT EXISTS `carte` (
 
 CREATE TABLE IF NOT EXISTS `cartes` (
   `idCarte` int(16) unsigned NOT NULL AUTO_INCREMENT COMMENT 'identifiant',
-  `langue` varchar(3) CHARACTER SET utf8 NOT NULL COMMENT 'la langue de la carte (ISO 639)',
-  `extLangue` varchar(16) CHARACTER SET utf8 DEFAULT NULL COMMENT 'extension de langue (IETF)',
-  `niveau` enum('A1','A1.1','A1.2','A2','B1','B2','C1','C2') CHARACTER SET utf8 NOT NULL COMMENT 'Niveau CECRL',
-  `categorie` enum('nom','nom propre','adjectif','adverbe','Expression idiomatique') CHARACTER SET utf8 NOT NULL COMMENT 'Une catégorie qui pourra être une aide',
+  `langue` varchar(3) NOT NULL COMMENT 'la langue de la carte (ISO 639)',
+  `extLangue` varchar(16) DEFAULT NULL COMMENT 'extension de langue (IETF)',
+  `niveau` enum('A1','A1.1','A1.2','A2','B1','B2','C1','C2') NOT NULL COMMENT 'Niveau CECRL',
+  `categorie` enum('nom','nom propre','pronom','adjectif','adverbe','verbe','expression idiomatique') DEFAULT NULL COMMENT 'Une catégorie qui pourra être une aide',
   `idDruide` int(16) unsigned NOT NULL COMMENT 'auteur',
-  `mot` varchar(128) CHARACTER SET utf8 NOT NULL,
+  `mot` varchar(128) NOT NULL,
   `dateCreation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idCarte`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Les cartes, attention nécessitent jointures' AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`idCarte`),
+  KEY `idDruide` (`idDruide`),
+  KEY `langue` (`langue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Les cartes, attention nécessitent jointures' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -135,8 +116,11 @@ CREATE TABLE IF NOT EXISTS `enregistrement` (
   `tpsEnregistrement` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `carteID` int(11) NOT NULL,
   `nivcarte` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `validation` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  PRIMARY KEY (`enregistrementID`)
+  `validation` enum('valid','invalid','limbo') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'limbo',
+  PRIMARY KEY (`enregistrementID`),
+  UNIQUE KEY `cheminEnregistrement` (`cheminEnregistrement`),
+  KEY `idOracle` (`idOracle`),
+  KEY `carteID` (`carteID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -170,7 +154,7 @@ INSERT INTO `game_lvl` (`userlvl`, `time`, `points`, `pointsSanction`) VALUES
 
 CREATE TABLE IF NOT EXISTS `mots_interdits` (
   `idCarte` int(16) NOT NULL COMMENT 'le mot auquel il se rapporte',
-  `mot` varchar(48) CHARACTER SET utf8 NOT NULL COMMENT 'le mot interdit',
+  `mot` varchar(48) NOT NULL COMMENT 'le mot interdit',
   `ordre` int(4) NOT NULL COMMENT 'l''ordre du mot interdit',
   UNIQUE KEY `idCarte` (`idCarte`,`mot`),
   UNIQUE KEY `idCarte_2` (`idCarte`,`ordre`)
@@ -206,7 +190,9 @@ CREATE TABLE IF NOT EXISTS `parties` (
   `idDevin` int(11) NOT NULL,
   `tpsdejeu` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `reussie` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`partieID`)
+  PRIMARY KEY (`partieID`),
+  KEY `enregistrementID` (`enregistrementID`),
+  KEY `idDevin` (`idDevin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -237,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `score` (
   `langue` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `first_game_time` text NOT NULL,
   PRIMARY KEY (`scoreID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -247,19 +233,10 @@ CREATE TABLE IF NOT EXISTS `score` (
 
 CREATE TABLE IF NOT EXISTS `themes` (
   `idTheme` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `themeFR` varchar(64) CHARACTER SET utf8 NOT NULL COMMENT 'la traductions ce sera pour plus tard',
-  PRIMARY KEY (`idTheme`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='liste des thèmes' AUTO_INCREMENT=5 ;
-
---
--- Contenu de la table `themes`
---
-
-INSERT INTO `themes` (`idTheme`, `themeFR`) VALUES
-(1, 'Objets'),
-(2, 'Formation'),
-(3, 'Profession'),
-(4, 'Art');
+  `themeFR` varchar(64) NOT NULL COMMENT 'la traductions ce sera pour plus tard',
+  PRIMARY KEY (`idTheme`),
+  UNIQUE KEY `themeFR` (`themeFR`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='liste des thèmes' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -290,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `photo` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `userlvl` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -304,7 +281,20 @@ CREATE TABLE IF NOT EXISTS `user_niveau` (
   `spoken_lang` varchar(100) NOT NULL,
   `niveau` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- --------------------------------------------------------
+-- --------------------------------------------------------
+-- --------------------------------------------------------
+-- créer admin:admin pour les cartes existantes
+
+INSERT INTO `user` (`userid`, `username`, `useremail`, `userpass`, `userlang`, `valkey`, `userlang_game`, `photo`, `userlvl`) VALUES
+(1, 'admin', 'your.email@mail.you', '21232f297a57a5a743894a0e4a801fc3', 'fr', '', 'fr', '', 'easy');
+INSERT INTO `user_niveau` (`id`, `userid`, `spoken_lang`, `niveau`) VALUES
+(1, 1, 'Français;', 'Natif;');
+INSERT INTO `score` (`scoreID`, `userid`, `scoreGlobal`, `scoreOracle`, `scoreDruide`, `scoreDevin`, `langue`, `first_game_time`) VALUES
+(1, 1, 0, 0, 0, 0, 'Français', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

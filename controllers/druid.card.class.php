@@ -21,6 +21,7 @@ class druid_card
 	private $errors = array();
 
 	private $res = '';
+	private $card;
 	private $res2 = '';
 	
 	private $previousSGDr = 0;
@@ -96,8 +97,7 @@ class druid_card
 		}
 
         // Vérification de l'unicité, le mot à trouver ne doit pas être parmi les mots tabous
-		if ( $this->res['mot'] == $this->res['tabou1'] || $this->res['mot'] == $this->res['tabou2'] || $this->res['mot'] == $this->res['tabou3'] || $this->res['mot'] == $this->res['tabou4'] || $this->res['mot'] == $this->res['tabou5'] || $this->res['mot'] == $this->res['tabou6'])
-		{
+		if ( $this->res['mot'] == $this->res['tabou1'] || $this->res['mot'] == $this->res['tabou2'] || $this->res['mot'] == $this->res['tabou3'] || $this->res['mot'] == $this->res['tabou4'] || $this->res['mot'] == $this->res['tabou5'] || $this->res['mot'] == $this->res['tabou6']){
 				array_push($this->errors, "tabooWords");
 				include('./views/druid.card.html');
 				exit;
@@ -120,11 +120,12 @@ class druid_card
 								  $this->createur,
 								  $this->res['mot'],
 								  $forbidden,
-								  array($this->res['theme_carte']));
+								  array($this->res['theme_carte']),
+								  './views/card.inline.display.php');
 				$carte->store();
-			//TODO probably better to do, but this is a quickfix see #newC
 				$_SESSION["LastStoredId"] = $carte->get_id();
-				$this->res['carteID'] = $_SESSION["LastStoredId"];/**/
+				$this->card = $carte ;
+				$this->res = array('carteID' => $_SESSION["LastStoredId"]); 
 			}
 			catch(Exception $e){
 				echo $e;
@@ -145,10 +146,6 @@ class druid_card
 			include('./sys/load_iso.php');
 			require_once('./controllers/update_score_coeff.php');
 			
-			//TODO probably better to do, but this is a quickfix see #newC
-/**/echo "<script>console.log('".$this->res['carteID']."');</script>";
-			$this->res['carteID'] = $_SESSION["LastStoredId"] ;
-/**/echo "<script>console.log('".$this->res['carteID']."');</script>";
 			//Requête de modification du score du Druide l'accomplissement de son fastidieux travail de création de carte
 			updateScoreDruideCreation($this->createur,$iso[$this->userlang],$this->pointsDr);
 			$_SESSION["notif"]["notification_done"]["Druide"] = 'pointsDruide';

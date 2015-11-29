@@ -25,51 +25,30 @@ include('./views/page.header.html');
 					<dl>
 						<dt><label for="beware"><?php echo $lang['listen']; ?></label></dt>
          
-						<?php echo "chemin_enregistrement: ".$this->raisin['cheminEnregistrement']."\n";?> <!-- à retirer après les tests-->
-						<dt><?php if (isset ($this->res2['username'])){ echo $lang['card_oracle'];?> : <?php echo $this->res2['username'].'</br>'; }?></dt>
-						<dt><?php if (isset ( $this->raisin['nivcarte'])){ echo $lang['card_level'];?> : <?php echo $this->raisin['nivcarte'].'</br>'; } ?></dt>
-						
-					<!-- 	<script language="Javascript"> function bascule() </script> -->
+						<?php echo "chemin_enregistrement: ".$this->raisin->cheminEnregistrement."\n";?> <!-- à retirer après les tests-->
+						<dt><?php if (isset ($this->res2['username'])){ echo $lang['card_oracle'];?> : <?php echo $this->res2['username'].'</br>'; }?></dt>						
 					</dl>
-			<!--	<div name="easy" id="easy" style="visibility: visible"> -->
 					<dl>
-						<dt><label for="mot"><?php echo $lang['word_to_find'];?></label> : <?php echo $this->res3['mot'].'</br>'; ?></dt>
-						<dt><input name="enregistrementID" type="HIDDEN" value="<?php echo $this->raisin['enregistrementID']; ?>"> 
+						<dt><input name="enregistrementID" type="HIDDEN" value="<?php echo $this->raisin->enregistrementID; ?>"> 
+						</dt>
 					</dl>
-			<!--		</div>
-					<div name="medium" id="medium" style="visibility: visible"> -->
 					<dl>
-						<dt><label for="tabou1"><?php echo $lang['taboo_1'];?></label> : <?php echo $this->res3['tabou1'].'</br>'; ?></dt>
-						<dt><label for="tabou2"><?php echo $lang['taboo_2'];?></label> : <?php echo $this->res3['tabou2']; ?></dt>
-					</dl>
-			<!--		</div>
-					<div name="hard" id="hard" style="visibility: visible">  -->
-					<dl>
-						<dt><label for="tabou3"><?php echo $lang['taboo_3'];?></label> : <?php echo $this->res3['tabou3'].'</br>'; ?></dt>
-						<dt><label for="tabou4"><?php echo $lang['taboo_4'];?></label> : <?php echo $this->res3['tabou4'].'</br>'; ?></dt>
-						<dt><label for="tabou5"><?php echo $lang['taboo_5'];?></label> : <?php echo $this->res3['tabou5'].'</br>'; ?></dt>
-					</dl>
-			<!--		</div> -->
-					<dl>
-						<!--<object type="application/x-shockwave-flash" data="./dewplayer.swf" width="200" height="20" id="dewplayer" name="dewplayer">
-							<param name="wmode" value="transparent" />
-							<param name="movie" value="dewplayer.swf" />
-							<param name="flashvars" value="mp3=<?php// echo $this->adresse; ?>&amp;showtime=true" />
-						</object> -->
-						<div class="inner" style="height: 5em;">
-						<audio id="audio" autoplay controls></audio> 
-						<button class="btn btn-primary"  type="button" id="start-audio">Commencer l'écoute</button>
+						<div class="inner">
+							<?php echo $this->card; ?>
+							<audio id="audio" autoplay controls></audio> 
+							<button class="btn btn-primary"  type="button" id="start-audio">Commencer l'écoute</button>
 						</div>
-
 					</dl>
-					<div id="form-cmd">
-						<input class="btn btn-lg btn-primary btn-block" type="submit" id="validate" name="validate" value="<?php echo $lang['validate']; ?>" />
-						<input class="btn btn-lg btn-primary btn-block" type="submit" id="invalidate" name="invalidate" value="<?php echo $lang['invalidate']; ?>" />
-						<input type="hidden" name="mode" value="<?php echo $this->mode; ?>"/>
-						<input type="hidden" name="enregistrement1" value="<?php echo $this->enregistrement; ?>"/>
-						<input type="hidden" name="oracle" value="<?php echo $this->raisin['idOracle']; ?>"/>
-						
-					</div>
+					<dl>
+						<div id="form-cmd">
+							<input class="btn btn-lg btn-primary btn-block" type="submit" id="validate" name="validate" value="<?php echo $lang['validate']; ?>" />
+							<input class="btn btn-lg btn-primary btn-block" type="submit" id="invalidate" name="invalidate" value="<?php echo $lang['invalidate']; ?>" />
+							<input type="hidden" name="mode" value="<?php echo $this->mode; ?>"/>
+							<input type="hidden" name="enregistrement1" value="<?php echo $this->enregistrement; ?>"/>
+							<input type="hidden" name="oracle" value="<?php echo $this->raisin->idOracle; ?>"/>
+							
+						</div>
+					</dl>
 				</fieldset>
 			</form>
 			<?php
@@ -83,7 +62,7 @@ include('./views/page.header.html');
 
 		
 		// fonction de changement d'Ã©tat appelÃ©e par chacune des deux fonctions	
-		var niveau = $this->raisin['nivcarte'];
+		var niveau = $this->raisin->nivcarte;
 		
 		function bascule(niveau)
 		{

@@ -1,4 +1,5 @@
 <?php
+require_once("./models/item.factory.class.php");
 
 class oracle_alea_exist
 {
@@ -8,6 +9,7 @@ class oracle_alea_exist
 	private $userlang = '';
 	private $user= '';
 	private $oracle= '';
+	public $card;
 	
 	private $res='';
 	private $result= '';
@@ -46,59 +48,25 @@ class oracle_alea_exist
 		return true;
 	}
 
-	private function selectcarte()
-	{
+	private function selectcarte(){
 		// récupération de plusieurs cartes possibles
-		//TODO ICITE créer une sélection carte pour les oracles
-		$db = db::getInstance();
-		 $sql = 'SELECT 
-                    carteID,niveau,mot,tabou1,tabou2,tabou3,tabou4,tabou5 
-                    FROM carte WHERE idDruide!='.$this->oracle.' AND langue="'.$this->userlang.'" ORDER BY RAND()';	    
-        $this->result=$db->query($sql);
-        // comptage du nombre de résultats
-        $nb_result=$this->result->num_rows;
-        
-        //pour chaque enregistrement:
-        if ($nb_result > 0)
-        { 
-			while($this->res= mysqli_fetch_assoc($this->result)){
-				// ligne pour permettre la récupération du niveau de la carte dans la table enregistrement
-				$this->res['nivcarte'] = $this->res['niveau'];
-				
-				//initialisation du booléen qui représentera la condition finale pour que la carte soit acceptée
-				// Il deviendra faux si le moindre critère n'est pas rempli durant la procédure
-				$carteok=true;
-			
-				//récupération de l'éventuel enregistrement que le devin aurait fait sur cette carte pour ne pas la re-proposer
-				$sql = 'SELECT enregistrementID
-	                    FROM enregistrement WHERE idOracle ="'.$this->oracle.'" AND carteID= "'.$this->res['carteID'].'"LIMIT 1';
-				$res2=$db->query($sql);
-				$res3=mysqli_fetch_assoc($res2);
-				
-				//comptage du nombre de résultat
-				 $nb_res3=$res2->num_rows;
-				 
-				// S'il existe  l'enregistrementID d'une partie que l'oracle aurait déjà faite sur cette carte
-				if ($nb_res3 != 0)
-				{
-					$carteok=false;
-				}
-				
-				// si rien de s'oppose à ce que la carte soit proposée
-				if ($carteok)
-				{
-					return true;	
-				} 
-
-			}	
-
-		}
-	else{
+		$cardFactory = new ItemFactory($this->oracle,$this->userlang);
+		$card = $cardFactory->get_card(ItemFactory::CARD_NOT_ME);
+    	if(is_object($card) && get_class($card)=="Card"){
+    		//echo "<script>window.alert('C bon ça');</script>";
+    		$this->card=$card;
+    		$res = true;
+    	}
+		else{
 			array_push($this->errors,'noCardBD');
-			$_SESSION["notif"]["notification_error"]["Oracle"] = 'noCardBD';	
-			return false;
+			$_SESSION["notif"]["notification_error"]["Oracle"] = 'noCardBD';
+			$res = false;
 		}
+		return $res;
 	}
+
+
+
 	private function display()
 	{
 		include('./views/oracle.card.display.html');

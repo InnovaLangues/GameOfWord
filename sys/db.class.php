@@ -49,6 +49,15 @@ class db
 		}
 	}
 
+	public function fetch_assoc(){
+		if($this->result){
+			return $this->result->fetch_assoc();
+		}
+		else{
+			return false;
+		}
+	}
+
 	public function insert_id()
 	{
 		return $this->handler->insert_id;

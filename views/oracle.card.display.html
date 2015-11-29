@@ -19,8 +19,8 @@ include('./sys/config.php');
 <div id="main-container">
 	<div id="userid" data-userid="<?php echo $this->oracle; ?>" style="display:none"></div>
 	<div id="userlang" data-userlang="<?php echo $this->userlang; ?>" style="display:none"></div>
-	<div id="cardid" data-cardid="<?php echo $this->res['carteID']; ?>" style="display:none"></div>
-	<div id="levelcard" data-levelcard="<?php echo $this->res['nivcarte']; ?>" style="display:none"></div>
+	<div id="cardid" data-cardid="<?php if(isset($this->card)){echo $this->card->get_id();} ?>" style="display:none"></div>
+	<div id="levelcard" data-levelcard="<?php if(isset($this->card)){echo $this->card->get_level();} ?>" style="display:none"></div>
 			<?php if ( $this->errors ) { ?>
 			<div class="form-jr">
 				<fieldset class="errors">
@@ -56,39 +56,7 @@ include('./sys/config.php');
 		        <legend class="form-jr-heading" style="text-align:center; font-style:bold;"><?php echo $lang['card_description']; ?></legend>
 					<div id='card'>
 						<table class="table table-hover" style="text-align:center;">
-							<thead>
-								<tr>
-									<td title='<?php echo $lang["word_to_find"] ?>'><p><?php echo $this->res['mot']; ?><p></td>
-								</tr>
-							</thead>
-							<tbody style="background-color:#F8E1E8;" title='<?php echo $lang["wordForbid"] ?>'>
-								<tr>
-									<td>
-										<p><img src='style/default.css/imgs/forbidden.png'></p><p><?php echo $this->res['tabou1'].'</p></br>'; ?>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<p><img src='style/default.css/imgs/forbidden.png'></p><p><?php echo $this->res['tabou2'].'</p></br>'; ?>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<p>
-											<img src='style/default.css/imgs/forbidden.png'></p><p><?php echo $this->res['tabou3'].'</p></br>'; ?>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<p><img src='style/default.css/imgs/forbidden.png'></p><p><?php echo $this->res['tabou4'].'</p></br>'; ?>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<p><img src='style/default.css/imgs/forbidden.png'></p><p><?php echo $this->res['tabou5'].'</p></br>'; ?>
-									</td>
-								</tr>
-							</tbody>
+							<?php echo $this->card; ?>
 						</table>
 					</div>
 					<center>

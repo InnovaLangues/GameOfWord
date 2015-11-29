@@ -15,6 +15,7 @@ class oracle_card_alea
 	public $tableau = '';
 	private $boobool = true;
 	private $time;
+	private $card;
 	
 	private $mot = '';
 	private $tabou1 = '';
@@ -243,9 +244,10 @@ class oracle_card_alea
 	    			array_push($forbidden,$this->res['tabou'.$i]);
 	    		}
 				$carte = new Card($this->userlang, NULL,
-							$this->res['nivcarte'], "nom", $this->oracle, $this->res['mot'], $forbidden, Array());
+							$this->res['nivcarte'], "nom", $this->oracle, $this->res['mot'], $forbidden, Array()/*, './views/card.inline.display.php'*/);
 				$carte->store();
-				$this->res['carteID'] = $carte->get_id();	
+				$this->card = $carte ;
+				unset($this->res);	
 			// affichage de la carte
 				include('./views/oracle.card.display.html');	
 				

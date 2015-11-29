@@ -59,7 +59,7 @@ $lang['game_arbitrage']='Arbitrage d\'une partie';
 // Description d'une carte par un Oracle oracle.card.display.html
 $lang['warning'] = 'Attention, votre micro n\'a pas été activé.';
 $lang['cut_sound'] = 'vous serez par conséquant redirigé vers le menu principal. Veuillez paramétrer votre micro';
-$lang['start_describe'] = 'Commence ta description :';
+$lang['start_describe'] = 'Commence ta description&nbsp;';
 $lang['record'] = 'Jouer';
 $lang['send_description'] = 'Envoie ta description !';
 $lang['erase'] = 'Efface et recommence';
@@ -104,7 +104,7 @@ $lang['card_descr'] = 'Description d\'une carte';
 $lang['description'] = 'Tu dois faire deviner aux autres joueurs  le<span class="motatrouver"> premier mot</span> sans dire les<span class="motTaboo"> autres mots.</span><br/>
 Tu recevras 10 points à la fin de ta description. Si elle n\'est pas validée par le Druide, tu les perdras. Si elle est validée mais que le Devin ne trouve pas le mot décrit, tu perdras 5 points.';
 $lang['abandonner']='Abandonner';
-$lang['beware_time']='Tu peux recommencer ton enregistrement à infini, mais ton temps est limité. Si tu décides de ne pas envoyer tu perderas des points d\'Oracle mais tu gagneras un peu de Druide';
+$lang['beware_time']='Tu peux recommencer ton enregistrement à infini, mais ton temps est limité. Si tu décides de ne pas envoyer tu perdras des points d\'Oracle mais tu gagneras un peu de Druide';
 $lang['card_preview'] = 'Aperçu de votre carte';
 $lang['id_describe'] = 'Voici l\' identifiant de votre carte (ID), transmettez-le à vos amis pour qu\'ils jouent à votre carte ! ';
 $lang['unknown_id'] = 'Carte inaccessible: soit la carte n\'existe pas dans cette langue, soit vous en êtes le créateur et dans ce cas vous ne pouvez pas y jouer.';
@@ -125,8 +125,8 @@ $lang['card_oracle'] = 'Tu écoutes la description de';
 $lang['card_level'] = 'Niveau de la carte décrite';
 $lang['guess'] = 'Devine !';
 $lang['which_word'] = 'Quel est le mot décrit ?';
-$lang['NoGame']='Il n\'y a pas de carte à jouer.';
-$lang["RecordCard"] ='Si vous voulez proposer un enregistrement pour cette carte cliquez ici : ';
+$lang['NoGame']='Il n\'y a plus de carte à jouer. Peut-être pourriez vous en ajouter quelques unes <a href=\'index.php?mode=druid.card\'>ici</a>…';
+$lang["RecordCard"] ='Si vous voulez proposer un enregistrement pour cette carte cliquez ici&nbsp; ';
 $lang["RecordArbitre"] ='Si vous voulez arbitrer cet enregistrement cliquez ici : ';
 $lang["restart"] ='Rejouer une partie ? ';
 $lang["start"] ='Il est temps de jouer !';
@@ -170,7 +170,7 @@ $lang['subj']='Choisissez votre thème ou créez-en un nouveau';
 
 //Erreurs
 $lang['unavailable_card'] = 'Carte inaccessible: la carte n\'existe pas.';
-$lang['without_card']= 'Désolé, il n\'y a pas de carte disponible à  jouer, veuillez en créer une.'; 
+$lang['without_card']= 'Désolé, il n\'y a pas de carte disponible à  jouer, vous pourriez en <a href=\'index.php?mode=druid.card\'>créer une</a>.'; 
 $lang['no_card']= 'Carte inaccessible: soit la carte n\'existe pas dans cette langue, soit vous en êtes le créateur et dans ce cas vous ne pouvez pas y jouer.';
 $lang['no_card_active']= 'La génération de carte n\'est pas active pour d\'autres langues que le français pour l\'instant';
 $lang['user_name']= 'Veuillez entrer un pseudo';
@@ -186,11 +186,11 @@ $lang['not_match']= 'Le pseudo ou le mot de passe est incorrect...';
 $lang['enter_email']= 'Il faut entrer une adresse mail';
 $lang['enter_language']= 'Il faut choisir une langue';
 $lang['tabooWords']= 'L\'intitulé de la carte doit être différent des mots taboo';
-$lang['noCardBD']= 'Il n\'y a pas de carte à jouer dans la base de données...';
+$lang['noCardBD']= 'Il n\'y a pas de carte à jouer dans la base de données… Si vous en <a href=\'index.php?mode=druid.card\'>créez</a>, cette situation sera moins fréquente pour tout le monde ;)';
 $lang['noEnregistrement']= 'Aucun enregistrement n\'a été trouvé.';
 $lang['Becareful']= 'ATTENTION!';
 $lang['enter_nativelang']='Veuillez entrer votre langue maternelle';
-$lang['Word2find'] = "Le mot à trouver était : ";
+$lang['Word2find'] = "Le mot à trouver était&nbsp;: ";
 $lang['home_miss_lang_game'] = 'Veuillez sélectionner une langue de jeu dans votre profil.';
 
 $lang["languePlay"] = "Vous jouez en ";
