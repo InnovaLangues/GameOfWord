@@ -1,187 +1,130 @@
 <?php
-$title = 'Score';
+$title = 'Scores';
 include('./views/page.header.html');
 ?>
 <div id="main-container">
-	<div id="jrForm">
-			<form class="form-jr" name="score">
-			<table class="table table-hover">
-					      <thead>
-						<tr>
-						  <th><?php echo $lang['classement']?></th>
-						  <th><?php echo $lang['userName']; ?></th>
-						  <th><?php echo $lang['score_global']; ?></th>
-						  <th><?php echo $lang['nbLangues']; ?></th>
-						</tr>
-					      </thead>
-					      <tbody>
-					    <?php 
-					   		$i=0;
-								foreach($this->allScores as $key => $tabD){
-									if($i<$this->scorE){
-									$i++;
-						
-									if($this->userName  == $tabD["name"]){
-				    	?>
-				    		<tr class="success">
-				    		<?php 
-				    		}
-				    		else{ ?>
-				    		<tr>
-				   			<?php }?>
+	<h2>Score global</h2>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th><?php echo $lang['classement']?></th>
+				<th><?php echo $lang['userName']; ?></th>
+				<th><?php echo $lang['score_global']; ?></th>
+				<th><?php echo $lang['nbLangues']; ?></th>
+			</tr>
+		</thead>
+		<tbody>
+	    	<?php 
+	   			$i=0;
+				foreach($this->allScores as $score){
+					if($i<$this->scorE){
+						$i++;
+						echo ($this->userName == $score["name"])
+	    					? '<tr class="success">'
+	    					: '<tr>';
+	    	?>
+			  <td><?php echo $i; ?></td>
+			  <td><?php echo $score["name"]; ?></td>
+			  <td><?php echo $score["ScoreGlobal"]; ?></td>
+			  <td><?php echo $score["NbLangue"]; ?></td>
+			</tr>
 
-							  <td><?php echo $i;  ?></td>
-							  <td><?php echo $tabD["name"]; ?></td>
-							  <td><?php echo $tabD["ScoreGlobal"]; ?></td>
-							  <td><?php echo $tabD["NbLangue"]; ?></td>
-							</tr>
+			<?php 	}
+				}
 
-						<?php }}
+				if(isset($this->scoreGlobalTab)){ ?>
+						<td><?php echo "..."; ?></td>
+						<td><?php echo "..."; ?></td>
+						<td><?php echo "..."; ?></td>
+						<td><?php echo "..."; ?></td>
+					</tr>
+						<?php
+						foreach($this->scoreGlobalTab as $score){
 
-							if(isset($this->scoreGlobalTab)){ ?>
+							echo ($this->userName == $score["name"])
+	    					? '<tr class="success">'
+	    					: '<tr>';
+	    				?>
+								<td><?php echo $score["classement"];;  ?></td>
+								<td><?php echo $score["name"]; ?></td>
+								<td><?php echo $score["ScoreGlobal"]; ?></td>
+								<td><?php echo $score["NbLangue"]; ?></td>
+							</tr><?php	
+						}
+				}
 
-							  <td><?php echo "..."; ?></td>
-							  <td><?php echo "..."; ?></td>
-							  <td><?php echo "..."; ?></td>
-							  <td><?php echo "..."; ?></td>
-
-							</tr>
-							<?php
-							foreach($this->scoreGlobalTab as $key => $tabb){
-									if($this->userName  == $tabb["name"]){
-						    			?>
-						    		<tr class="success">
-						    		<?php 
-						    		}
-						    		else{ ?>
-						    		<tr>
-						   			<?php }?>
-
-								 <td><?php echo $tabb["classement"];;  ?></td>
-							  	 <td><?php echo $tabb["name"]; ?></td>
-							  	 <td><?php echo $tabb["ScoreGlobal"]; ?></td>
-							 	 <td><?php echo $tabb["NbLangue"]; ?></td>
-								</tr>
-
-							<?php	
-							}
-							
-
-
-							}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-							foreach($this->userScoreTab as $key => $tabD){
-								$i=0;
-						?>
-
-							<table class="table table-hover">
-							      <thead>
-
+				?> 
+		</tbody>
+	</table> 
+	<!-- END SCORE GLOBAL -->
+	<h2>Score par langue</h2>
+				<?php 
+					foreach($this->userScoreTab as $key => $tabD){
+						$i=0;
+				?>
+						<table class="table table-hover">
+							<thead>
 								<tr>
-								  <th><?php echo $lang['scores']." ".$key; ?></th>
-								  <th><?php echo $lang['userName']; ?></th>
-								  <th><?php echo $lang['score_oracle']; ?></th>
-								  <th><?php echo $lang['score_druid']; ?></th>
-								  <th><?php echo $lang['score_diviner']; ?></th>
-								  <th><?php echo $lang['score_global']; ?></th>
+									<th><?php echo $lang['scores']." ".$key; ?></th>
+									<th><?php echo $lang['userName']; ?></th>
+									<th><?php echo $lang['score_oracle']; ?></th>
+									<th><?php echo $lang['score_druid']; ?></th>
+									<th><?php echo $lang['score_diviner']; ?></th>
+									<th><?php echo $lang['score_global']; ?></th>
 								</tr>
-							      </thead>
-							      <tbody>
-							    <?php 
-							    	foreach($tabD as $indice => $tab){
-
-								    	foreach($tab as $key2 => $tab2){
-									    
-									    	$i++;
+							</thead>
+						    <tbody>
+						    	<?php 
+						    	foreach($tabD as $indice => $tab){
+									foreach($tab as $key2 => $tab2){
+								    	$i++;
 									    if($i<=$this->scorE){
-									    	if($this->userName  == $key2){
-							    			?>
-							    		<tr class="success">
-							    		<?php 
-							    		}
-							    		else{ ?>
-							    		<tr>
-							   			<?php }
+									    	echo ($this->userName == $key2)
+						    					? '<tr class="success">'
+						    					: '<tr>';
 								?>
-							      
+						      
 								  <td><?php echo $i; ?></td>
 								  <td><?php echo $key2; ?></td>
 								  <td><?php echo $this->usertab[$key][$key2]["scoreOracle"]; ?></td>
 								  <td><?php echo $this->usertab[$key][$key2]["scoreDruide"]; ?></td>
 								  <td><?php echo $this->usertab[$key][$key2]["scoreDevin"]; ?></td>
 								  <td><?php echo $this->usertab[$key][$key2]["scoreGlobal"]; ?></td>
-								
-							      
-							    
-							
-							</tr>
-							<?php  }
-						}} 
-							if(isset($this->scoreTab[$key])){?>
+								</tr><?php  			
+										}
+									}
+								} 
+						if(isset($this->scoreTab[$key])){?>
 							<tr>
-							 	  <td><?php echo "..."; ?></td>
-								  <td><?php echo "..."; ?></td>
-								  <td><?php echo "..."; ?></td>
-								  <td><?php echo "..."; ?></td>
-								  <td><?php echo "..."; ?></td>
-								  <td><?php echo "..."; ?></td>
+								<td><?php echo "..."; ?></td>
+								<td><?php echo "..."; ?></td>
+								<td><?php echo "..."; ?></td>
+								<td><?php echo "..."; ?></td>
+								<td><?php echo "..."; ?></td>
+								<td><?php echo "..."; ?></td>
 							</tr>
 							<?php
 							foreach($this->scoreTab[$key] as $key => $tab){
 								foreach($tab as $key1 => $value){ 
-									if($this->userName  == $key1){
-						    			?>
-						    		<tr class="success">
-						    		<?php 
-						    		}
-						    		else{ ?>
-						    		<tr>
-						   			<?php }?>
-
+									echo ($this->userName == $key1)
+							    					? '<tr class="success">'
+							    					: '<tr>';?>
+						
 								  <td><?php echo $value["classement"];  ?></td>
 								  <td><?php echo $key1; ?></td>
 								  <td><?php echo $value["scoreOracle"]; ?></td>
 								  <td><?php echo $value["scoreDruide"]; ?></td>
 								  <td><?php echo $value["scoreDevin"]; ?></td>
 								  <td><?php echo $value["scoreGlobal"]; ?></td>
-
-							<?php	
-							}
+								  <?php	
+								}
 							}	  
-							}	
+						}	
 
-
-							?>
-							</tbody>
-							</table> 
-							<?php } ?> 
-				</form>
-	</div>
-</div>
+						?>
+						</tbody>
+					</table> 
+				<?php } ?> 
 </div>
 
 <?php
