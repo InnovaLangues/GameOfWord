@@ -31,7 +31,21 @@ require('models/card.class.php');
 	$tmpObj = new Card("en", NULL, "A1", "Nom", "1", "Apple", array("Fruit","Computer","Pear","Green","Red","Tree"), array("Végétal","Alimentation")); $tmpObj->store();$nb++;
 	$tmpObj = new Card("en", NULL, "A1", "Nom", "1", "Key", array("Open","Door","USB","Car","Code"), array("Objet")); $tmpObj->store();$nb++;
 	$tmpObj = new Card("en", NULL, "A1", "Nom", "1", "Car", array("Automobile","Vehicle","Motor","Wheel","Road","Drive"), array("Objet","Transport")); $tmpObj->store();$nb++;
-	$tmpObj = new Card("en", NULL, "A1", "Nom", "1", "Potato", array("vegetable","Fries","Mashed","plant tuber"), array("Végétal","Alimentation")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "A1", "Nom", "1", "Potato", array("Vegetable","Fries","Mashed","Plant","Tuber"), array("Végétal","Alimentation")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Attorney", array("Law","Justice","Court","Defend","Represent","Appeal"), array("Profession")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "A2", "Nom", "1", "Brain", array("Cortex","Grey cells","Think","mind","Clear"), array("Science")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "A2", "Nom", "1", "Editor", array("Redactor","Newspaper","Revisor","Edit","Publish"), array("Profession")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Judge", array("Law","Justice","Court","Lawyer","Judgment","Verdict"), array("Profession")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Police officer", array("Police","Criminals","Handcuffs","Arrest","Law"), array("Profession")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Translator", array("Language","Interpreter","Sworn","Translate"), array("Profession")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "A2", "Adjectif", "1", "Outgoing", array("Shy","Timid","Extrovert","Sociable"), array("Caractère")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B1", "Verbe", "1", "Level off", array("Stagnate","Stable","Steady","Even"), array()); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B2", "Verbe", "1", "Plummet", array("Dercrease","Dramatically","Fall","Decline","Dropp"), array()); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Damage", array("Harm","Injure","Hurt","Wound","Maltreat"), array()); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B2", "Verbe", "1", "Soar", array("Surge","Rise","Increase","Go up","Dramatically"), array()); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B2", "Verbe", "1", "Raise awareness", array("Knowledge","Understanding","Improve","Public"), array()); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B2", "Nom", "1", "Struggle", array("Difficulty","Cope","Fight"), array()); $tmpObj->store();$nb++;
+	$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Forecast", array("Predict","Foresee","Weather","Climate","News"), array()); $tmpObj->store();$nb++; 
 	echo "<p><strong>$nb</strong> cards imported</p>";
 ?>
 	<h2>Importación de cartas en Castellano</h2>
@@ -52,9 +66,7 @@ require('models/card.class.php');
 	$tmpObj = new Card("es", NULL, "A1", "Nom", "1", "Cajera", array("Mercado","Tienda","Comercio"), array("Profession")); $tmpObj->store();$nb++;
 	$tmpObj = new Card("es", NULL, "A1", "Nom", "1", "Actor", array("Película","Cine","Interpretar","Jugar","Teatro","Protagonista"), array("Profession","Art")); $tmpObj->store();$nb++;
 	$tmpObj = new Card("es", NULL, "", "Adverbe", "1", "Realmente", array("Verdaderamente","Ciertamente"), array()); $tmpObj->store();$nb++;
-	$tmpObj = new Card("es", NULL, "A1", "Nom", "1", "Carpintero", array("Madera","Ebanista"), array("Profession")); $tmpObj->store();$nb++;
-
-	$tmpObj = new Card("es", NULL, "A2", "Nom", "1", "Químico", array("Química","Física"), array("Profession","Science")); $tmpObj->store();$nb++;
+	$tmpObj = new Card("es", NULL, "A1", "Nom", "1", "Carpintero", array("Madera","Ebanista"), array("Profession")); $tmpObj->store();$nb++;	$tmpObj = new Card("es", NULL, "A2", "Nom", "1", "Químico", array("Química","Física"), array("Profession","Science")); $tmpObj->store();$nb++;
 	$tmpObj = new Card("es", NULL, "A2", "Nom", "1", "Entrenador", array("Preparador","Equipo","Deporte"), array("Sport","Profession")); $tmpObj->store();$nb++;
 	$tmpObj = new Card("es", NULL, "A2", "Nom", "1", "Bailador", array("Bailarín","Danza"), array("Profession","Art")); $tmpObj->store();$nb++;
 	$tmpObj = new Card("es", NULL, "A2", "Nom", "1", "Diseňador", array("Creador","Dibujante"), array("Profession","Art")); $tmpObj->store();$nb++;
@@ -112,9 +124,7 @@ require('models/card.class.php');
 	$tmpObj = new Card("es", NULL, "A1", "Nom", "1", "Metro", array("Subterráneo","Transporte"), array("Technologie","Transport")); $tmpObj->store();$nb++;
 	$tmpObj = new Card("es", NULL, "A1", "Adverbe", "1", "Superior", array("Inferior","Arriba"), array("Lieu")); $tmpObj->store();$nb++;
 	echo "<p><strong>$nb</strong> cards imported</p>";
-?>
-
-	<h2>Importation des cartes françaises</h2>
+?>	<h2>Importation des cartes françaises</h2>
 <?php
 	$nb=0;
 	$tmpObj = new Card("fr", NULL, "A1", "Nom", "1", "Dessin", array("Crayon","Feuille","Papier","Fusain","Illustration","Bulle"), array("Art")); $tmpObj->store();$nb++;
