@@ -14,5 +14,4 @@ while ($usedIso = $db->fetch_assoc()) {
     $usedIsos[$code] = $iso[$code];
 }
 
-//sort($usedIsos);
-//removes the associations
+asort($usedIsos);
