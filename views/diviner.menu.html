@@ -11,7 +11,7 @@ include('./sys/load_used_iso.php');
 				<select name="chooseLang" size="1" id="chooseLang" onchange="saveLangue()">
 					<?php
 						foreach ($usedIsos as $short => $long) {
-							echo "<option value=" . $usedIso ;
+							echo "<option value='" . $short."'" ;
 							if(isset($_SESSION["langDevin"]))
 								{
 									if(strcmp($_SESSION["langDevin"],$short) == 0){ echo " selected"; }
@@ -34,7 +34,7 @@ include('./sys/load_used_iso.php');
 
 <script>
 function saveLangue() {
-	$.post("devinLangue.php","lang="+$('#chooseLang option:selected').val(),function (response){void window.location.reload();
+	$.post("devinLangue.php","lang="+$('#chooseLang').val(),function (response){void window.location.reload();
 	});
 }
 </script>

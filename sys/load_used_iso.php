@@ -10,8 +10,9 @@ $db->query($sql);
 
 $usedIsos = array();
 while ($usedIso = $db->fetch_assoc()) {
-    $language = $usedIso['langue'];
-    $usedIsos[$language] = $iso[$language];
+    $code = $usedIso['langue'];
+    $usedIsos[$code] = $iso[$code];
 }
 
-sort($usedIsos);
+//sort($usedIsos);
+//removes the associations
