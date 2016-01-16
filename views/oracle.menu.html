@@ -42,7 +42,13 @@ include('./sys/load_iso.php');
 				<a href="?mode=oracle.card.alea" title="card_alea"><?php echo $lang['card_alea']; ?></a>
 			</li>
 <?php 
-	} 
+	}
+	$disable="";
+	if($this->lexicon->count_entries()==0){
+		$disable = 'disabled="disabled"';
+	}
+	echo "<li type='button' $disable class='btn btn-primary btn-lg btn-block'>
+			<a href='?mode=oracle.card.alea' title='card_alea'>".$lang['card_lexinno'].'</a></li>';
 ?>
 			<li type="button" class="btn btn-primary btn-lg btn-block">
 				<a href="?mode=oracle.byid" title="card_byid"><?php echo $lang['card_by_id']; ?></a>

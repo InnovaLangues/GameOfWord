@@ -100,6 +100,7 @@ $lang['enter_id'] ='Entrer an Id';
 $lang['card_alea'] = 'Random Card (Create)';
 $lang['card_exist'] = 'Random Card (Exist)';
 $lang['card_by_id'] ='Card by it\'s Identification';
+$lang['card_lexinno']='Linked to your lexicon';
 
 // Description d'une carte : Oracle
 $lang['card_descr'] = 'Card Description';

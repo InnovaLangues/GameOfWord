@@ -23,7 +23,6 @@ class oracle_menu
 				$controller->set_mode($this->mode);
 				return $controller->process();
 			break;
-		    
 		case 'oracle.byid':
 				include('controllers/oracle.card.byid.class.php');
 				$controller = new oracle_card_byid();

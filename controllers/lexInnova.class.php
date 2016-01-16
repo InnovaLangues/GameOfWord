@@ -1,27 +1,19 @@
 <?php
 
 class LexInnovaLink{
-	private $user= '';
-	//$this->oracle = $this->user->id;
-	//$this->userlang = $this->user->userlang;
+	private $user ;
 	private $lexiconUrl = "http://totoro.imag.fr/lexinnova/api/Lexinnova@user@/@lang@/cdm-headword/*/cdm-headword/?strategy=NOT_EQUAL" ;
 	private $content ;
+	private $lang_codes = array("es"=>"esp",
+								"fr"=>"fre");
 
 
-	public function __construct(){
-		/**/
-/*		$this->user = user::getInstance();
-		if ($this->user->userlang == 'es'){
-			$this->lang = "esp";
-		}
-		else{
-			$this->lang = "fra";//pour qu'il y ait une alternative
-		}
-		
-		$this->lexiconUrl = str_replace(array("@user@", "@lang"), array($this->user->id, $this->lang), $this->lexiconUrl);*/
-		//mais là on va dire que c'est Titi et qu'il apprend l'espagnol
-		$this->lexiconUrl = str_replace(array("@user@", "@lang@"), array("lzbk", "esp"), $this->lexiconUrl);
-		echo $this->lexiconUrl;
+	public function __construct($user){
+		$this->user = $user ;
+		$this->lexiconUrl = str_replace(array("@user@", "@lang@"),
+			array($this->user->username,
+				  $this->lang_codes[$this->user->langGame]),
+			$this->lexiconUrl);
 		$this->content = simplexml_load_file($this->lexiconUrl);
 	}
 
@@ -48,9 +40,4 @@ class LexInnovaLink{
 		return $this->count_entries()." entrées → ($result)";
 	}
 }
-/**/
-echo "youhouu";
-$test = new LexInnovaLink();
-echo "<!doctype html><html><head> <meta charset='utf-8'></head><body>$test</body></html>";
-
 ?>

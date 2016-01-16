@@ -53,6 +53,7 @@ $lang['select_role'] = 'Selectionez un rôle';
 $lang['card_create'] = 'Création d\'une carte';
 $lang['card_description'] = 'Description d\'une carte';
 $lang['game_arbitrage'] = 'Arbitrage d\'une partie';
+$lang['card_lexinno']='Carte liée à votre lexique';
 
 // Description d'une carte par un Oracle oracle.card.display.html
 $lang['warning'] = 'Attention, votre micro n\'a pas été activé.';

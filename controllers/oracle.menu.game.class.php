@@ -1,12 +1,11 @@
 <?php
+require_once("lexInnova.class.php");
 
 class oracle_menu_game
 {
 	private $userlang = '';
 	private $user= '';
 	private $oracle ='';
-	private $wronglang ='0';
-
 	private $mode = '';
 
 	public function set_mode($mode)
@@ -28,10 +27,7 @@ class oracle_menu_game
 		$this->user = user::getInstance();
 		$this->oracle = $this->user->id;
 		$this->userlang = $this->user->userlang;
-		// Si l'utilisateur n'apprend pas le français, initalisation de wronglang à 1. Solution provisoire.
-		if ($this->userlang !== 'fr'){
-			$this->wronglang = "1";
-		}
+		$this->lexicon = new LexInnovaLink($this->user);
 		return true; 
 	}
 
