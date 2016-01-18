@@ -43,12 +43,16 @@ include('./sys/load_iso.php');
 			</li>
 <?php 
 	}
-	$disable="";
-	if($this->lexicon->count_entries()==0){
-		$disable = 'disabled="disabled"';
+	if($this->lexicon->has_content()){
+		if(isset($_SESSION["idCard"])){
+			$disable="";
+		}
+		else{
+			$disable = 'disabled="disabled"';
+		}
+		echo "<li type='button' $disable class='btn btn-primary btn-lg btn-block'>
+			<a href='?mode=oracle.byid' title='card from personal lexicon'>".$lang['card_lexinno'].'</a></li>';
 	}
-	echo "<li type='button' $disable class='btn btn-primary btn-lg btn-block'>
-			<a href='?mode=oracle.card.alea' title='card_alea'>".$lang['card_lexinno'].'</a></li>';
 ?>
 			<li type="button" class="btn btn-primary btn-lg btn-block">
 				<a href="?mode=oracle.byid" title="card_byid"><?php echo $lang['card_by_id']; ?></a>

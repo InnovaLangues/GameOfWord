@@ -5,7 +5,8 @@ class LexInnovaLink{
 	private $lexiconUrl = "http://totoro.imag.fr/lexinnova/api/Lexinnova@user@/@lang@/cdm-headword/*/cdm-headword/?strategy=NOT_EQUAL" ;
 	private $content ;
 	private $lang_codes = array("es"=>"esp",
-								"fr"=>"fre");
+								"fr"=>"fre",
+								"en"=>"eng");
 
 
 	public function __construct($user){
@@ -14,7 +15,13 @@ class LexInnovaLink{
 			array($this->user->username,
 				  $this->lang_codes[$this->user->langGame]),
 			$this->lexiconUrl);
-		$this->content = simplexml_load_file($this->lexiconUrl);
+		$headers = get_headers($this->lexiconUrl, 1);
+		if($headers[0] == 'HTTP/1.1 200 OK'){
+			$this->content = simplexml_load_file($this->lexiconUrl);			
+		}
+		else{
+			$this->content = false ;
+		}
 	}
 
 	public function has_content(){
@@ -27,6 +34,18 @@ class LexInnovaLink{
 			$result = count($this->content->xpath('//d:entry'));
 		}
 		return $result;
+	}
+
+	//returns a string formatted for an SQL query
+	public function list_entries(){
+		$result = "";
+		foreach ($this->content->xpath('d:entry/d:key') as $element){
+			if($result != ""){
+				$result .= ", ";
+			}
+			$result .= "'".$element."'";
+		}
+		return "($result)";
 	}
 
 	public function __toString(){

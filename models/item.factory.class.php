@@ -6,6 +6,7 @@ class ItemFactory //a quick and dirty class…
 {	//…to encapsulate some "complicated" frequent queries
 	const ANY = 1;
 	const CARD_NOT_ME = 2;
+	const CARD_FROM_LEXICON = 5;
 	const VALID_RECORDING_NOT_ME = 3;
 	const LIMBO_RECORDING_ME_IF_POSSIBLE = 4;
 	private $db;
@@ -32,8 +33,14 @@ class ItemFactory //a quick and dirty class…
 		}
 	}
 
-	private function generate_query($queryType){
+	private function generate_query($queryType, $parameter = NULL, $forOne = true){
 		$res = true;
+		if($forOne){
+			$forOne = "LIMIT 1";
+		}
+		else{
+			$forOne="";
+		}
 		switch ($queryType) {
 			case self::CARD_NOT_ME:
 				$this->query = "SELECT `cartes`.`idCarte` as `zeId` FROM `cartes` WHERE
@@ -43,7 +50,7 @@ class ItemFactory //a quick and dirty class…
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `enregistrement` WHERE `enregistrement`.`idOracle`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `parties`,`enregistrement` WHERE `parties`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `parties`.`idDevin`='$this->user_id'
-						) ORDER BY RAND() LIMIT 1;";
+						) ORDER BY RAND() $forOne;";
 				break;
 			case self::LIMBO_RECORDING_ME_IF_POSSIBLE:
 				$this->query = "SELECT `enregistrement`.*, IF(
@@ -58,7 +65,7 @@ class ItemFactory //a quick and dirty class…
 						AND `enregistrement`.`validation` = 'limbo'
 						AND `enregistrement`.`carteID` = `cartes`.`idCarte`
 						AND `cartes`.`langue` = '$this->lang'
-					ORDER BY `poids` DESC, RAND() LIMIT 1";
+					ORDER BY `poids` DESC, RAND() $forOne;";
 
 				break;
 			case self::VALID_RECORDING_NOT_ME:
@@ -71,7 +78,25 @@ class ItemFactory //a quick and dirty class…
 						AND `enregistrement`.`carteID` NOT IN (
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `parties`,`enregistrement` WHERE `parties`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `parties`.`idDevin`='$this->user_id'
-						) ORDER BY RAND() LIMIT 1;";
+						) ORDER BY RAND() $forOne;";
+				break;
+			case self::CARD_FROM_LEXICON: //ICITE tester la requête l'intégrer à innova class pour pouvoir allouer la variable de session et faire l'affichage en fonction de son existence(disabled ou non)  et de celle du dico (pas d'affichage)
+				if(isset($parameter)){
+					$this->query = "SELECT `cartes`.`idCarte` as `zeId` FROM `cartes` WHERE
+						`cartes`.`langue`='$this->lang'
+						AND `cartes`.`idDruide` != '$this->user_id' 
+						AND `cartes`.`idCarte` NOT IN (
+							SELECT `enregistrement`.`carteID` as`cardId` FROM `enregistrement` WHERE `enregistrement`.`idOracle`='$this->user_id'
+							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
+							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `parties`,`enregistrement` WHERE `parties`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `parties`.`idDevin`='$this->user_id'
+						)
+						AND (  `cartes`.`mot` IN $parameter
+							OR `cartes`.`idCarte` IN (SELECT `idCarte` FROM `mots_interdits` WHERE `mots_interdits`.`mot` IN $parameter)
+						) ORDER BY RAND() $forOne;";
+				}
+				else{
+					$res = false;
+				}
 				break;
 			default:
 				$res = false;
@@ -82,8 +107,8 @@ class ItemFactory //a quick and dirty class…
 
 	//returns a card object if the query yields 1 result and the number
 	//of result otherwise, this should only be 0
-	public function get_card($queryType){
-		if($this->generate_query($queryType)){
+	public function get_card($queryType, $parameter = NULL){
+		if($this->generate_query($queryType, $parameter)){
 			$this->db->query($this->query);
 			$res = $this->db->affected_rows();
 			if($res == 1){
@@ -96,8 +121,24 @@ class ItemFactory //a quick and dirty class…
 		return $res;
 	}
 
-	public function get_recording($queryType){
-		if($this->generate_query($queryType)){
+	public function get_card_id($queryType, $parameter = NULL){
+		if($this->generate_query($queryType, $parameter)){
+			$this->db->query($this->query);
+			if($this->db->affected_rows() == 1){
+				$res = $this->db->fetch_object()->zeId;
+			}
+			else{
+				$res = -1;
+			}
+		}
+		else{
+			throw new Exception("Not a proper query type '$queryType'.");
+		}
+		return $res;
+	}
+
+	public function get_recording($queryType, $parameter = NULL){
+		if($this->generate_query($queryType,$parameter)){
 			$this->db->query($this->query);
 			$res = $this->db->affected_rows();
 			if($res == 1){

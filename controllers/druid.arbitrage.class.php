@@ -105,7 +105,7 @@ class druid_arbitrage
 		//Cas par défaut (clique sur arbitrer)
 			else{
 				$this->partie=false;
-				$recordingFactory = new ItemFactory($this->druid,$this->userlang);
+				$recordingFactory = new ItemFactory($this->druid,$this->user->langGame);
 				$this->raisin = $recordingFactory->get_recording(ItemFactory::LIMBO_RECORDING_ME_IF_POSSIBLE);
 				if(is_object($this->raisin) && file_exists("enregistrements/".$this->raisin->cheminEnregistrement)){
 					//construction de l'adresse de l'enregistrement à partir du nom du fichier

@@ -50,7 +50,7 @@ class oracle_alea_exist
 
 	private function selectcarte(){
 		// récupération de plusieurs cartes possibles
-		$cardFactory = new ItemFactory($this->oracle,$this->userlang);
+		$cardFactory = new ItemFactory($this->oracle,$this->user->langGame);
 		$card = $cardFactory->get_card(ItemFactory::CARD_NOT_ME);
     	if(is_object($card) && get_class($card)=="Card"){
     		//echo "<script>window.alert('C bon ça');</script>";
