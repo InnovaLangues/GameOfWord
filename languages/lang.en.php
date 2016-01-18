@@ -104,7 +104,7 @@ $lang['card_lexinno']='Linked to your lexicon';
 
 // Description d'une carte : Oracle
 $lang['card_descr'] = 'Card Description';
-$lang['description'] = 'You let the others gusse your description of the<span class="motatrouver"> first word</span> without using <span class="motTaboo"> the others words</span>';
+$lang['description'] = '<span class="motTaboo">Attention: It would seem that this role requires the use of firefox</span>.<br />You let the others gusse your description of the<span class="motatrouver"> first word</span> without using <span class="motTaboo"> the others words</span>';
 $lang['beware_time']=' You can restart your recording as much as you want but beware, you are limited in time. If you don\'t send your recording, you loose the points from Oracle, but you get some points from Druide.';
 $lang['card_preview'] = 'Card Preview';
 $lang['id_describe'] = 'Here is your Card ID, send it to your friend so they can play with it ! ';

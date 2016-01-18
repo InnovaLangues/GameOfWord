@@ -99,7 +99,7 @@ $lang['card_by_id'] = 'Carte par son Identifiant';
 
 // Description d'une carte : Oracle
 $lang['card_descr'] = 'Description d\'une carte';
-$lang['description'] = 'Tu dois faire deviner aux autres joueurs  le<span class="motatrouver"> premier mot</span> sans dire les<span class="motTaboo"> autres mots.</span><br/>
+$lang['description'] = '<span class="motTaboo">Attention&nbsp;: Il semblerait que ce rôle nécessite l\'utilisation de firefox</span>.<br />Tu dois faire deviner aux autres joueurs  le<span class="motatrouver"> premier mot</span> sans dire les<span class="motTaboo"> autres mots.</span><br/>
 Tu recevras 10 points à la fin de ta description. Si elle n\'est pas validée par le Druide, tu les perdras. Si elle est validée mais que le Devin ne trouve pas le mot décrit, tu perdras 5 points.';
 $lang['abandonner'] = 'Abandonner';
 $lang['beware_time'] = 'Tu peux recommencer ton enregistrement à infini, mais ton temps est limité. Si tu décides de ne pas envoyer tu perdras des points d\'Oracle mais tu gagneras un peu de Druide';
