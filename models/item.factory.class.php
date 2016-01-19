@@ -5,6 +5,7 @@ require_once('./sys/db.class.php');//useless (called by Card)
 class ItemFactory //a quick and dirty class…
 {	//…to encapsulate some "complicated" frequent queries
 	const ANY = 1;
+	const ALL_CARDS = 6;
 	const CARD_NOT_ME = 2;
 	const CARD_FROM_LEXICON = 5;
 	const VALID_RECORDING_NOT_ME = 3;
@@ -98,6 +99,11 @@ class ItemFactory //a quick and dirty class…
 					$res = false;
 				}
 				break;
+			case self::ALL_CARDS:
+				//partir sur cette piste ce serait peut être mieux : SELECT `cartes`.*, GROUP_CONCAT(`mots_interdits`.`mot` SEPARATOR '|') as `interdits` FROM `cartes`,`mots_interdits` WHERE `cartes`.`idCarte`=`mots_interdits`.`idCarte` GROUP BY `mots_interdits`.`idCarte` ORDER BY `cartes`.`langue`, `cartes`.`idCarte`
+				//mais c'est un peu fatiguant…
+				$this->query = "SELECT `idCarte` as `zeId` FROM `cartes` ORDER BY `langue`, `idCarte` $forOne";//le forOne servira pas, pour la cohérence
+				break;
 			default:
 				$res = false;
 				break;
@@ -129,6 +135,23 @@ class ItemFactory //a quick and dirty class…
 			}
 			else{
 				$res = -1;
+			}
+		}
+		else{
+			throw new Exception("Not a proper query type '$queryType'.");
+		}
+		return $res;
+	}
+
+	public function get_card_ids($queryType, $parameter = NULL){
+		if($this->generate_query($queryType, $parameter, false)){
+			$this->db->query($this->query);
+			$res = $this->db->affected_rows();
+			if($res >= 1){
+				$res = array();
+				while($id = $this->db->fetch_object()){
+					array_push($res, $id->zeId);
+				}
 			}
 		}
 		else{

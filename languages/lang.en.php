@@ -203,4 +203,7 @@ $lang['uploadProb'] = 'The file has not been uploaded yet...';
 //
 $lang['same_lang'] = ' You have chosen twice the same language in langues parlées';
 
+//Administration cartes
+$lang['admin'] = "Administration: Press cross to delete card";
+
 ?>

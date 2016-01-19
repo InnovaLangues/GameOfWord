@@ -196,3 +196,5 @@ $lang['uploadProb'] = 'Le fichier n\'a pas été uploadé...';
 
 //
 $lang['same_lang'] = 'Vous avez choisi deux fois la même langue  dans langues parlées ';
+//Administration cartes
+$lang['admin'] = "Administration&nbsp;: Cliquer sur la croix pour supprimer la carte";
