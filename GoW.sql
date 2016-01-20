@@ -53,9 +53,12 @@ CREATE TABLE IF NOT EXISTS `cartes` (
   `idDruide` int(16) unsigned NOT NULL COMMENT 'auteur',
   `mot` varchar(128) NOT NULL,
   `dateCreation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateSuppression` timestamp NULL DEFAULT NULL,
+  `idEraser` int(16) DEFAULT NULL COMMENT 'Id de la personne qui a supprimé la carte',
   PRIMARY KEY (`idCarte`),
   KEY `idDruide` (`idDruide`),
-  KEY `langue` (`langue`)
+  KEY `langue` (`langue`),
+  KEY `idEraser` (`idEraser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Les cartes, attention nécessitent jointures' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

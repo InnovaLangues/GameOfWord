@@ -205,5 +205,4 @@ $lang['same_lang'] = ' You have chosen twice the same language in langues parlé
 
 //Administration cartes
 $lang['admin'] = "Administration: Press cross to delete card";
-
 ?>

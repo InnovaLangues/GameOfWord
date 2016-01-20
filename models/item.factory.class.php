@@ -44,10 +44,11 @@ class ItemFactory //a quick and dirty class…
 		}
 		switch ($queryType) {
 			case self::CARD_NOT_ME:
-				$this->query = "SELECT `cartes`.`idCarte` as `zeId` FROM `cartes` WHERE
-						`cartes`.`langue`='$this->lang'
-						AND `cartes`.`idDruide` != '$this->user_id' 
-						AND `cartes`.`idCarte` NOT IN (
+				$this->query = "SELECT `cartes`.`idCarte` as `zeId` FROM `cartes`
+						WHERE `cartes`.`idEraser` IS NULL
+						AND   `cartes`.`langue`='$this->lang'
+						AND   `cartes`.`idDruide` != '$this->user_id' 
+						AND   `cartes`.`idCarte` NOT IN (
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `enregistrement` WHERE `enregistrement`.`idOracle`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `parties`,`enregistrement` WHERE `parties`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `parties`.`idDevin`='$this->user_id'
@@ -61,8 +62,9 @@ class ItemFactory //a quick and dirty class…
 							SELECT `enregistrement`.`carteID` FROM `enregistrement`,`arbitrage` WHERE `enregistrement`.`enregistrementID`=`arbitrage`.`enregistrementID` AND `arbitrage`.`idDruide` = '$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` FROM `enregistrement`,`parties` WHERE `enregistrement`.`enregistrementID`=`parties`.`enregistrementID` AND `parties`.`idDevin` = '$this->user_id'
 					),1,0) as `poids`
-					FROM `enregistrement`,`cartes` WHERE
-						`enregistrement`.`idOracle` != '$this->user_id'
+					FROM `enregistrement`,`cartes`
+						WHERE `cartes`.`idEraser` IS NULL
+						AND `enregistrement`.`idOracle` != '$this->user_id'
 						AND `enregistrement`.`validation` = 'limbo'
 						AND `enregistrement`.`carteID` = `cartes`.`idCarte`
 						AND `cartes`.`langue` = '$this->lang'
@@ -70,23 +72,25 @@ class ItemFactory //a quick and dirty class…
 
 				break;
 			case self::VALID_RECORDING_NOT_ME:
-				$this->query = "SELECT `enregistrement`.* FROM `enregistrement`,`cartes` WHERE
-						`cartes`.`langue`='$this->lang'
-						AND `cartes`.`idCarte` = `enregistrement`.`carteID`
-						AND `cartes`.`idDruide` != '$this->user_id'
-						AND `enregistrement`.`validation` = 'valid'
-						AND `enregistrement`.`idOracle` != '$this->user_id' 
-						AND `enregistrement`.`carteID` NOT IN (
+				$this->query = "SELECT `enregistrement`.* FROM `enregistrement`,`cartes`
+						WHERE `cartes`.`idEraser` IS NULL
+						AND   `cartes`.`langue`='$this->lang'
+						AND   `cartes`.`idCarte` = `enregistrement`.`carteID`
+						AND   `cartes`.`idDruide` != '$this->user_id'
+						AND   `enregistrement`.`validation` = 'valid'
+						AND   `enregistrement`.`idOracle` != '$this->user_id' 
+						AND   `enregistrement`.`carteID` NOT IN (
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `parties`,`enregistrement` WHERE `parties`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `parties`.`idDevin`='$this->user_id'
 						) ORDER BY RAND() $forOne;";
 				break;
 			case self::CARD_FROM_LEXICON: //ICITE tester la requête l'intégrer à innova class pour pouvoir allouer la variable de session et faire l'affichage en fonction de son existence(disabled ou non)  et de celle du dico (pas d'affichage)
 				if(isset($parameter)){
-					$this->query = "SELECT `cartes`.`idCarte` as `zeId` FROM `cartes` WHERE
-						`cartes`.`langue`='$this->lang'
-						AND `cartes`.`idDruide` != '$this->user_id' 
-						AND `cartes`.`idCarte` NOT IN (
+					$this->query = "SELECT `cartes`.`idCarte` as `zeId` FROM `cartes`
+						WHERE `cartes`.`idEraser` IS NULL
+						AND   `cartes`.`langue`='$this->lang'
+						AND   `cartes`.`idDruide` != '$this->user_id' 
+						AND   `cartes`.`idCarte` NOT IN (
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `enregistrement` WHERE `enregistrement`.`idOracle`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `parties`,`enregistrement` WHERE `parties`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `parties`.`idDevin`='$this->user_id'
@@ -102,7 +106,7 @@ class ItemFactory //a quick and dirty class…
 			case self::ALL_CARDS:
 				//partir sur cette piste ce serait peut être mieux : SELECT `cartes`.*, GROUP_CONCAT(`mots_interdits`.`mot` SEPARATOR '|') as `interdits` FROM `cartes`,`mots_interdits` WHERE `cartes`.`idCarte`=`mots_interdits`.`idCarte` GROUP BY `mots_interdits`.`idCarte` ORDER BY `cartes`.`langue`, `cartes`.`idCarte`
 				//mais c'est un peu fatiguant…
-				$this->query = "SELECT `idCarte` as `zeId` FROM `cartes` ORDER BY `langue`, `idCarte` $forOne";//le forOne servira pas, pour la cohérence
+				$this->query = "SELECT `idCarte` as `zeId` FROM `cartes` WHERE `cartes`.`idEraser` IS NULL ORDER BY `langue`, `idCarte` $forOne";//le forOne servira pas, pour la cohérence
 				break;
 			default:
 				$res = false;

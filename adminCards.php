@@ -31,8 +31,5 @@ else{
 		$card->set_view("./views/card.inline.admin.display.php");
 		echo $card;
 	}
-    echo "<script>$('.close').click(function() {
-  $( this ).slideUp();
-});</script>";
 }
 ?>
