@@ -5,7 +5,7 @@
 	$user = user::getInstance();
 	if(($user->id == $_GET['user_id']) && isset($_GET['card_id'])){
 		$db = db::getInstance();
-		$db->query("UPDATE `GoW`.`cartes` SET `dateSuppression` = CURRENT_TIMESTAMP, `idEraser` = '".$user->id."' WHERE `cartes`.`idCarte` = '".$_GET['card_id']."';");
+		$db->query("UPDATE `cartes` SET `dateSuppression` = CURRENT_TIMESTAMP, `idEraser` = '".$user->id."' WHERE `cartes`.`idCarte` = '".$_GET['card_id']."';");
 		if($db->affected_rows() == 1){
 			echo "OK";
 		}
