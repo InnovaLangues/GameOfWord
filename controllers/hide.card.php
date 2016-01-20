@@ -2,7 +2,6 @@
 	session_start();
 	require_once("../sys/db.class.php");
 	require_once("../models/user.class.php");
-	require('../languages/language.php');
 	$user = user::getInstance();
 	if(($user->id == $_GET['user_id']) && isset($_GET['card_id'])){
 		$db = db::getInstance();
