@@ -169,3 +169,17 @@
 	position:absolute;
 	margin-left:10px;
 }
+
+footer{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    color:white;
+    font-size:large;
+    background-color: black;
+    padding-left:1em;
+    padding-right:1em;
+    padding-top:0.3em;
+    padding-bottom:0.5em;
+}
