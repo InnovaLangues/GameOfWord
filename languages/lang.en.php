@@ -129,6 +129,9 @@ $lang["RecordCard"] ='If you want to record yourself click here : ';
 $lang["RecordArbitre"] ='If you want to judge this record click here : ';
 $lang["restart"] ='Play again ? ';
 $lang["start"] ='It\'s time to play the game !';
+$lang['start_playback']="Play recording";
+$lang['give_up'] = 'Give up';
+$lang['devin-nope'] = 'Not the word…';
 $lang["game"] ='Start the game';
 
 

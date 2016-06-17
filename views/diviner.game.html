@@ -20,16 +20,19 @@ function pressurise(){
 	$('#countdown').css('background-color', '#'+(Math.random()*0xFFFFFF<<0).toString(16));
 }
 
-	function finChrono(){
-		document.location.href="index.php?mode=diviner.timeout"
-		if(!monChrono.isRunning()){
-			$('#countdown').css('background-color', 'white');
-			$('#countdown').html("Buzz Buzz");
-		}
+function finChrono(){
+	document.location.href="index.php?mode=diviner.timeout"
+	if(!monChrono.isRunning()){
+		$('#countdown').css('background-color', 'white');
+		$('#countdown').html("Buzz Buzz");
 	}
-
+}
 
 var monChrono = new MyTimer(renders, <?php echo $this->time; ?>, finChrono, 10,pressurise);
+
+function give_up(){
+	monChrono.stop();
+}
 
 </script>
 <div id="main-container">
@@ -88,7 +91,8 @@ var monChrono = new MyTimer(renders, <?php echo $this->time; ?>, finChrono, 10,p
 						<h3><?php echo $lang['which_word'];?> </h3>
 						<div class="inner" style="height: 5em;">
 						<audio id="audio" autoplay controls></audio> 
-						<button class="btn btn-primary"  type="button" id="start-audio">Commencer l'écoute</button>
+						<button class="btn btn-primary"  type="button" id="start-audio"><?php echo $lang['start_playback'] ?></button>
+						<button class="btn btn-primary"  type="button" id="give-up"><?php echo $lang['give_up'] ?></button>
 						</div>
 						<h3><span id="countdown" class="timer"></span></h3>
 					</dl>
@@ -121,12 +125,26 @@ var monChrono = new MyTimer(renders, <?php echo $this->time; ?>, finChrono, 10,p
 		var motadeviner=(motadeviner.replace(/\s{2,}/g, ' ').trim().toLowerCase());
 				
 	//if (document.getElementById('motadeviner').value == document.getElementById('mot').value ) {
-	if (motentre == motadeviner) {
+		if (motentre == motadeviner) {
 				document.location.href="index.php?mode=diviner.result";
 			}
 	// Si le devin donne une réponse fausse, on vide la zone de texte 
 		else {
-			document.getElementById('mot').value = '' ;
+			console.log('OK');
+			var inputElt = document.getElementById('mot');
+			var inputEltColor = inputElt.style.backgroundColor ;
+			var textError = "<?php echo $lang['devin-nope']; ?>";
+			inputElt.value = textError;
+			inputElt.style.backgroundColor = 'red';
+			inputElt.select();
+
+			setTimeout(function(){
+				inputElt.style.backgroundColor = inputEltColor;
+				if(inputElt.value == textError){
+					inputElt.value = '' ;
+					inputElt.select();
+				}
+			}, 1000);
 		}
 	}
 	
@@ -145,6 +163,7 @@ $(document).keypress(function(e) {
         }
         var startAudio = getByID('start-audio');
         var audio = getByID('audio');
+        var giveup = getByID('give-up');
 
 	// commandes pour limiter l'écoute d'un enregistrement
 	// la premiere empeche de mettre en pause en relancant la lecture quand on appuie sur le bouton pause
@@ -169,6 +188,7 @@ $(document).keypress(function(e) {
             
             
         };
+        giveup.onclick = give_up ;
 </script>
 
 

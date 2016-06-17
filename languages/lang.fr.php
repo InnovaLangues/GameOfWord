@@ -125,6 +125,9 @@ $lang['RecordCard'] = 'Si vous voulez proposer un enregistrement pour cette cart
 $lang['RecordArbitre'] = 'Si vous voulez arbitrer cet enregistrement cliquez ici : ';
 $lang['restart'] = 'Rejouer une partie ? ';
 $lang['start'] = 'Il est temps de jouer !';
+$lang['start_playback']="Commencer l'écoute";
+$lang['give_up'] = 'Abandonner';
+$lang['devin-nope'] = 'Pas ce mot…';
 $lang['game'] = 'Jouer';
 
 //Résultats, Scores et Points
