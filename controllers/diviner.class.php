@@ -134,7 +134,8 @@ class diviner_game
 	private function selectpartie(){
 		$res = false;
 		try{
-			$recordingFactory = new ItemFactory($this->diviner,$this->user->langGame);
+			$recordingFactory = new ItemFactory($this->diviner,$this->userlang);
+			//$this->user->langGame); langGame n'a pas l'air d'être ce qu'on pense
 			$this->raisin = $recordingFactory->get_recording(ItemFactory::VALID_RECORDING_NOT_ME);
 			if(is_object($this->raisin)){
 				// construction de l'adresse de l'enregistrement à  partir du nom du fichier son

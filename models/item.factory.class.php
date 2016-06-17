@@ -112,6 +112,7 @@ class ItemFactory //a quick and dirty class…
 				$res = false;
 				break;
 		}
+		//echo "$this->query<script>console.log($this->query);</script>";
 		return true;
 	}
 
