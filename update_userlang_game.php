@@ -5,20 +5,20 @@
 	require_once('./controllers/notificationMessage.php');
 	require('./models/userlvl.class.php');
 	require('./languages/language.php');
-	require('./sys/load_iso.php');
-
+	require_once('./sys/load_iso.php');
+  $lang_iso = new IsoLang();
 
 	$user = user::getInstance();
-	
+
 	$sql = "UPDATE user SET userlang_game ='"
-			. $_GET['userlang_game'] 
+			. $_GET['userlang_game']
 			. "' WHERE userid = '" . intval($user->id)."'";
 	$db = db::getInstance();
 	echo $sql;
 	if ($db->query($sql)){
 		echo "update succed";
-		
-		$mess = $_GET['page_not']." : ".$lang["languePlay"].$iso[$_GET['userlang_game']];
+
+		$mess = $_GET['page_not']." : ".$lang["languePlay"].$lang_iso->french_for($_GET['userlang_game']);
 		$role = strtolower($_GET['page_not']);
 		$role = "profil/".$role;
 
@@ -31,10 +31,4 @@
 		echo "update fails";
 	}
 	$_SESSION["langDevin"] = $_GET['userlang_game'];
-	
-//~ 	if ($user->set_lang($_GET['userlang'])) {
-//~ 		echo "update succeeded";
-//~ 	} else {
-//~ 		echo "update failed";
-//~ 	};
 ?>

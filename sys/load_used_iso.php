@@ -1,7 +1,8 @@
 <?php
 
 require_once 'sys/db.class.php';
-include './sys/load_iso.php';
+require_once './sys/load_iso.php';
+$lang_iso = new IsoLang();
 
 $db = db::getInstance();
 
@@ -11,7 +12,7 @@ $db->query($sql);
 $usedIsos = array();
 while ($usedIso = $db->fetch_assoc()) {
     $code = $usedIso['langue'];
-    $usedIsos[$code] = $iso[$code];
+    $usedIsos[$code] = $lang_iso->french_for($code);
 }
 
 asort($usedIsos);

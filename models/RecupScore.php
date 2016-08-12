@@ -1,7 +1,7 @@
 <?php
-	
 	function score($role){
-		require('./sys/load_iso.php');
+		require_once('./sys/load_iso.php');
+		$lang_iso = new IsoLang();
 
 		$db = db::getInstance();
 		$user = user::getInstance();
@@ -10,10 +10,10 @@
 		if(isset($_SESSION["langDevin"]) && $_SESSION["langDevin"]!=""){
 			$langue = $_SESSION["langDevin"];
 		}
-				
+
 		$roleUt = "score".$role;
 
-		$sql = 'SELECT '.$roleUt.' FROM `score` WHERE `userid`="'.$user->id.'" AND langue="'.$iso[$langue].'"';
+		$sql = 'SELECT '.$roleUt.' FROM `score` WHERE `userid`="'.$user->id.'" AND langue="'.$lang_iso->french_for($langue).'"';
 
 		$res = $db->query($sql);
 		$resultat = mysqli_fetch_assoc($res);
@@ -21,6 +21,4 @@
 		return $resultat[$roleUt];
 
 	}
-
-
 ?>

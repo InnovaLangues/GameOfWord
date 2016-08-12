@@ -92,7 +92,11 @@ class user
 	{
 		return $this->lang;
 	}
-	
+
+	public function get_lang_lvl($lang){
+		return isset($this->languages[$lang]) ? $this->languages[$lang] : false ;
+	}
+
 	private function update_lang($lang=false) {
 		$db = db::getInstance();
 		if ($lang === false) { return false;}
@@ -146,15 +150,30 @@ class user
 			$this->userlang = (string) $row['userlang'];
 			$this->userlvl = (string) $row['userlvl'];
 		}
-		
+
 		$sql = 'SELECT * FROM user_niveau WHERE userid = ' . intval($id);
 		$result = $db->query($sql);
 		$row = $result->fetch_assoc();
 		$result->free();
 		if ($row) {
 			$this->spoken_lang = (string) $row['spoken_lang'];
+			//now we go deeper…
+			$tmp_langs = explode(';',$row['spoken_lang']);
+			$tmp_lvls = explode(';',$row['niveau']);
+			$nb_langs = count($tmp_langs);
+			if($nb_langs==count($tmp_lvls)){
+				for($i=0;$i<$nb_langs;$i++){
+					require_once("./sys/load_iso.php");
+					$lang_iso = new IsoLang();
+					if($tmp_langs[$i]!=""){
+						$this->languages[$lang_iso->language_code_for($tmp_langs[$i])]=$tmp_lvls[$i];
+					}
+				}
+				//**/include("debug.php");
+			}
+			//end add on for level for languages… multiplicity of info beurk
 			return true;
-		}		
+		}
 		return false;
 	}
 }

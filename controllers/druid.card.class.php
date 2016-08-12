@@ -23,11 +23,11 @@ class druid_card
 	private $res = '';
 	private $card;
 	private $res2 = '';
-	
+
 	private $previousSGDr = 0;
 	private $previousSDr = 0;
 	private $pointsDr = "";
-	
+
 	private $mode = '';
 
 	public function set_mode($mode)
@@ -41,9 +41,9 @@ class druid_card
         {
             $this->check();
             $this->validate();
-       	}	
+       	}
        	return $this->display_et_scores();
-       
+
         return false;
 	}
 
@@ -53,10 +53,10 @@ class druid_card
 		$this->user = user::getInstance();
 		$this->userlang = $this->user->langGame;
 		$this->createur = $this->user->id;
-		
+
 		//récupération de la date au format jour/mois/année/heure
 		$this->et_c_est_le_temps_qui_court = date("d/m/Y H:i");
-		
+
 		//récupération des points druides
 		$this->pointsDr = pointsDruid;
 
@@ -65,8 +65,8 @@ class druid_card
 		// récupération du formulaire de création de carte
 		 $this->submit = isset($_POST['submit_form']);
 		if ( $this->submit )
-		{	
-			
+		{
+
 		    $this->res['mot'] = isset($_POST['mot']) ? trim($_POST['mot']) : '';
 		    $this->res['theme_carte'] = isset($_POST['theme_carte']) ? trim($_POST['theme_carte']) : '';
 		    $this->res['nivcarte'] = isset($_POST['nivcarte']) ? trim($_POST['nivcarte']) : '';
@@ -77,7 +77,7 @@ class druid_card
 		    $this->res['tabou5'] = isset($_POST['tabou5']) ? trim($_POST['tabou5']) : '';
 		    $this->res['tabou6'] = isset($_POST['tabou6']) ? trim($_POST['tabou6']) : '';
 		}
-	
+
 		$db = db::getInstance();
 		//A theme object would not have been bad… notimenow
 		$sql = 'SELECT DISTINCT `themeFR` FROM `themes` ORDER BY `themes`.`themeFR` ASC';
@@ -125,7 +125,7 @@ class druid_card
 				$carte->store();
 				$_SESSION["LastStoredId"] = $carte->get_id();
 				$this->card = $carte ;
-				$this->res = array('carteID' => $_SESSION["LastStoredId"]); 
+				$this->res = array('carteID' => $_SESSION["LastStoredId"]);
 			}
 			catch(Exception $e){
 				echo $e;
@@ -136,18 +136,19 @@ class druid_card
 			return false;
 		}
     }
-    
+
 	private function display_et_scores()
 	{
 
         //si une carte a été soumise
        if ($this->submit && !isset($_SESSION["CreateCard"]))
         {
-			include('./sys/load_iso.php');
+			require_once('./sys/load_iso.php');
+			$lang_iso = new IsoLang();
 			require_once('./controllers/update_score_coeff.php');
-			
+
 			//Requête de modification du score du Druide l'accomplissement de son fastidieux travail de création de carte
-			updateScoreDruideCreation($this->createur,$iso[$this->userlang],$this->pointsDr);
+			updateScoreDruideCreation($this->createur,$lang_iso->french_for($this->userlang),$this->pointsDr);
 			$_SESSION["notif"]["notification_done"]["Druide"] = 'pointsDruide';
 			$_SESSION["CreateCard"]=true;
 

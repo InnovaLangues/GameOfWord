@@ -7,23 +7,22 @@ $db=db::getInstance();
 
 foreach(array('audio') as $type) {
 	if (isset($_FILES["audio-blob"])) {
-		echo 'enregistrements/';
 		$fileName = $_POST["audio-filename"];
 		$_SESSION['filename']=$fileName;
-		$uploadDirectory = 'enregistrements/'.$fileName;
+		$uploadDirectory = './enregistrements/'.$fileName;
 		if (!move_uploaded_file($_FILES["audio-blob"]["tmp_name"], $uploadDirectory)) {
 			throw new Exception('problem moving uploaded file');
 		}
 	}
-	
+
 
 	//echo ($fileName);
-	$temps= date("d/m/Y H:i");		
-	
+	$temps= date("d/m/Y H:i");
+
 	// récupère dans un tableau de hachage le nom du fichier sans l'extension, l'extension et le chemin
-	$file = pathinfo('./enregistrements/'.$fileName.''); 
-	
-			
+	$file = pathinfo('./enregistrements/'.$fileName);
+
+
 	// convertit en mp3
 			if($conversion!==false){
 				//#format
@@ -31,10 +30,10 @@ foreach(array('audio') as $type) {
 					$conversion = "avconv -i %source% -acodec libmp3lame -q:a 2 -ac 1 %target%";
 				}
 				$commande = audio_convert($conversion, $file['filename']);
-				exec($commande); 
-				// Supression du fichier.wav du serveur.	
-				exec("rm ./enregistrements/".$file['filename'].".ogg"); 
-				$ext = ".mp3";	
+				exec($commande);
+				// Supression du fichier.wav du serveur.
+				exec("rm ./enregistrements/".$file['filename'].".ogg");
+				$ext = ".mp3";
 				echo $file['filename'].$ext;
 				echo $commande;
 
@@ -42,34 +41,43 @@ foreach(array('audio') as $type) {
 			else{
 				echo $file['filename'].$ext;
 			}
-	
-	
 
-	
+
+
+
 	// ajout 15/02
 	//$_SESSION['userid']=$userid;
-	
+
 	//enregistrement dans la BD de la partie de l'oracle
 	if($fileName!='')
 	//$userid = $_POST["filename"];
 	//$_SESSION['userid']=$userid;
 	{
-		//renomme le nom du fichier à rentrer dans la BD
-		
 		$fileName=$file['filename'].$ext;
+		//renomme le nom du fichier à rentrer dans la BD
+		$duration = 1;//durée min…
+		if($ext == ".mp3"){
+			//would better use ffmpeg, but if we do that, might as well replace avconv
+			//see http://stackoverflow.com/questions/12053125/php-function-to-get-mp3-duration#answer-15237692
+			//short term solution
+			require_once("./sys/mp3.utils.php");
+			$mp3_file = new MP3File("./enregistrements/$fileName");
+			$duration = $mp3_file->getDuration();
+		}
 		$sql = 'INSERT INTO enregistrement
-                (cheminEnregistrement,idOracle,OracleLang,tpsEnregistrement,carteID,nivcarte) 
+                (`cheminEnregistrement`,`idOracle`,`OracleLang`,`tpsEnregistrement`,`carteID`,`nivcarte`,`duration`)
 				 VALUES('.$db->escape($fileName).','.
 					$_GET["userid"]. ','.
 					$_GET["userlang"]. ','.$db->escape($temps).','.
 					$_GET["cardid"]. ','.
-					$_GET["levelcard"].')';
+					$_GET["levelcard"].','.
+					$duration.')';
 		$db->query($sql);
 	}
 }
 
 function audio_convert($file, $filename){
-	$commandeConv = str_replace(array("%source%", "%target%"), array("./enregistrements/".$filename.".ogg","./enregistrements/".$filename.".mp3"), $file); 
+	$commandeConv = str_replace(array("%source%", "%target%"), array("./enregistrements/".$filename.".ogg","./enregistrements/".$filename.".mp3"), $file);
 	return $commandeConv;
 }
 

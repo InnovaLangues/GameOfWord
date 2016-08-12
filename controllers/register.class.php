@@ -36,14 +36,16 @@ class register
         return false;
     }
 
-    private function init()
-    {
-	include('./sys/load_iso.php');
+    private function init(){
+	     require_once('./sys/load_iso.php');
+       $lang_iso = new IsoLang();
+
+
         $this->submit = isset($_POST['submit_form']);
         if ( $this->submit )
         {
             include('./sys/upload.php');
-            
+
             $this->photo='';
             $upload = upload($_POST["profilphot"],'profil/',3000000, array('png','gif','jpg','jpeg'),$_POST['username'] );
             if(is_array($upload)){
@@ -73,7 +75,7 @@ class register
 		$this->niveau .= isset($_POST['choix_niveau_'.$i]) ? trim($_POST['choix_niveau_'.$i]).';' : '';
 		if (!isset($_POST['choix_niveau_'.$i])) { break; }
 	    }
-	    $this->userlang_game = isset($_POST['lang_game']) ? array_search(trim($_POST['lang_game']),$iso) : '';
+	    $this->userlang_game = isset($_POST['lang_game']) ? $lang_iso->language_code_for(trim($_POST['lang_game'])) : '';
         }
         return true;
     }
@@ -153,22 +155,22 @@ class register
 						$db->escape((string) $this->userlang_game) . ','.
                         $db->escape((string) $this->photo) .','.
                         $db->escape((string) $this->GameLvl) .')' ;
-						
-					
-						
+
+
+
         $db->query($sql);
-   
+
 	// ajout d'une ligne correspondante dans la table score
-        
+
 			//selection de l'id de l'utilisateur
-       
+
 			$sql = 'SELECT userid
-                    FROM user WHERE username="'.$this->username.'"';	    
+                    FROM user WHERE username="'.$this->username.'"';
 			$result=$db->query($sql);
 			$res= mysqli_fetch_assoc($result);
 			$this->userid=$res['userid'];
-			
-	
+
+
      //ajout des langues parlées dans la table user_niveau
 	      $sql = 'INSERT INTO user_niveau
                     (userid, spoken_lang, niveau)
@@ -176,10 +178,10 @@ class register
 						$db->escape((string) $this->userid) . ', ' .
 						$db->escape((string)$this->spoken_lang). ', '.
 						$db->escape((string) $this->niveau) . ')' ;
-					
-						
-        $db->query($sql);	
-			
+
+
+        $db->query($sql);
+
 			//insertion dans la table score
             $spoken_langg = explode(';',$this->spoken_lang);
 

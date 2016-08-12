@@ -35,15 +35,12 @@ class edit
         return false;
     }
 
-    private function init()
-    {
-	   include('./sys/load_iso.php');
-    
-
-        $db = db::getInstance();
-        $user = user::getInstance();
-
-		$this->userlang = $user->get_lang();
+    private function init(){
+      require_once('./sys/load_iso.php');
+      $lang_iso = new IsoLang();
+      $db = db::getInstance();
+      $user = user::getInstance();
+      $this->userlang = $user->get_lang();
 
         // initialisation
         $this->submit = isset($_POST['submit_form']);
@@ -69,10 +66,10 @@ class edit
         if (!file_exists($this->photo)) {
             $this->photo = "profil/unknow.jpg";
         }
-	
+
 	$this->userlang_interface = $row['userlang'];
 	$this->userlang_game = $row['userlang_game'];
-	
+
 	// TODO initialiser les datalist (edit.form.html) avec les langues parlées dans la bd
 	$sql = 'SELECT *
                     FROM user_niveau
@@ -88,7 +85,7 @@ class edit
         if ( $this->submit )
         {
              include('./sys/upload.php');
-            
+
 
             $upload = upload($_POST["profilphot"],'profil/',3000000, array('png','gif','jpg','jpeg'), $this->username );
             if($upload){
@@ -112,7 +109,7 @@ class edit
             //$_SESSION["langDevin"] = $this->userlang ;
 	    $this->spoken_lang = '';
 	    $this->niveau = '';
-	    
+
          for ($i=1; $i<=10; $i++) {
             for($j=$i+1; $j<=10; $j++){
                 if(isset($_POST['choix_langs_'.$i]) && isset($_POST['choix_langs_'.$j]) && $_POST['choix_langs_'.$i] == $_POST['choix_langs_'.$j]){
@@ -120,7 +117,7 @@ class edit
                     break;
                 }
             }
-            
+
          $this->spoken_lang .= isset($_POST['choix_langs_'.$i]) ? trim($_POST['choix_langs_'.$i]).';' : '';
 
 
@@ -131,7 +128,7 @@ class edit
 
         }
 
-	    $this->userlang_game = isset($_POST['lang_game']) ? array_search(trim($_POST['lang_game']),$iso) : '';
+	    $this->userlang_game = isset($_POST['lang_game']) ? $lang_iso->language_code_for(trim($_POST['lang_game'])) : '';
 	   // $this->userlang_interface = isset($_POST['userlang_interface']) ? trim($_POST['userlang_interface']) : '';
             //$this->spoken_lang = isset($_POST['userlang_spoken']) ? trim($_POST['userlang_spoken']) : '';
 	    //echo $this->spoken_lang;
@@ -163,7 +160,7 @@ class edit
 	//{
 		//echo "erreur!!!";
 	//}
-	
+
         if ( empty($this->userlang) )
         {
             array_push( $this->errors,'enter_language');
@@ -205,16 +202,16 @@ class edit
                         photo = ' . $db->escape((string) $this->photo) . ',
                         userlvl = ' . $db->escape((string) $this->userlvl) . '
                     WHERE userid = ' . intval($this->userid);
-	
+
         $db->query($sql);
-	
+
 	// test whether the user has a record in the 'user_niveau' table
 	$sql = "SELECT * FROM user_niveau WHERE userid = " . intval($this->userid);
 	$result = $db->query($sql);
 	if ($result->num_rows > 0) {
-	      $sql = 'UPDATE user_niveau 
-		      SET					
-			spoken_lang='. $db->escape((string)$this->spoken_lang). ', 
+	      $sql = 'UPDATE user_niveau
+		      SET
+			spoken_lang='. $db->escape((string)$this->spoken_lang). ',
 			niveau='. $db->escape((string) $this->niveau) . '
 		 WHERE userid = ' . intval($this->userid);
 	} else {
@@ -225,9 +222,9 @@ class edit
 			. $db->escape((string) $this->niveau) . ')';
 	}
 
-					
-	
-        $db->query($sql);	
+
+
+        $db->query($sql);
         for ($i=1; $i<=10; $i++) {
                 if(isset($_POST['choix_langs_'.$i]) && $_POST['choix_langs_'.$i]!=""){
                     $sql = 'SELECT *
@@ -242,7 +239,7 @@ class edit
                  }
          }
 
-	
+
         // Mise à jour de la bdd
         redirect('');
     }

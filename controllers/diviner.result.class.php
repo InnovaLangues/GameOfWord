@@ -9,13 +9,13 @@ class diviner_result
 	private $userlvl = '';
 	private $lang = '';
 	private $devinName ='';
-	
+
 	private $previousSGDev = 0;
 	private $previousSDev = 0;
 	private $previousSGOracle = 0;
 	private $previousSOracle = 0;
 	private $pointsDev = 10;
-	
+
 	private $reussie = 'oui';
 
 	public function set_mode($mode)
@@ -33,10 +33,14 @@ class diviner_result
         return false;
 	}
 
+	public function __construct(){
+		require_once('./sys/load_iso.php');
+	}
+
 	private function init()
-	
-	{	
-		include('./sys/load_iso.php');
+
+	{
+		$lang_iso = new IsoLang();
 		$db = db::getInstance();
 		//Récupération des informaions de base: userid
 		$this->user = user::getInstance();
@@ -51,14 +55,14 @@ class diviner_result
 		$i=0;
 
 		while ($i<count($spoken_lang)) {
-			if(strcmp($iso[$this->lang],$spoken_lang[$i]) == 0){
+			if(strcmp($lang_iso->french_for($this->lang),$spoken_lang[$i]) == 0){
 				break;
 			}
 			$i++;
 		}
 		if($i!=count($spoken_lang)){
 			$lang_lvl = explode(';',$res['niveau'])[$i];
-		
+
 			$sql = 'SELECT * FROM coeff_niveau_langue WHERE niveau_langue="' . $lang_lvl . '"';
 			$result = $db->query($sql);
 			$this->lang_lvl_pts = mysqli_fetch_assoc($result)['coeff'];
@@ -79,36 +83,39 @@ class diviner_result
 	{
 		if(!isset($_SESSION["motDeviner"]))
 		{
-			include('./sys/load_iso.php');
+			$lang_iso = new IsoLang();
 			require_once('./controllers/update_score_coeff.php');
 			//connexion à la BD
 			$db = db::getInstance();
-			
-			updateScoreDevinSucces($this->devin,$iso[$_SESSION["langDevin"]],$this->points);
+
+			updateScoreDevinSucces($this->devin,$lang_iso->french_for($_SESSION["langDevin"]),$this->points);
 			$pointsCoef = $this->points*$this->lang_lvl_pts;
 			$_SESSION["pointsCoef"] = $pointsCoef;
 			$db = db::getInstance();
-			$sql = 'UPDATE parties 
+			$sql = 'UPDATE parties
 					SET  reussie='.$db->escape((string) $this->reussie).'
-					WHERE idDevin='.$this->devin.' ORDER BY tpsDevin DESC LIMIT 1 ';		
+					WHERE idDevin='.$this->devin.' ORDER BY tpsDevin DESC LIMIT 1 ';
 			$db->query($sql);
 
 
 			//Récupération de enregistrementID
 			$sql = 'SELECT enregistrementID FROM parties WHERE idDevin="'.$this->devin.'" ORDER BY tpsDevin DESC LIMIT 1 ';
-	        $res1=$db->query($sql); 
+	        $res1=$db->query($sql);
 	        $this->res2= mysqli_fetch_assoc($res1);
-	        
+
 	       // récupération de l'id de l'oracle et de la carte grâce à enregistrementID
 			$sql = 'SELECT idOracle,carteID,OracleLang
-	                    FROM enregistrement WHERE enregistrementID='.$this->res2['enregistrementID'].'';	
-	        $res1=$db->query($sql); 
+	                    FROM enregistrement WHERE enregistrementID='.$this->res2['enregistrementID'].'';
+	        $res1=$db->query($sql);
 	        $res3= mysqli_fetch_assoc($res1);
 
-	        
-		updateScoreOracleDevinSucces($res3["idOracle"],$iso[$res3["OracleLang"]],$this->res2['enregistrementID']);
+
+		updateScoreOracleDevinSucces($res3["idOracle"],$lang_iso->french_for($res3["OracleLang"]),$this->res2['enregistrementID']);
+		echo "updateScoreOracleDevinSucces(".$res3["idOracle"].",".$lang_iso->french_for($res3["OracleLang"]).",".$this->res2['enregistrementID'].");";/**/
+
+
 			$this->oracle=$res3["idOracle"];
-			
+
 			// récupération du contenu de la carte avec carteID
 			require_once("./models/card.class.php");
 			$carte = new Card($res3['carteID']);
@@ -120,14 +127,14 @@ class diviner_result
 
 		}
 		else{
-			header('Location: index.php?page.home.html');      
+			header('Location: index.php?page.home.html');
 			return false;
 		}
 	}
 
 	private function display()
 	{
-		$_SESSION["notif"]["notification_done"]["Devin"] = 'points';	 		
+		$_SESSION["notif"]["notification_done"]["Devin"] = 'points';
 		include('./views/diviner.result.html');
         return true;
 	}

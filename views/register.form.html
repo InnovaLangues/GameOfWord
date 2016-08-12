@@ -1,7 +1,8 @@
 <?php
 $title = 'S\'enregister';
 include('./views/page.header.html');
-include('./sys/load_iso.php');
+require_once('./sys/load_iso.php');
+$lang_iso = new IsoLang();
 include('./controllersJS/display_lang.js');
 
 ?>
@@ -43,11 +44,11 @@ include('./controllersJS/display_lang.js');
 					<dd><input id="profilphoto" name="profilphoto" type="file" multiple="true">
 					</dd>
 					<input type="hidden" name="profilphot" value="profilphoto">
-				</dl>					
+				</dl>
 				<dl>
 					<dt><label for="userlang_spoken" >Choisissez les langues que vous parlez</label></dt>
 					<dd>
-						<datalist id="lang_level">	
+						<datalist id="lang_level">
 							<option value="Débutant">
 							<option value="Intermédiaire">
 							<option value="Avancé">
@@ -55,11 +56,9 @@ include('./controllersJS/display_lang.js');
 						</datalist>
 						<datalist id="iso">
 							<?php
-								$tableLang=$iso;
-								//for($i=0; $i < sizeof($tableLang); $i++){
-								foreach($iso as $value){
-									//echo "<option value=".$tableLang[$i] . ">";
-									echo"<option value=".$value.">";
+								$tableLang=$lang_iso->get_all_codes();
+								foreach($tableLang as $value){
+									echo "<option value='".$value."'>";
 								}
 							?>
 						</datalist>
@@ -74,7 +73,7 @@ include('./controllersJS/display_lang.js');
 								<td align="center"><input list="lang_level" name="choix_niveau_1" required="required" size="10"/></td>
 								<td align="center"><input type="radio" name="lang_game" required="required" /></td>
 							</tr>
-					
+
 						</table>
 						<table>
 							<tr>
@@ -84,9 +83,9 @@ include('./controllersJS/display_lang.js');
 								<td><button type="button" id="langueAppriseCancel" onClick="dispalyLessLanguages();" align="center">Retirer une langue</button></td>
 							</tr>
 						</table>
-					
-				
-					</dd>	
+
+
+					</dd>
 				</dl>
 
 				<dl>

@@ -7,16 +7,16 @@ class diviner_game
 	private $mode = '';
 
 	private $errors = array();
-	private $lang = array();	
+	private $lang = array();
 	private $motadeviner='';
 	private $nivcarte = '';
-	
-	
+
+
 	private $userlang = '';
 	private $user= '';
 	private $diviner= '';
 	private $pointsSanction ='';
-	
+
 	private $raisin ='';
 	private $res2 = '';
 	private $card = '';
@@ -24,10 +24,10 @@ class diviner_game
 	private $result= '';
 	private $sanction ='';
 	private $score='';
-	
+
 
 	private $carteValide = false;
-	
+
 	private $adresse = '';
 	private $reussie = 'en cours';
 	private $temps='';
@@ -43,9 +43,9 @@ class diviner_game
 	{
 		if ( $this->init() )
         {
-			$this->sanctionLastPartie();	
+			$this->sanctionLastPartie();
 			if($this->selectpartie()){
-				$this->update();	
+				$this->update();
 			}
 			 return $this->display();
         }
@@ -81,16 +81,17 @@ class diviner_game
 	private function sanctionLastPartie()
 	{ // fonction qui permet de vérifier l'état de la dernière partie et de sanctionner le joueur de 5 pts s'il a quitté la partitatut = "en cours")
 		include_once('./sys/load_iso.php');
+		$lang_iso = new IsoLang();
 	    $db =  db::getInstance();
 		$sql =  "SELECT *
-			FROM parties WHERE idDevin = \"".$this->diviner."\"			
+			FROM parties WHERE idDevin = \"".$this->diviner."\"
 			ORDER BY parties.tpsDevin DESC
 			LIMIT 1";
 			$res=$db->query($sql);
 			$this->sanction = mysqli_fetch_assoc($res);
 
 		if($this->sanction['reussie'] == "en cours"){
-				
+
 		   $sql = "SELECT *
             	FROM sanctionCarte
                 WHERE idDevin ='".$this->diviner."' AND enregistrementID='".$this->sanction['enregistrementID']."'";
@@ -101,23 +102,23 @@ class diviner_game
 					$sql = "INSERT INTO sanctionCarte
 					(idDevin,enregistrementID)
 					VALUES (".$this->diviner.",".$this->sanction['enregistrementID'].")";
-                    	
+
                    	if( $res = $db->query($sql)){
 						$sql = "SELECT scoreDevin, scoreGlobal
 						FROM score
-						WHERE userid ='".$this->diviner."' AND langue='" . $iso[$this->userlang] . "'";
+						WHERE userid ='".$this->diviner."' AND langue='" . $lang_iso->french_for($this->userlang) . "'";
 						$res = $db->query($sql);
-						$this->score = mysqli_fetch_assoc($res);  
-			
+						$this->score = mysqli_fetch_assoc($res);
+
 						if ($this->score['scoreDevin'] >= $this->pointsSanction) { #à modifier avec un fichier config
-							
+
 
 							$this->score['scoreDevin']-=$this->pointsSanction;
 							$this->score['scoreGlobal']-=$this->pointsSanction;
 
-							$sql='UPDATE score 
+							$sql='UPDATE score
 							SET scoreDevin="'.$this->score['scoreDevin'].'", scoreGlobal ="'.$this->score['scoreGlobal'].'"
-							WHERE userid="'.$this->diviner.'" AND langue="' . $iso[$this->userlang] . '"';
+							WHERE userid="'.$this->diviner.'" AND langue="' . $lang_iso->french_for($this->userlang) . '"';
 							$res=$db->query($sql);
 							array_push($this->lang,"sanction");
 						}
@@ -174,18 +175,18 @@ class diviner_game
 			}
 		}
 		catch(Exception $e){
-			array_push($this->errors,'NoGame');	
+			array_push($this->errors,'NoGame');
 		}
 		$this->setcarteValide($res);
 		return $res;
 	}
-	
+
 	private function update()
 	{
 		//Insertion des informations dans la table parties
-		//connexion à  la bd  
+		//connexion à  la bd
 			$db = db::getInstance();
- 	 
+
 			 $sql = 'INSERT INTO parties
 				(enregistrementID,idDevin,tpsDevin,reussie)
 					VALUES(' .
@@ -200,7 +201,7 @@ class diviner_game
 	private function display()
 	{
 		include('./views/diviner.game.html');
-		
+
         return true;
 	}
 
@@ -210,4 +211,3 @@ class diviner_game
 }
 
 ?>
-

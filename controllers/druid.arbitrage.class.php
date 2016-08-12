@@ -3,7 +3,7 @@ require_once("./models/item.factory.class.php");
 require_once("./models/card.class.php");
 
 class druid_arbitrage
-{	
+{
 	private $errors = array();
 	private $enregist = array();
 	private $nivcarte = '';
@@ -11,7 +11,7 @@ class druid_arbitrage
 	private $user= '';
 	private $druid= '';
 	public $partie = false;
-	
+
 	private $raisin ='';
 	private $res2 = '';
 	private $card ;
@@ -21,16 +21,16 @@ class druid_arbitrage
 	private $adresse = '';
 	private $oracle = '';
 	private $enregistrement='';
-	
+
 	private $previousSGO = 0;
 	private $previousSO = 0;
-	
+
 	private $previousSGDr = 0;
 	private $previousSDr = 0;
 	private $pointsDr = 10;
-	
+
 	private $et_c_est_le_temps_qui_court ='d/m/Y H:i';
-	
+
 	private $valid = 'valid';
 	private $invalid = 'invalid';
 
@@ -58,10 +58,10 @@ class druid_arbitrage
 
 		//récupération des points en fonction du niveau de jeu
 		$this->userlvl = userlvl::getInstance();
-		$this->points= $this->userlvl->get_points();		
-		
+		$this->points= $this->userlvl->get_points();
+
 		$this->et_c_est_le_temps_qui_court = date("d/m/Y H:i");
-		
+
 		return true;
 	}
 //Revoir dans le cas où toutes les cartes ont été supprimés du serveur.
@@ -81,7 +81,7 @@ class druid_arbitrage
 //why why why ça et adresse ?
 					$this->enregistrement = "enregistrements/".$this->raisin->cheminEnregistrement;
 					// récupération du pseudo du joueur arbitré
-					$sql = 'SELECT 
+					$sql = 'SELECT
 						username
 						FROM user WHERE userid ="'.$this->raisin->idOracle.'"';
 					$this->result=$db->query($sql);
@@ -93,8 +93,8 @@ class druid_arbitrage
 					$this->adresse = "enregistrements/".$this->raisin->cheminEnregistrement;
 					$this->partie=true;
 
-					unset($_SESSION["idCard"]);	
-					unset($_SESSION["idEnregistrement"]);	
+					unset($_SESSION["idCard"]);
+					unset($_SESSION["idEnregistrement"]);
 
 					return true; //two returns
 				}
@@ -112,12 +112,12 @@ class druid_arbitrage
 					$this->adresse = "enregistrements/".$this->raisin->cheminEnregistrement ;
 					$this->enregistrement = $this->raisin->enregistrementID;
 					// récupération du pseudo du joueur arbitré
-					 $sql = 'SELECT username FROM user WHERE userid ="'.$this->raisin->idOracle.'"';		
+					 $sql = 'SELECT username FROM user WHERE userid ="'.$this->raisin->idOracle.'"';
 					 $this->result=$db->query($sql);
 					 $this->res2= mysqli_fetch_assoc($this->result);
-					
+
 					//récupération de la carte jouée
-					$this->card = new Card($this->raisin->carteID,'./views/card.inline.display.php');		
+					$this->card = new Card($this->raisin->carteID,'./views/card.inline.display.php');
 					$this->partie=true;
 	   			}
 				else{//$this->partie reste faux
@@ -137,9 +137,10 @@ class druid_arbitrage
 
 	private function display_et_scores()
 	{
-		require('./sys/load_iso.php');
+		require_once('./sys/load_iso.php');
+		$lang_iso = new IsoLang();
 		require_once('./controllers/update_score_coeff.php');
-		
+
 		if(isset($_POST["enregistrement1"])  &&  isset($_POST["oracle"])){
 			$this->enregistrement = $_POST["enregistrement1"];
 			$this->oracle = $_POST['oracle'];
@@ -149,7 +150,7 @@ class druid_arbitrage
 		{
 
 			//connexion à la BD
-			$db = db::getInstance(); 
+			$db = db::getInstance();
 
 			// Requête d'insertion des info dans la table 'arbitrage'
 			$sql = 'INSERT INTO arbitrage
@@ -159,26 +160,26 @@ class druid_arbitrage
 					$db->escape((string) $this->druid) . ', ' .
 					$db->escape((string) $this->et_c_est_le_temps_qui_court) . ', ' .
 					$db->escape((string) $this->invalid ) . ')' ;
-					
+
 				$db->query($sql);
 			//	mettre à jour le champs "validation" de la table enregistrement pour que cet enregistrement devienne jouable
-				$sql = 'UPDATE enregistrement 
-				SET validation =  ' .$db->escape((string) $this->invalid ) . ' 
+				$sql = 'UPDATE enregistrement
+				SET validation =  ' .$db->escape((string) $this->invalid ) . '
 				WHERE enregistrementID="'.$this->enregistrement .'" ' ;
 				$db->query($sql);
-			
+
 		// Requête de modification du score de l'Oracle dont la description est jetée en pâture aux flammes du bûcher purificateur
-			
-			updateScoreOracleDruideRefuse($this->oracle,$iso[$this->userlang],$this->enregistrement);
-			
+
+			updateScoreOracleDruideRefuse($this->oracle,$lang_iso->french_for($this->userlang),$this->enregistrement);
+
 		//Requête de modification du score du Druide après l'accomplissement de son fastidieux travail d'inquisition
 			//récupération du score précédent;
 
-			updateScoreDruideArbitrage($this->druid,$iso[$this->userlang],$this->pointsDr);
-			
+			updateScoreDruideArbitrage($this->druid,$lang_iso->french_for($this->userlang),$this->pointsDr);
+
 			$_SESSION["notif"]["notification_done"]["Druide"] = 'pointsDruide';
 			header('Location: index.php?page.home.html');
-			
+
 			// après avoir cliqué sur "valider" = description correcte et jouable
 		}elseif (isset($_POST['validate'])){
 
@@ -191,21 +192,21 @@ class druid_arbitrage
 						$db->escape((string) $this->enregistrement ) . ', ' .
 						$db->escape((string) $this->druid) . ', ' .
 						$db->escape((string) $this->et_c_est_le_temps_qui_court) . ', ' .
-						$db->escape((string) $this->valid ) . ') ' ;	
+						$db->escape((string) $this->valid ) . ') ' ;
 					$db->query($sql);
-				
+
 				//	mettre à jour le champs "validation" de la table enregistrement pour que cet enregistrement devienne jouable
-				$sql = 'UPDATE enregistrement 
-				SET validation =  ' .$db->escape((string) $this->valid ) . ' 
+				$sql = 'UPDATE enregistrement
+				SET validation =  ' .$db->escape((string) $this->valid ) . '
 				WHERE enregistrementID="'.$this->enregistrement .'" ' ;
 				$db->query($sql);
-				
+
 			// Requête de modification du score de l'Oracle dont la description est élevée au rang de prediction divine
-			
-				updateScoreOracleDruideAccepte($this->oracle,$iso[$this->userlang],$this->enregistrement);
+
+				updateScoreOracleDruideAccepte($this->oracle,$lang_iso->french_for($this->userlang),$this->enregistrement);
 		//Requête de modification du score du Druide l'accomplissement de son fastidieux travail d'inquisition
 			//récupération du score précédent;
-			updateScoreDruideArbitrage($this->druid,$iso[$this->userlang],$this->pointsDr);
+			updateScoreDruideArbitrage($this->druid,$lang_iso->french_for($this->userlang),$this->pointsDr);
 
 			$_SESSION["notif"]["notification_done"]["Druide"] = 'pointsDruide';
 			header('Location: index.php?page.home.html');

@@ -2,11 +2,12 @@
 $title = 'Game of Words';
 include('./views/page.header.html');
 include('./controllersJS/menu_lang.js');
-include('./sys/load_iso.php');
+require_once('./sys/load_iso.php');
+$lang_iso = new IsoLang();
 ?>
 <div id="main-container">
 	<div id="center-block">
-	
+
 			<!-- cette formulaire sert à choisir la langue de jeu-->
 			<form id="select_lang">
 				<h2><?php echo $lang['learning'];?>
@@ -14,7 +15,7 @@ include('./sys/load_iso.php');
 						<?php
 							foreach (explode(';',$user->spoken_lang) as $l) {
 								if (strlen($l) > 0) {
-									$code = array_search($l,$iso);
+									$code = $lang_iso->language_code_for($l);
 									echo "<option value=" . $code ;
 									if (strcmp($user->langGame,$code) == 0) { echo " selected"; }
 									echo ">" . $l . "</option>";
@@ -25,23 +26,23 @@ include('./sys/load_iso.php');
 					</select>
 				</h2>
 			</form>
-	
-	
+
+
 	<h2><?php echo $lang['select_mode']; ?></h2>
 		<ul id="modes" class="nav nav-tabs">
-<?php 
+<?php
 	// Test de vérification de la langue de l'utilisateur. Si il n'apprend pas le français, il ne peux (pour l'instant) pas créer de carte aléatoire.
 	if ($user->langGame !== 'fr'  ) { ?>
 			<li type="button" class="btn btn-primary btn-lg btn-block" disabled="disabled">
 				<a href="?mode=oracle.card.alea" title="card_alea"><?php echo $lang['card_alea']; ?></a>
 			</li>
-<?php 
-	} else { 
-?>	
+<?php
+	} else {
+?>
 			<li type="button" class="btn btn-primary btn-lg btn-block">
 				<a href="?mode=oracle.card.alea" title="card_alea"><?php echo $lang['card_alea']; ?></a>
 			</li>
-<?php 
+<?php
 	}
 	if($this->lexicon->has_content()){
 		if(isset($_SESSION["idCard"])){
@@ -68,4 +69,3 @@ include('./sys/load_iso.php');
 <?php
 include('./views/page.footer.html');
 ?>
-
