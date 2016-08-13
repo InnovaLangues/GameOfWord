@@ -1,17 +1,16 @@
 <?php
 $title = 'Game of Words';
 include('./views/page.header.html');
-include('./controllersJS/menu_lang.js');
 require_once('./sys/load_iso.php');
-
 ?>
+<script type="text/javascript" src="./controllersJS/menu_lang.js"> </script>
 <div id="main-container">
 	<div id="center-block">
 
 			<!-- cette formulaire sert � choisir la langue de jeu-->
 			<form id="select_lang">
 				<h2><?php echo $lang['learning'];?>
-					<select name="chooseLang" size="1" id="chooseLang" onchange="myFunction('Druide')">
+					<select name="chooseLang" size="1" id="chooseLang" onchange="changeParameters('Druide')">
 						<?php
 							foreach (explode(';',$user->spoken_lang) as $l) {
 								if (strlen($l) > 0) {

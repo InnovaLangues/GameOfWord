@@ -19,7 +19,7 @@ if ( !$userlogged ){
 else{
 	$title = 'Game of Words / Administration';
 	include('./views/page.header.html');
-	include('./controllersJS/menu_lang.js');
+	echo "<script type='text/javascript' src='./controllersJS/menu_lang.js'> </script>";
 	echo "<h1>".$lang['admin']."</h1>";
 	require_once('./models/item.factory.class.php');
 	$cardFactory = new ItemFactory($user->id,$user->langGame);

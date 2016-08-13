@@ -17,10 +17,10 @@ class oracle_menu_game
 	public function process()
 	{
 		if ( $this->init() )
-        {
-            return $this->display();
-        }
-        return false;
+		{
+				return $this->display();
+		}
+		return false;
 	}
 
 	private function init()
@@ -40,14 +40,14 @@ class oracle_menu_game
 				$_SESSION["idCard"] = $card_id;
 			}
 		}
-		return true; 
+		return true;
 	}
 
 
 	private function display()
 	{
 		include('./views/oracle.menu.html');
-        return true;
+		  return true;
 	}
 }
 
