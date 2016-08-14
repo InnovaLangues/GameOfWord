@@ -64,11 +64,11 @@ $lang['start_describe'] = 'Start your description :';
 $lang['record'] = 'Play';
 $lang['send_description'] = 'Send your description !';
 $lang['erase'] = 'Erase and restart';
-//$lang['giveUp']=' You did not send your record, Therefore you will loose 10 points as Oracle but you will get 5 points as Druide'; 
+//$lang['giveUp']=' You did not send your record, Therefore you will loose 10 points as Oracle but you will get 5 points as Druide';
 //$lang['giveUpWithoutPoints'] = 'You did not send your record. But you have not enought points to loose. So you don\'t loose points for this time... Be carefull the next time ;)';
 
 $pointsCoeff = $points*0.5;
-$lang['pointsOracle'] = ' The record  has been sent. you will gain or loose '.$pointsCoeff.' points according the Druid/Oracle points.'; 
+$lang['pointsOracle'] = ' The record  has been sent. you will gain or loose '.$pointsCoeff.' points according the Druid/Oracle points.';
 $lang['giveUpOracle'] = ' The record has not been sent to the server.';
 
 
@@ -131,11 +131,11 @@ $lang["restart"] ='Play again ? ';
 $lang["start"] ='It\'s time to play the game !';
 $lang['start_playback']="Play recording";
 $lang['give_up'] = 'Give up';
-$lang['devin-nope'] = 'Not the word�';
+$lang['devin-nope'] = 'Not the word�';
 $lang["game"] ='Start the game';
 
 
-//R�sultats, Scores et Points
+//R�sultats, Scores et Points
 $lang['well_done'] = 'Congratulation!';
 $lang['points'] = ' +'.$points.' Points';
 $lang['too_bad'] = 'Too bad !';
@@ -159,7 +159,7 @@ $lang['oracle_timeout'] = 'You did not make a description in time';
 $lang['oracle_card_timeout'] = 'You did not answer the card in time';
 
 
-//Triche 
+//Triche
 $lang['sanction']='We are sory but it seems that you leave suddenly the plateforme! So, you loose 5 points!';
 $lang['sanction_without_points']='We are sory but it seems that you leave suddenly the plateforme! You are lucky this time, you don\'t have points to loose! But be careful the next time...';
 
@@ -173,8 +173,8 @@ $lang['subj']='Select your subject or create a new one';
 //Erreurs
 $lang['unavailable_card'] = 'Access card denied. The card does\'nt exist';
 $lang['without_card']= 'Sorry,  There is no card to play, Would you create one.';
-$lang['no_card']= ' Access card denied: maybe the card does\'nt exist in this language or  you are the creator of the card and  so, you can not play this card.'; 
-$lang['no_card_active']= ' Card production is not available  for the other languages; is just available for french.'; 
+$lang['no_card']= ' Access card denied: maybe the card does\'nt exist in this language or  you are the creator of the card and  so, you can not play this card.';
+$lang['no_card_active']= ' Card production is not available  for the other languages; is just available for french.';
 $lang['user_name']= 'Please enter a user name';
 $lang['email']= 'Please enter an email address';
 $lang['password']= 'Please enter a password';
@@ -190,18 +190,26 @@ $lang['enter_language']= 'You must choose a language';
 $lang['enter_nativelang']='Please enter your native language';
 $lang['tabooWords']= 'The word to find in the card must be diffrent from the taboo words';
 $lang['noCardBD']= ' There is no card to play in the Data base';
-$lang['noEnregistrement']= ' There is no available record'; 
+$lang['noEnregistrement']= ' There is no available record';
 $lang['Becareful']= 'Attention!';
 $lang['Word2find'] = "The word to find is:";
 $lang['home_miss_lang_game'] = 'Please select a game language in your profile.';
 
-$lang["languePlay"] = "You are playing in ";
+$lang["languePlay"] = "Language: ";
+$lang['level'] = 'Game level: ';
+$lang['levelChange'] = 'Level of next game:';
+$lang['Oracle_easy'] = "Only one forbidden word and 1′30″ recording time (stake: 10 points).";
+$lang['Oracle_medium'] = "Three forbidden words and 1′ recording time (stake: 20 points).";
+$lang['Oracle_hard'] = "Six forbidden words and 30″ recording time (stake: 30 points).";
+$lang['Devin_easy'] = "Twice the duration of the recording, for a 10 points stake.";
+$lang['Devin_medium'] = "1.5 times the duration of the recording, for a 20 points stake.";
+$lang['Devin_hard'] = "Recording duration + 8″, for a 30 points stake.";
 
 //Erreur upload
 $lang['file_unupload'] = 'Attention, the file was not fully uploaded.';
 $lang['sizeOfUp'] = 'The uploaded file is too large.';
-$lang['extUp'] = 'The uploaded file format is not supported (accepted formats are: png,gif,jpg,jpeg).'; 
-$lang['uploadProb'] = 'The file has not been uploaded yet...'; 
+$lang['extUp'] = 'The uploaded file format is not supported (accepted formats are: png,gif,jpg,jpeg).';
+$lang['uploadProb'] = 'The file has not been uploaded yet...';
 
 //
 $lang['same_lang'] = ' You have chosen twice the same language in langues parlées';

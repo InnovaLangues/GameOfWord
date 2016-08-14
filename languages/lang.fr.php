@@ -28,7 +28,7 @@ $lang['login'] = 'Connexion';
 $lang['logout'] = 'Déconnexion';
 $lang['langue_apprentissage'] = 'Indiquez la/les langue(s) que vous apprenez:';
 $lang['ajout_langue'] = 'ajouter une langue parlée';
-//Menu et boutons de formulaires 
+//Menu et boutons de formulaires
 $lang['cmd_submit'] = 'Valider';
 $lang['cmd_cancel'] = 'Annuler';
 $lang['register'] = 'Enregistrer';
@@ -153,7 +153,7 @@ $lang['diviner_timeout'] = 'Tu n\'as pas fourni de réponse dans le temps impart
 $lang['oracle_timeout'] = 'Tu n\'as pas fourni de description dans le temps imparti';
 $lang['oracle_card_timeout'] = 'Tu n\'as pas répondu à la carte dans le temps imparti';
 
-//Triche 
+//Triche
 $lang['sanction'] = 'Il semblerait que vous avez subitement quitté la précédente partie. Par conséquent, vous serez sanctionné de 5 points...';
 $lang['sanction_without_points'] = 'Il semblerait que vous ayez subitement quitté la partie précédente. Néamoins vous n\'avez pas de point pour le moment, vous ne serez donc pas sanctionné! Mais gare à vous la prochaine fois ;)';
 
@@ -190,6 +190,14 @@ $lang['Word2find'] = 'Le mot à trouver était&nbsp;: ';
 $lang['home_miss_lang_game'] = 'Veuillez sélectionner une langue de jeu dans votre profil.';
 
 $lang['languePlay'] = 'Vous jouez en ';
+$lang['level'] = 'au niveau ';
+$lang['levelChange'] = 'Niveau de la prochaine partie&nbsp;:';
+$lang['Oracle_easy'] = "Un seul mot interdit et 1′30″ d'enregistrement (mise&nbsp;: 10 points).";
+$lang['Oracle_medium'] = "Trois mots interdits et 1′ d'enregistrement (mise&nbsp;: 20 points).";
+$lang['Oracle_hard'] = "Six mots interdits et 30″ d'enregistrement (mise&nbsp;: 30 points).";
+$lang['Devin_easy'] = "2 fois la durée de l'enregistrement pour une mise de 10 points.";
+$lang['Devin_medium'] = "1,5 fois la durée de l'enregistrement pour une mise de 20 points.";
+$lang['Devin_hard'] = "Enregistrement + 8″ pour une mise de 30 points.";
 
 //Erreur upload
 $lang['file_unupload'] = 'Attention le fichier a mal été uploadé.';

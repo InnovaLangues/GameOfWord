@@ -17,10 +17,13 @@ include('./sys/load_used_iso.php');
 									if(strcmp($_SESSION["langDevin"],$short) == 0){ echo " selected"; }
 								}
 							elseif (strcmp($user->langGame,$short) == 0) { echo " selected"; }
-							echo ">" . $long . "</option>";	
+							echo ">" . $long . "</option>";
 						}
 					?>
 				</select>
+				<?php include_once("./views/level.menu.php");
+						print_level_choice('Devin',$lang,$user);
+				?>
 			</h2>
 		</form>
 		<h2><?php echo $lang['start']; ?></h2>
@@ -42,4 +45,3 @@ function saveLangue() {
 <?php
 include('./views/page.footer.html');
 ?>
-

@@ -8,7 +8,7 @@
 }
 
 #card tbody td p{
-	float:left;   
+	float:left;
 	margin-left: 10%;
 	font-family: playball;
 	font-size:20px;
@@ -19,7 +19,7 @@
 	font-size: 25px;
 	font-style: normal;
 	background-color:#CFFFCD;
-	border-radius:15px; 
+	border-radius:15px;
 	text-align:center;
 
 }
@@ -28,14 +28,14 @@
 }
 
 .timer{
-	border-radius:15px; 
+	border-radius:15px;
 	font-style:bold;
 	font-align:center;
 	width:5px;padding-top:10px;
 	padding-bottom:10px;
 	padding-left:40px;
-	padding-right:40px; 
-	background-color:#FF5757; 
+	padding-right:40px;
+	background-color:#FF5757;
 }
 .messageUtil{
 	font-family: playball;
@@ -122,9 +122,9 @@
 }
 #notificationsMess {
     background-color: rgba(96, 103, 207, 0.7);
-    border-radius:5px; 
+    border-radius:5px;
     min-height:64px;
-    text-align:center;	
+    text-align:center;
     margin-top : 5px;
     margin-bottom : 5px;
 }
@@ -138,7 +138,7 @@
 	float:left;
 	position:relative;
 	width:64px;
-	height:64px;	
+	height:64px;
 }
 #delete{
 	float:right;
@@ -182,4 +182,11 @@ footer{
     padding-right:1em;
     padding-top:0.3em;
     padding-bottom:0.5em;
+}
+
+.info{
+	background-color: rgb(238,238,238);
+	color:rgb(77,77,77);
+	font-size:small;
+	padding:2px;
 }

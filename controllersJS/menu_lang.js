@@ -1,9 +1,17 @@
-function changeParameters(pageNot) {
-	var choixLang = document.getElementById("chooseLang").value;
-	alert('ça marche');
-
+function changeParameters(pageNot, action) {
 	var req = new XMLHttpRequest();
-	req.open("GET","update_userlang_game.php?userlang_game="+choixLang+"&page_not="+pageNot, true);
+	var address = "update_userlang_game.php?page_not=" + pageNot ;
+	console.log(address);
+	if(action == "lang"){
+		address += "&userlang_game=" +
+			document.getElementById("chooseLang").value ;
+	}
+	else if (action == "level"){
+		address += "&game_lvl=" +
+			document.getElementById("chooseLevel").value ;
+	}
+	console.log(address);
+	req.open("GET",address, true);
 	req.onreadystatechange = function(aEvt){
 		if (req.readyState == 4) {
 			if(req.status == 200){

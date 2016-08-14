@@ -11,8 +11,7 @@ $lang_iso = new IsoLang();
 			<!-- cette formulaire sert à choisir la langue de jeu-->
 			<form id="select_lang">
 				<h2><?php echo $lang['learning'];?>
-					<!-- ICITE, gérer le choix du niveau (si possible avec message d'aide) -->
-					<select name="chooseLang" size="1" id="chooseLang" onchange="changeParameters('Oracle')">
+					<select name="chooseLang" size="1" id="chooseLang" onchange="changeParameters('Oracle','lang')">
 						<?php
 							foreach (explode(';',$user->spoken_lang) as $l) {
 								if (strlen($l) > 0) {
@@ -23,8 +22,10 @@ $lang_iso = new IsoLang();
 								}
 							}
 						?>
-
 					</select>
+					<?php include_once("./views/level.menu.php");
+							print_level_choice('Oracle',$lang,$user);
+					?>
 				</h2>
 			</form>
 

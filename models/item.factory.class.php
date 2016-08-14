@@ -47,7 +47,7 @@ class ItemFactory //a quick and dirty class…
 				$this->query = "SELECT `cartes`.`idCarte` as `zeId` FROM `cartes`
 						WHERE `cartes`.`idEraser` IS NULL
 						AND   `cartes`.`langue`='$this->lang'
-						AND   `cartes`.`idDruide` != '$this->user_id' 
+						AND   `cartes`.`idDruide` != '$this->user_id'
 						AND   `cartes`.`idCarte` NOT IN (
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `enregistrement` WHERE `enregistrement`.`idOracle`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
@@ -78,18 +78,18 @@ class ItemFactory //a quick and dirty class…
 						AND   `cartes`.`idCarte` = `enregistrement`.`carteID`
 						AND   `cartes`.`idDruide` != '$this->user_id'
 						AND   `enregistrement`.`validation` = 'valid'
-						AND   `enregistrement`.`idOracle` != '$this->user_id' 
+						AND   `enregistrement`.`idOracle` != '$this->user_id'
 						AND   `enregistrement`.`carteID` NOT IN (
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `parties`,`enregistrement` WHERE `parties`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `parties`.`idDevin`='$this->user_id'
 						) ORDER BY RAND() $forOne;";
 				break;
-			case self::CARD_FROM_LEXICON: //ICITE tester la requête l'intégrer à innova class pour pouvoir allouer la variable de session et faire l'affichage en fonction de son existence(disabled ou non)  et de celle du dico (pas d'affichage)
+			case self::CARD_FROM_LEXICON:
 				if(isset($parameter)){
 					$this->query = "SELECT `cartes`.`idCarte` as `zeId` FROM `cartes`
 						WHERE `cartes`.`idEraser` IS NULL
 						AND   `cartes`.`langue`='$this->lang'
-						AND   `cartes`.`idDruide` != '$this->user_id' 
+						AND   `cartes`.`idDruide` != '$this->user_id'
 						AND   `cartes`.`idCarte` NOT IN (
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `enregistrement` WHERE `enregistrement`.`idOracle`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
