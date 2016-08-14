@@ -8,7 +8,7 @@ class Card
 	private $langPrecisions=false ; //this should complete the language class
 	private $level ; // should be an object
 	private $cat ; //should be an object
-	private $author ; //should be an object 
+	private $author ; //should be an object
 	private $themes = array() ;
 	private $cdate ;
 	private $db;
@@ -88,6 +88,14 @@ class Card
 			$this->view = $aView;
 		}
 	}
+	//removes the last forbidden words until there are at most $nbWords
+	//returns the actual number of forbidden words…
+	public function set_forbidden_count($nbWords){
+		while(count($this->forbiddenWords) > $nbWords){
+			array_pop($this->forbiddenWords);
+		}
+		return count($this->forbiddenWords);
+	}
 
 	/*
 	 * So that the current card's data is replaced by that of card $cardId
@@ -134,7 +142,7 @@ class Card
 	 * this is used to store the object inside the database.
 	 * $prompt : whether the function should put on hold the insertion
 	 *		   if a similar card (same guessword)  should be inserted
-	 * if the card already has an id, that means it exists (otherwise 
+	 * if the card already has an id, that means it exists (otherwise
 	 * the auto_increment should do the numbering), thus we replace the
 	 * existing card with this.
 	 */

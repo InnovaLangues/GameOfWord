@@ -9,6 +9,7 @@ class user
 	public $useremail = '';
 	public $useronline = false;
 	public $userlang = '';
+	public $userlvl = '';
 	public $langGame = '';
 	public $spoken_lang = '';
 

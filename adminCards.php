@@ -7,7 +7,6 @@ require('./sys/utils.func.php');
 require('./sys/db.class.php');
 require('./sys/constants.php');
 require('./models/user.class.php');
-require('./models/userlvl.class.php');
 require('./languages/language.php');
 //C'est pas beau mais sans mvc ici
 

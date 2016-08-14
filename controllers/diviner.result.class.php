@@ -73,7 +73,7 @@ class diviner_result
 
 		$this->userlvl = userlvl::getInstance();
 		$this->points= $this->userlvl->get_points();
-		$this->time = $this->userlvl->get_time();
+		//$this->time = $this->userlvl->get_time(); /*can't understand why we would need it now…)*/
 
 
 		return true;

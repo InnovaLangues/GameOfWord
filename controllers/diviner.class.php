@@ -1,6 +1,7 @@
 ﻿<?php
 require_once("./models/item.factory.class.php");
 require_once("./models/card.class.php");
+require_once("./models/userlvl.class.php");
 
 class diviner_game
 {
@@ -58,10 +59,8 @@ class diviner_game
 		//récupération des informations de base : id user et sa langue
 		$this->user = user::getInstance();
 		$this->diviner = $this->user->id;
-		$this->userlvl = userlvl::getInstance();
-		$this->time = $this->userlvl->get_time();
 
-		//récupération des points de sanction
+		//récupération des points de sanction (not handled by gameHandler et tant pis)
 		$this->pointsSanction = loosePointsDevin;
 
 
@@ -147,6 +146,10 @@ class diviner_game
 					//récupération du contenu de la carte
 					$carte = new Card($this->raisin->carteID);
 					$this->card = $carte;
+
+					//Gestion du temps
+					$gh = new GameHandler();
+					$this->time = $gh->get_augur_time($this->user->userlvl, $this->raisin->duration);
 
 					// récupération du pseudo de l'oracle pour savoir qui on écoute
 					$db = db::getInstance();

@@ -1,16 +1,17 @@
 <?php
 require_once("./models/item.factory.class.php");
+require_once("./models/userlvl.class.php");
 
 class oracle_alea_exist
 {
-	
+
 	private $errors = array();
 	private $nivcarte = '';
 	private $userlang = '';
 	private $user= '';
 	private $oracle= '';
 	public $card;
-	
+
 	private $res='';
 	private $result= '';
 	private $mode = '';
@@ -38,13 +39,6 @@ class oracle_alea_exist
 		$this->oracle = $this->user->id;
 		$this->userlang = $this->user->langGame;
 
-		$this->userlvl = userlvl::getInstance();
-		$this->time = $this->userlvl->get_time();
-		
-		// Ici il faudra récupérer le niveau de l'utilisateur pour n'afficher sur tel ou tel nb de mots tabous.
-		// récupérer scoreID dans user, puis scoreglobal dans score. si score = tant, $niveau = facile, moyen ou difficile
-		// En fonction, ne récupérer que le mot, les deux mots tabous ou les 5 mots tabous. Sinon on peut vider $res de ses mots tabous.
-		
 		return true;
 	}
 
@@ -53,8 +47,13 @@ class oracle_alea_exist
 		$cardFactory = new ItemFactory($this->oracle,$this->user->langGame);
 		$card = $cardFactory->get_card(ItemFactory::CARD_NOT_ME);
     	if(is_object($card) && get_class($card)=="Card"){
-    		//echo "<script>window.alert('C bon ça');</script>";
     		$this->card=$card;
+
+			//Gestion des règles
+			$gh = new GameHandler();
+			$this->time = $gh->get_oracle_time($this->user->userlvl);
+			$this->card->set_forbidden_count($gh->get_forbidden_count($this->user->userlvl));
+
     		$res = true;
     	}
 		else{
