@@ -24,10 +24,6 @@ class druid_card
 	private $card;
 	private $res2 = '';
 
-	private $previousSGDr = 0;
-	private $previousSDr = 0;
-	private $pointsDr = "";
-
 	private $mode = '';
 
 	public function set_mode($mode)
@@ -56,9 +52,6 @@ class druid_card
 
 		//récupération de la date au format jour/mois/année/heure
 		$this->et_c_est_le_temps_qui_court = date("d/m/Y H:i");
-
-		//récupération des points druides
-		$this->pointsDr = pointsDruid;
 
 
 
@@ -148,8 +141,8 @@ class druid_card
 			require_once('./controllers/update_score_coeff.php');
 
 			//Requête de modification du score du Druide l'accomplissement de son fastidieux travail de création de carte
-			updateScoreDruideCreation($this->createur,$lang_iso->french_for($this->userlang),$this->pointsDr);
-			$_SESSION["notif"]["notification_done"]["Druide"] = 'pointsDruide';
+			$sh = new ScoreHandler($this->createur, $this->userlang);
+			$sh->update_scores();
 			$_SESSION["CreateCard"]=true;
 
 			//affichage de l'aperçu de la carte avec son identifiant

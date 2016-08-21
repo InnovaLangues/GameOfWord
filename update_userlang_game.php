@@ -8,7 +8,11 @@
 	$user = user::getInstance();
 	$db = db::getInstance();
 	if(isset($_GET['page_not'])){
-		$role = "profil/".strtolower($_GET['page_not']);
+		$role = strtolower($_GET['page_not']);
+		if($role == "devin"){
+			$role="diviner";
+		}
+		$role = "./profil/$role.jpg";
 		if(isset($_GET['userlang_game'])){
 			require_once('./sys/load_iso.php');
 			$lang_iso = new IsoLang();
@@ -17,11 +21,10 @@
 					. "' WHERE userid = '" . intval($user->id)."'";
 			echo $sql;
 			if ($db->query($sql)){
-				echo "update succed";
+				echo "update success";
 
 				$mess = $_GET['page_not']." : ".$lang["languePlay"].$lang_iso->french_for($_GET['userlang_game']);
-				$notif = new Notification;
-				$notif->initNotif();
+				$notif = new Notification();
 				$notif->addNotifGAME($user->id,$mess,$role);
 			}
 			else {
@@ -39,8 +42,7 @@
 
 				$mess = $_GET['page_not']." : ".$lang["levelChange"].$lang["level_".$_GET['game_lvl']]."→".$lang[$_GET['page_not']."_".$_GET['game_lvl']];
 
-				$notif = new Notification;
-				$notif->initNotif();
+				$notif = new Notification();
 				$notif->addNotifGAME($user->id,$mess,$role);
 			}
 			else {

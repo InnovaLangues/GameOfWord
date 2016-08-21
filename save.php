@@ -55,7 +55,7 @@ foreach(array('audio') as $type) {
 	{
 		$fileName=$file['filename'].$ext;
 		//renomme le nom du fichier à rentrer dans la BD
-		$duration = 1;//durée min…
+		$duration = 1;//durée minimale…
 		if($ext == ".mp3"){
 			//would better use ffmpeg, but if we do that, might as well replace avconv
 			//see http://stackoverflow.com/questions/12053125/php-function-to-get-mp3-duration#answer-15237692
@@ -65,13 +65,15 @@ foreach(array('audio') as $type) {
 			$duration = $mp3_file->getDuration();
 		}
 		$sql = 'INSERT INTO enregistrement
-                (`cheminEnregistrement`,`idOracle`,`OracleLang`,`tpsEnregistrement`,`carteID`,`nivcarte`,`duration`)
+                (`cheminEnregistrement`,`idOracle`,`OracleLang`,`tpsEnregistrement`,`carteID`,`nivcarte`,`duration`,`nivpartie`)
 				 VALUES('.$db->escape($fileName).','.
 					$_GET["userid"]. ','.
-					$_GET["userlang"]. ','.$db->escape($temps).','.
+					$_GET["gamelang"]. ','.
+					$db->escape($temps).','.
 					$_GET["cardid"]. ','.
 					$_GET["levelcard"].','.
-					$duration.')';
+					$duration.','.
+					$_GET['gamelevel'].')';
 		$db->query($sql);
 	}
 }

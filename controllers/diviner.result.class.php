@@ -1,20 +1,13 @@
 <?php
-
+require_once('./models/recording.class.php');
 class diviner_result
 {
 	private $mode = '';
 	private $user = '';
 	private $devin = '';
 	private $oracle = '';
-	private $userlvl = '';
 	private $lang = '';
 	private $devinName ='';
-
-	private $previousSGDev = 0;
-	private $previousSDev = 0;
-	private $previousSGOracle = 0;
-	private $previousSOracle = 0;
-	private $pointsDev = 10;
 
 	private $reussie = 'oui';
 
@@ -25,12 +18,11 @@ class diviner_result
 
 	public function process()
 	{
-		if ( $this->init() )
-        {
-            $this->score();;
-            return $this->display();
-        }
-        return false;
+		if ( $this->init() ){
+			$this->score();
+			return $this->display();
+		}
+		return false;
 	}
 
 	public function __construct(){
@@ -38,7 +30,6 @@ class diviner_result
 	}
 
 	private function init()
-
 	{
 		$lang_iso = new IsoLang();
 		$db = db::getInstance();
@@ -47,35 +38,6 @@ class diviner_result
 		$this->devin = $this->user->id;
 		$this->devinName = $this->user->username;
 		$this->lang = $_SESSION["langDevin"];
-
-		$sql = 'SELECT * FROM user_niveau WHERE userid=' . $this->devin;
-		$result = $db->query($sql);
-		$res = mysqli_fetch_assoc($result);
-		$spoken_lang = explode(';',$res['spoken_lang']);
-		$i=0;
-
-		while ($i<count($spoken_lang)) {
-			if(strcmp($lang_iso->french_for($this->lang),$spoken_lang[$i]) == 0){
-				break;
-			}
-			$i++;
-		}
-		if($i!=count($spoken_lang)){
-			$lang_lvl = explode(';',$res['niveau'])[$i];
-
-			$sql = 'SELECT * FROM coeff_niveau_langue WHERE niveau_langue="' . $lang_lvl . '"';
-			$result = $db->query($sql);
-			$this->lang_lvl_pts = mysqli_fetch_assoc($result)['coeff'];
-		}
-		else{
-			$this->lang_lvl_pts = 1; //par défaut
-		}
-
-		$this->userlvl = userlvl::getInstance();
-		$this->points= $this->userlvl->get_points();
-		//$this->time = $this->userlvl->get_time(); /*can't understand why we would need it now…)*/
-
-
 		return true;
 	}
 
@@ -84,47 +46,26 @@ class diviner_result
 		if(!isset($_SESSION["motDeviner"]))
 		{
 			$lang_iso = new IsoLang();
+			//Récupération des infos nécessaires
+			$db = db::getInstance();
+			$query = "SET @id_enr := null;
+				UPDATE `parties` SET  `reussie`=".$db->escape((string) $this->reussie).", `enregistrementID` = (SELECT @id_enr := `enregistrementID`) WHERE idDevin='".$this->devin."' ORDER BY tpsDevin DESC LIMIT 1;
+				SELECT @id_enr;";
+			$db->multi_query_last_result($query);
+			$this->record_id = $db->fetch_assoc()["@id_enr"];
+			$tmpRecording  = new Recording($this->record_id);
+			$this->oracle  = $tmpRecording->get_oracle_id();
+
+			//mise à jour des scores
 			require_once('./controllers/update_score_coeff.php');
-			//connexion à la BD
-			$db = db::getInstance();
-
-			updateScoreDevinSucces($this->devin,$lang_iso->french_for($_SESSION["langDevin"]),$this->points);
-			$pointsCoef = $this->points*$this->lang_lvl_pts;
-			$_SESSION["pointsCoef"] = $pointsCoef;
-			$db = db::getInstance();
-			$sql = 'UPDATE parties
-					SET  reussie='.$db->escape((string) $this->reussie).'
-					WHERE idDevin='.$this->devin.' ORDER BY tpsDevin DESC LIMIT 1 ';
-			$db->query($sql);
-
-
-			//Récupération de enregistrementID
-			$sql = 'SELECT enregistrementID FROM parties WHERE idDevin="'.$this->devin.'" ORDER BY tpsDevin DESC LIMIT 1 ';
-	        $res1=$db->query($sql);
-	        $this->res2= mysqli_fetch_assoc($res1);
-
-	       // récupération de l'id de l'oracle et de la carte grâce à enregistrementID
-			$sql = 'SELECT idOracle,carteID,OracleLang
-	                    FROM enregistrement WHERE enregistrementID='.$this->res2['enregistrementID'].'';
-	        $res1=$db->query($sql);
-	        $res3= mysqli_fetch_assoc($res1);
-
-
-		updateScoreOracleDevinSucces($res3["idOracle"],$lang_iso->french_for($res3["OracleLang"]),$this->res2['enregistrementID']);
-		echo "updateScoreOracleDevinSucces(".$res3["idOracle"].",".$lang_iso->french_for($res3["OracleLang"]).",".$this->res2['enregistrementID'].");";/**/
-
-
-			$this->oracle=$res3["idOracle"];
+			$sh = new ScoreHandler($this->devin, ScoreHandler::AUGUR, $tmpRecording);
+			$sh->update_scores(true); //because they won…
 
 			// récupération du contenu de la carte avec carteID
 			require_once("./models/card.class.php");
-			$carte = new Card($res3['carteID']);
-	        $this->res= $carte->dirtify();
-
-	        $_SESSION["motDeviner"] = true;//pour éviter de s'ajouter des points à l'infini avec des refresh
-
+			$this->carte = new Card($tmpRecording->get_card_id());
+			$_SESSION["motDeviner"] = true;//pour éviter de s'ajouter des points à l'infini avec des refresh
 			return true;
-
 		}
 		else{
 			header('Location: index.php?page.home.html');
@@ -134,9 +75,10 @@ class diviner_result
 
 	private function display()
 	{
+		//for dynamic notification don't want to take the time to understand them…
 		$_SESSION["notif"]["notification_done"]["Devin"] = 'points';
 		include('./views/diviner.result.html');
-        return true;
+		return true;
 	}
 }
 

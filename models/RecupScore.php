@@ -1,4 +1,5 @@
 <?php
+	//don't really know what this is for… will see later…
 	function score($role){
 		require_once('./sys/load_iso.php');
 		$lang_iso = new IsoLang();

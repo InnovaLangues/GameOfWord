@@ -1,5 +1,4 @@
 <?php
-
 class Notification
 {
 	private $user = '';
@@ -7,16 +6,14 @@ class Notification
 	private $db;
 	private $time = "";
 
-	function initNotif()
-	{	
+	function __construct()
+	{
 		//Récupération des informaions de base: userid
 		$this->user = user::getInstance();
 		//connexion à la BD
 		$this->db = db::getInstance();
-		
-		$this->time = date('Y-m-d H:i:s');
 
-		return true;
+		$this->time = date('Y-m-d H:i:s');
 	}
 
 	function readNotif()
@@ -26,7 +23,7 @@ class Notification
 		$result=$this->db->query($sql);
         // comptage du nombre de résultats
         $nb_result=$result->num_rows;
-        
+
         //pour chaque enregistrement:
         if ($nb_result > 0)
         { 		while($res = mysqli_fetch_assoc($result)){
@@ -38,7 +35,7 @@ class Notification
 						$emetteur = $res2["photo"];
 					}
 					else{
-						$emetteur = $res["game"].".jpg";
+						$emetteur = $res["game"];
 					}
 
 					$this->messNotif[$res['id']][$res['state']][$emetteur][$res["time"]] = $res['message'];
@@ -47,24 +44,22 @@ class Notification
 	}
 
 	function addNotif($userid,$notification,$emetteur){
-		//récupération des messages de notification;
-		$sql = "INSERT INTO `notif`(`userid`, `message`, `emetteur` , `time`) VALUES ($userid,'".$notification."',$emetteur,'".$this->time."')";
+		$sql = "INSERT INTO `notif`(`userid`, `message`, `emetteur` , `time`) VALUES ($userid,".$this->db->escape($notification).",$emetteur,'".$this->time."')";
 		$result=$this->db->query($sql);
 	}
 
 	function addNotifGAME($userid,$notification,$role){
-		//récupération des messages de notification;
-		$sql = "INSERT INTO `notif`(`userid`, `message`, `emetteur` ,`game` , `time`) VALUES ($userid,'".$notification."',0,'".$role."','".$this->time."')";
+		//add an image to your notification…
+		$sql = "INSERT INTO `notif` (`userid`, `message`, `emetteur` ,`game` , `time`) VALUES ($userid,".$this->db->escape($notification).",0,'".$role."','".$this->time."')";
 		$result=$this->db->query($sql);
 	}
 
 
 	function notifRead($id) {
-		//récupération des messages de notification;
 		$sql= 'UPDATE `notif` SET `state`=1 WHERE id= $id';
 		$result=$this->db->query($sql);
 	}
-		
+
 }
 
 ?>

@@ -32,9 +32,8 @@
 	$mess = "Diviner : ".$lang["languePlay"].$lang_iso->french_for($_SESSION["langDevin"]);
 
 
-	$notif = new Notification;
-	$notif->initNotif();
-	$notif->addNotifGAME($user->id,$mess,"./profil/diviner");
+	$notif = new Notification();
+	$notif->addNotifGAME($user->id,$mess,"./profil/diviner.jpg");
 
 echo $_SESSION["langDevin"];
 ?>

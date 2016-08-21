@@ -6,28 +6,11 @@ include('./views/page.header.html');
 	<div id="jrForm">
 		<form class="form-jr" role="form" id="diviner.timeout" method="post" action="./index.php">
 			<fieldset>
-
-						<h2><?php echo $lang['Word2find'];?></h2>
-					<dl>
-						
-						<dt><label for="mot"><?php echo $lang['word_to_find'];?></label> : <?php echo $this->res['mot'].'</br>'; ?></dt>
-						<dt><label for="tabou1"><?php echo $lang['taboo_1'];?></label> : <?php echo $this->res['tabou1'].'</br>'; ?></dt>
-						<dt><label for="tabou2"><?php echo $lang['taboo_2'];?></label> : <?php echo $this->res['tabou2'].'</br>'; ?></dt>
-						<dt><label for="tabou3"><?php echo $lang['taboo_3'];?></label> : <?php echo $this->res['tabou3'].'</br>'; ?></dt>
-						<dt><label for="tabou4"><?php echo $lang['taboo_4'];?></label> : <?php echo $this->res['tabou4'].'</br>'; ?></dt>
-						<dt><label for="tabou5"><?php echo $lang['taboo_5'];?></label> : <?php echo $this->res['tabou5'].'</br>'; ?></dt>
-					</dl>
-
-					<?php 
-						$_SESSION["idCard"] = $this->res['carteID'];
-						$_SESSION["idEnregistrement"] = $this->res2['enregistrementID'];
-
-						//notification pour l'oracle
-						$notif = new Notification;
-						$notif->initNotif();
-						$mess = $this->devinName." : +".$this->points." points";
-						$notif->addNotif($this->oracle,$mess,$this->devin);
-						
+					<?php
+						$this->carte->set_view("./views/card.inline.display.php");
+						echo $this->carte;
+						$_SESSION["idCard"] = $this->carte->get_id();
+						$_SESSION["idEnregistrement"] = $this->record_id;
 					?>
 
 					<p><?php echo $lang["RecordCard"]?><a id="ImgDivin" href="index.php?mode=oracle.byid"><img src="./style/default.css/imgs/recON.png" width='20px' height='20px'></a>

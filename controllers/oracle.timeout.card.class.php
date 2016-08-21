@@ -23,6 +23,7 @@ class oracle_timeout_card
 
 	private function init()
 	{
+		//for dynamic notification don't want to take the time to understand them…
 		$_SESSION["notif"]["notification_error"]["oracle"] = 'oracle_card_timeout';
 		return true;
 	}

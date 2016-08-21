@@ -10,11 +10,7 @@ class diviner_timeout
 	private $devinName='';
 	private $oracle = '';
 
-	private $previousSGO = 0;
-	private $previousSO = 0;
-
-
-	private $res = '';
+	private $carte = '';
 	private $reussie ='non';
 
 
@@ -26,12 +22,12 @@ class diviner_timeout
 	public function process()
 	{
 		if ( $this->init() )
-        {
-            $this->carte_et_scoreOracle();
-            $this->updateparties();
-            return $this->display();
-        }
-        return false;
+		{
+			$this->carte_et_scoreOracle();
+			$this->updateparties();
+			return $this->display();
+		}
+		return false;
 	}
 
 	private function init()
@@ -40,17 +36,13 @@ class diviner_timeout
 		$this->user = user::getInstance();
 		$this->diviner = $this->user->id;
 		$this->devinName = $this->user->username;
-		$this->userlvl = userlvl::getInstance();
-		$this->points= $this->userlvl->get_points();
-
-
 		return true;
 	}
 
 	private function carte_et_scoreOracle()
 	{
 		require_once('./sys/load_iso.php');
-		require_once('./controllers/update_score_coeff.php');
+		$lang_iso = new IsoLang();
 
 		if(!isset($_SESSION["timeOutOracle"])){
 			// récupération d'enregistrementID pour récupérer l'id de l'Oracle et l'id de la carte
@@ -58,25 +50,18 @@ class diviner_timeout
 			$db = db::getInstance();
 
 			//Récupération de enregistrementID
-			$sql = 'SELECT enregistrementID FROM parties WHERE idDevin="'.$this->diviner.'" ORDER BY tpsDevin DESC LIMIT 1 ';
-	        $res1=$db->query($sql);
-	        $this->res2= mysqli_fetch_assoc($res1);
+			$sql = 'SELECT `enregistrementID` FROM `parties` WHERE `idDevin`="'.$this->diviner.'" ORDER BY `tpsDevin` DESC LIMIT 1 ';
+			$db->query($sql);
+			require_once("./models/recording.class.php");
+			$this->rec= new Recording($db->fetch_assoc()['enregistrementID']);
 
-	       // récupération de l'id de l'oracle et de la carte grâce à enregistrementID
-			$sql = 'SELECT idOracle,carteID,OracleLang
-	                    FROM enregistrement WHERE enregistrementID='.$this->res2['enregistrementID'].'';
-	        $res1=$db->query($sql);
-	        $res3= mysqli_fetch_assoc($res1);
-
-	        $this->oracle = $res3['idOracle'];
+			//mise à jour des scores
+			require_once('./controllers/update_score_coeff.php');
+			$sh = new ScoreHandler($this->diviner, ScoreHandler::AUGUR, $this->rec);
+			$sh->update_scores(false); //because they lost…
 
 			// récupération du contenu de la carte avec carteID
-			$carte = new Card($res3['carteID']);
-	        $this->res= $carte->dirtify();
-
-		// Requête de modification des scores de l'Oracle qui a fait une description non trouvée par le devin
-		  $lang_iso = new IsoLang();
-			updateScoreOracleDevinEchec($this->oracle,$lang_iso->french_for($res3["OracleLang"]),$this->res2['enregistrementID']);
+			$this->carte = new Card($this->rec->get_card_id());
 			$_SESSION["timeOutOracle"]=true;
 
 			return false;
@@ -94,8 +79,8 @@ class diviner_timeout
 			$sql = 'UPDATE parties
 					SET  reussie='.$db->escape((string) $this->reussie).'
 					WHERE idDevin='.$this->diviner.' ORDER BY tpsDevin DESC LIMIT 1 ';
-
 			$db->query($sql);
+			//for dynamic notification don't want to take the time to understand them…
 			$_SESSION["notif"]["notification_error"]["Devin"] = 'diviner_timeout';
 		return false;
 	}
@@ -103,7 +88,7 @@ class diviner_timeout
 	private function display()
 	{
 		include('./views/diviner.timeout.html');
-        return true;
+		  return true;
 	}
 }
 

@@ -40,6 +40,24 @@ class db
 		return $this->result;
 	}
 
+	//will only return the last result…
+	public function multi_query_last_result($sql)
+	{	$this->result = false;
+		if($this->handler->multi_query($sql)){
+			$continue = true;
+			while($continue){
+				$this->result = $this->handler->store_result();
+				if($this->handler->more_results()){
+					$this->handler->next_result();
+				}
+				else{
+					$continue=false;
+				}
+			}
+		}
+		return $this->result;
+	}
+
 	public function fetch_object(){
 		if($this->result){
 			return $this->result->fetch_object();

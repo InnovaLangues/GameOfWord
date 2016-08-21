@@ -99,10 +99,10 @@ function deleteAudioVideoFiles() {
 
 function previewRec (url){
 	container.appendChild(document.createElement('hr'));
-	
+
 	var mediaElement = document.createElement("audio");
 	var source = document.createElement('source');
-	source.src =  url;  
+	source.src =  url;
     source.type = 'audio/mp3';
 
 		mediaElement.appendChild(source);
@@ -116,7 +116,7 @@ function previewRec (url){
 
 
 
-// PostBlob method uses XHR2 and FormData to submit 
+// PostBlob method uses XHR2 and FormData to submit
 // recorded blob to the PHP server
 function PostBlob(blob, fileType, fileName) {
 	// FormData
@@ -133,17 +133,19 @@ function PostBlob(blob, fileType, fileName) {
 	strong.innerHTML = fileType + ' oracleupload progress: ';
 	container.appendChild(strong);
 	var progress = document.createElement('progress');
-	container.appendChild(progress); 
+	container.appendChild(progress);
 
 
 //Récupération des identifiants pour insertion dans la table enregistrement
 var userid = $("#userid").attr("data-userid");
-var userlang = $("#userlang").attr("data-userlang");
+var userlang = $("#lang").attr("data-userlang");
+var gamelang = $("#lang").attr("data-gamelang");
 var cardid = $("#cardid").attr("data-cardid");
-var levelcard = $("#levelcard").attr("data-levelcard");
+var gamelevel = $("#level").attr("data-gamelevel");
+var levelcard = $("#level").attr("data-levelcard");
 
 	// POST the Blob using XHR2
-xhr('save.php?userid="'+userid+'"&userlang="'+userlang+'"&cardid="'+cardid+'"&levelcard="'+levelcard+'"', formData, progress, percentage, function(fileURL) {
+xhr('save.php?userid="'+userid+'"&userlang="'+userlang+'"&gamelang="'+gamelang+'"&cardid="'+cardid+'"&levelcard="'+levelcard+'"'+'&gamelevel="'+gamelevel+'"', formData, progress, percentage, function(fileURL) {
 	var href = location.href.substr(0, location.href.lastIndexOf('/') + 1);
 		progress.parentNode.removeChild(progress);
 		strong.parentNode.removeChild(strong);
@@ -164,18 +166,18 @@ function xhr(url, data, progress, percentage, callback) {
 
 	// TODO : si firefox alors addeventlistener ; si chrome alors onloadstart/progress/load
 
-	
+
 	if (url.indexOf('delete.php') == -1) {
 		if(!isChrome){
-			request.upload.addEventListener("loadstart", function() {	
+			request.upload.addEventListener("loadstart", function() {
 			percentage.innerHTML = 'Upload started...';
 			},false);
-	
+
 		     request.upload.addEventListener("progress", function(event){
                       progress.max = event.total;
                       progress.value = event.loaded;
                       percentage.innerHTML = 'Upload Progress ' + Math.round(event.loaded / event.total * 100) + "%    "; },false);
-	
+
 	      request.upload.addEventListener("load",function(){
                       percentage.innerHTML = 'Saved!';
                       $("#form-cmd").show("slow");
@@ -198,5 +200,5 @@ function xhr(url, data, progress, percentage, callback) {
 		}
 	}
 	request.open('POST', url);
-	request.send(data); 
+	request.send(data);
 }

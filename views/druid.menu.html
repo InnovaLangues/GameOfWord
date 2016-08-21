@@ -10,7 +10,7 @@ require_once('./sys/load_iso.php');
 			<!-- cette formulaire sert � choisir la langue de jeu-->
 			<form id="select_lang">
 				<h2><?php echo $lang['learning'];?>
-					<select name="chooseLang" size="1" id="chooseLang" onchange="changeParameters('Druide','lang')">
+					<select name="chooseLang" size="1" id="chooseLang" onchange="changeParameters('druide','lang')">
 						<?php
 							foreach (explode(';',$user->spoken_lang) as $l) {
 								if (strlen($l) > 0) {

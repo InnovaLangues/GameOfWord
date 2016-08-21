@@ -9,7 +9,7 @@ include('./sys/config.php');
 <div id="facebox">
 	<div class="content">
 		<div style="padding:5px;">
-		<h2><?php echo $lang['warning']; ?></h2><br/><h3><?php echo $lang['cut_sound']; ?></h3> 
+		<h2><?php echo $lang['warning']; ?></h2><br/><h3><?php echo $lang['cut_sound']; ?></h3>
 		<button class="close" style="cursor: pointer; background:#000; color:white; text-align:center; font-weight:bold; position:absolute; bottom:20%; left:50%; padding:0 2px; width:200px; height:30px; line-height:20px">OK</button>
 		<div class="resume">&nbsp;</div>
 		</div>
@@ -18,9 +18,9 @@ include('./sys/config.php');
 <!-- Fin Popup -->
 <div id="main-container">
 	<div id="userid" data-userid="<?php echo $this->oracle; ?>" style="display:none"></div>
-	<div id="userlang" data-userlang="<?php echo $this->userlang; ?>" style="display:none"></div>
+	<div id="lang" data-userlang="<?php echo $this->userlang; ?>" data-gamelang="<?php if(isset($this->card)){echo $this->card->get_lang();} ?>" style="display:none"></div>
 	<div id="cardid" data-cardid="<?php if(isset($this->card)){echo $this->card->get_id();} ?>" style="display:none"></div>
-	<div id="levelcard" data-levelcard="<?php if(isset($this->card)){echo $this->card->get_level();} ?>" style="display:none"></div>
+	<div id="level" data-levelcard="<?php if(isset($this->card)){echo $this->card->get_level();} ?>" data-gamelevel="<?php if(isset($this->user)){echo $this->user->userlvl;} ?>" style="display:none"></div>
 			<?php if ( $this->errors ) { ?>
 			<div class="form-jr">
 				<fieldset class="errors">
@@ -50,8 +50,8 @@ include('./sys/config.php');
 							<td><button class="btn btn-primary btn-lg btn-block" id="record" type="button" style="margin-left:10px;" ><?php echo $lang['record']; ?></button></td>
 						</tr>
 					</table><center>
-		</div>	
-		<form class="form-jr" role="form" id="descriptioncarte" name="formSaisie" method="post" action="./index.php?mode=oracle.result">  		   							
+		</div>
+		<form class="form-jr" role="form" id="descriptioncarte" name="formSaisie" method="post" action="./index.php?mode=oracle.result">
 		<div id="secondPage">
 		        <legend class="form-jr-heading" style="text-align:center; font-style:bold;"><?php echo $lang['card_description']; ?></legend>
 					<div id='card'>
@@ -65,12 +65,12 @@ include('./sys/config.php');
 								</th>
 							</tr>
 						</table>
-					</center> 	
+					</center>
 					<img src="style/default.css/imgs/recON.png" alt="Recording" id="rec1" style="float:left;margin-left:30%">
 					<button type="button" id='restart' title="restart recording"  class="btn btn-default"><img src="style/default.css/imgs/restart.png" alt="restart" id="restart now" style="float:left;"></button>
 					<button type="button"  id="valid" title = "send recording"  class="btn btn-default"><img src="style/default.css/imgs/valid.png" alt="valider" id="valider" style="float:left;"></button>
-					<br/>					
-		</div>	
+					<br/>
+		</div>
 			<div id="thirdPage">
 				<dl>
 					<p style="text-align:center;">
@@ -81,22 +81,22 @@ include('./sys/config.php');
 				</dl>
 				<dl> <p id="audiovide"></p></dl>
 					<div id="form-cmd"style="text-align:center;" >
-               				      <input type="submit" class="btn btn-danger" id="abandon_form" 
+               				      <input type="submit" class="btn btn-danger" id="abandon_form"
                                                name="abandon_form" title="Erase recording" value="<?php echo $lang['abandonner'];?>" onclick="delaySubmit(); return false; "/>
-				 		
-						<input class="btn btn-success" type="submit" id="submit_form" title="Save recording" 
-						 name="submit_form" style="margin-left:3%;" value="<?php echo $lang['validate'];?>"/> 
+
+						<input class="btn btn-success" type="submit" id="submit_form" title="Save recording"
+						 name="submit_form" style="margin-left:3%;" value="<?php echo $lang['validate'];?>"/>
 					</div>
 			</div>
 		</form>
 	<?php } ?>
-	</div>			
+	</div>
 </div>
 
 <!--
 	ici rajouter un message d'erreur quand aucune carte n'existe dans la langue de l'utilisateur
 -->
-<audio class="audioDemo" controls preload="none" style="visibility:hidden;"> 
+<audio class="audioDemo" controls preload="none" style="visibility:hidden;">
    <source src="audio/test.mp3" type="audio/mpeg">
 </audio>
 
@@ -115,9 +115,9 @@ var monChrono = new MyTimer(renders, <?php echo $this->time; ?> , finChrono, 10,
 function handleSubmit(){
 	document.getElementById("descriptioncarte").submit();
     }
-function delaySubmit(){ 
+function delaySubmit(){
 	deleteAudioVideoFiles();
-        window.setTimeout(handleSubmit, 500); 
+        window.setTimeout(handleSubmit, 500);
     };
 
 
@@ -129,7 +129,7 @@ document.location.href="index.php";
 
 </script>
 
-	
+
 <?php
 include('./views/page.footer.html');
 ?>

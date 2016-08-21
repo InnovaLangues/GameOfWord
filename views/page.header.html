@@ -1,11 +1,10 @@
 <?php
 include('./languages/language.php');
-include('./models/RecupScore.php');
-require('./controllers/notificationMessage.php');
+include('./models/RecupScore.php');//cf. said file…
+require_once('./controllers/notificationMessage.php');
 
 // Notification initialisation
-$notif = new Notification;
-$notif->initNotif();
+$notif = new Notification();
 $notif->readNotif();
 
 //header('Content-Type: text/html; charset=UTF-8');
@@ -16,25 +15,25 @@ $notif->readNotif();
         <meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
 
 		<script type="text/javascript" src="style/default.js/js/jquery-1.11.2.min.js"></script>
-		
+
 		<!-- Adaptation au Bootstrap -->
 		<link rel="stylesheet" type="text/css" href="style/default.css/css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="style/default.css/css/bootstrap-theme.css">
 		<link rel ="stylesheet" type ="text/css" href="style/default.css/css/moncss.css">
-				
+
 		<script src="style/default.js/js/bootstrap.min.js"></script>
-		
+
 		<link href="http://fonts.googleapis.com/css?family=Playball" rel="stylesheet" type="text/css">
 		<link rel="icon" href="style/default.css/imgs/favicon.ico" />
 
 		<!-- For notification style -->
 		<link rel="stylesheet" type="text/css" href="style/default.css/css/ns-default.css" />
 		<link rel="stylesheet" type="text/css" href="style/default.css/css/ns-style-other.css" />
-		
-		
+
+
 		<!--Module de son : -->
 		    <script src="style/default.js/RecordRTC.js"></script>
 
@@ -45,7 +44,7 @@ $notif->readNotif();
 		<script src="controllersJS/Notification/modernizr.custom.js"></script>
 		<script src="controllersJS/sendSQL.js"></script>
 		<script src="controllersJS/notif.js"></script>
-		
+
 
     </head>
     <body>
@@ -63,7 +62,7 @@ $notif->readNotif();
 				</div>
 			<div class="collapse navbar-collapse" style="height: 1px;">
 				<ul class="nav navbar-nav">
-<?php 
+<?php
 	if ( $GLOBALS['userlogged'] ) { ?>
 
 			<li><a  class="active" href="?mode=infos" title="rules"><?php echo $lang['rules']; ?></a></li>
@@ -78,10 +77,10 @@ $notif->readNotif();
 					<div id="notificationsBody" class="notifications">
 							<?php
 							if($notif->messNotif){?>
-									<script> 
+									<script>
 								var tab = <?php echo json_encode($notif->messNotif); ?>;
 									notifBox(tab);</script>
-							<?php 
+							<?php
 							}
 							else{ ?>
 								<script> $("#notification_count").hide(); </script>
@@ -91,18 +90,18 @@ $notif->readNotif();
 					<div id="notificationFooter"><a href="#"></a></div>
 				</div>
 			</li>
-			
 
 
-<?php 
-	} else { 
+
+<?php
+	} else {
 ?>
 			<li ><a href="?mode=login" title="login">Se connecter</a></li>
 			<li ><a href="?mode=register" title="register">S'enregister</a></li>
-<?php 
-	} 
+<?php
+	}
 ?>
-				</ul>	
+				</ul>
 			</div>
 		</div>
 </div>
@@ -112,7 +111,7 @@ $notif->readNotif();
 <?php
 	if(isset($_SESSION["notif"])){
 		foreach($_SESSION["notif"] as $key => $value)
-		{ 
+		{
 			foreach($_SESSION["notif"][$key] as $k => $v){
 				$scoreUtilisateur = "";
 				if($k != "undefined"){
@@ -130,12 +129,3 @@ $notif->readNotif();
 ?>
 
 	<div class="container">
-	
-	
-	<!--<script>
-		var selection = document.getElementById("select_lang").onchange = function() {
-			var lang_new = this.value;
-			//var user = JSON.parse('<php echo json_encode($user)?>');
-			//user.set_lang(this.value);
-		}
-	</script>-->

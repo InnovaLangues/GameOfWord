@@ -67,8 +67,7 @@ $lang['erase'] = 'Erase and restart';
 //$lang['giveUp']=' You did not send your record, Therefore you will loose 10 points as Oracle but you will get 5 points as Druide';
 //$lang['giveUpWithoutPoints'] = 'You did not send your record. But you have not enought points to loose. So you don\'t loose points for this time... Be carefull the next time ;)';
 
-$pointsCoeff = $points*0.5;
-$lang['pointsOracle'] = ' The record  has been sent. you will gain or loose '.$pointsCoeff.' points according the Druid/Oracle points.';
+$lang['pointsOracle'] = ' The record  has been sent. you will gain or lose points according the Druid/Oracle points.';
 $lang['giveUpOracle'] = ' The record has not been sent to the server.';
 
 
@@ -131,27 +130,27 @@ $lang["restart"] ='Play again ? ';
 $lang["start"] ='It\'s time to play the game !';
 $lang['start_playback']="Play recording";
 $lang['give_up'] = 'Give up';
-$lang['devin-nope'] = 'Not the word�';
+$lang['devin-nope'] = 'Not the word…';
 $lang["game"] ='Start the game';
 
 
-//R�sultats, Scores et Points
+//Résultats, Scores et Points
 $lang['well_done'] = 'Congratulation!';
-$lang['points'] = ' +'.$points.' Points';
 $lang['too_bad'] = 'Too bad !';
 $lang['no_point'] = 'You haven\'t got points';
 $lang['result'] = 'Score';
 $lang['return']= 'Return';
 $lang['score_role'] = 'Regarding the roles you played';
 $lang['scores'] = 'Scores';
-$lang['nbLangues'] = 'Languages number';
-$lang['classement'] = 'Classement';
-$lang['score_oracle']= 'Oracle_Score';
-$lang['score_druid']= 'Druid_Score';
-$lang['score_diviner']= 'Diviner_Score';
+$lang['nbLangues'] = 'Languages count';
+$lang['listLangues'] = 'Languages played';
+$lang['classement'] = 'Rankings';
+$lang['score_oracle']= 'Oracle Score';
+$lang['score_druid']= 'Druid Score';
+$lang['score_diviner']= 'Augur Score';
 $lang['score_global']= 'Global score';
-$lang['pointsDruide']= '+ 10 points';
-
+$lang['global_score'] = 'Global rankings';
+$lang['scores_by_language'] = "Rankings by language";
 
 // Timeout
 $lang['diviner_timeout'] = 'You did not give an anwser in time';
@@ -204,6 +203,19 @@ $lang['Oracle_hard'] = "Six forbidden words and 30″ recording time (stake: 30 
 $lang['Devin_easy'] = "Twice the duration of the recording, for a 10 points stake.";
 $lang['Devin_medium'] = "1.5 times the duration of the recording, for a 20 points stake.";
 $lang['Devin_hard'] = "Recording duration + 8″, for a 30 points stake.";
+$lang['Card_created'] = "Thank you for creating a card: ";
+$lang['Rec_verified'] = "Thank you for verifying the recording of ";
+$lang['Oracle_verif'][true] = " verified your recording and thinks you didn't use forbidden words";
+$lang['Oracle_verif'][false] = " verified your recording and thinks you used forbidden words";
+$lang['Oracle_devin'][false] = " listened to your recording and didn't find the word…";
+$lang['Oracle_devin'][true] = " listened to your recording and found the word!";
+$lang['Devin_played'] = "You listened to a recording by ";
+$lang['Devin_oracle'][true] = "And you found the word!";
+$lang['Devin_oracle'][false] = "And you did not find the word…";
+
+$lang['img_augur']  = "./profil/diviner.jpg";
+$lang['img_druid']  = "./profil/druide.jpg";
+$lang['img_oracle'] = "./profil/oracle.jpg";
 
 //Erreur upload
 $lang['file_unupload'] = 'Attention, the file was not fully uploaded.';

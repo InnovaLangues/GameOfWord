@@ -1,92 +1,5 @@
 <?php
-
-class userlvl
-{
-    private $lvl = "";
-    private $points = '';
-    private $temps = '';
-    private $user = '';
-
-    private static $_instance = null;
-        /**
-     * Empêche la création externe d'instances.
-     */
-    private function __construct () {
-        $this->read();
-    }
-
-    /**
-     * Empêche la copie externe de l'instance.
-     */
-    private function __clone () {}
-
-    /**
-     * Renvoi de l'instance et initialisation si nécessaire.
-     */
-    public static function getInstance () {
-        if ( !self::$_instance )
-        {
-            $class = __CLASS__;
-            self::$_instance = new $class();
-        }
-        return self::$_instance;
-    }
-
-
-
-    public function read()
-    {
-        $this->user = user::getInstance();
-        $this->lvl = $this->user->userlvl;
-
-        $this->define($this->lvl);
-    }
-
-    private function define($lvl){
-        $db = db::getInstance();
-
-        $sql = 'SELECT *
-                    FROM game_lvl
-                    WHERE userlvl = "' . $lvl.'"';
-        $result = $db->query($sql);
-        $row = $result->fetch_assoc();
-        $result->free();
-        if ( $row )
-        {
-            $this->points = (int) $row['points'];
-            $this->temps = (int) $row['time'];
-        }
-    }
-    public function get_points(){
-        return $this->points;
-    }
-    public function get_time(){
-        return $this->temps;
-    }
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //A class to handle the main rules
-require_once('./sys/constants.php');
-require_once('./models/user.class.php');
-require_once('./sys/db.class.php');//useless (called by Card)
-
 class GameHandler{
 	const LVL_EASY = 0;
 	const LVL_MEDIUM = 1;
@@ -154,6 +67,7 @@ class GameHandler{
 		return $res;
 	}
 
+	//Game rules
 	private function get_mastery_mult($card_lvl, $user_lvl, $win=true){
 		if(!is_int($card_lvl)){
 			$card_lvl = $this->unify_Lvl($card_lvl);
@@ -161,7 +75,6 @@ class GameHandler{
 		if(!is_int($user_lvl)){
 			$user_lvl = $this->unify_Lvl($user_lvl);
 		}
-		/**/echo "<p>".($card_lvl - $user_lvl)." → ".self::$MULTIPLIERS[$card_lvl - $user_lvl]."</p>";
 		if($win){
 			return self::$MULTIPLIERS_WIN[$card_lvl - $user_lvl];
 		}
@@ -193,10 +106,10 @@ class GameHandler{
 		if($res < self::$AUGUR_MIN_TIME[$game_lvl]){
 			$res = self::$AUGUR_MIN_TIME[$game_lvl];
 		}
-		/**/echo "<p>".self::$AUGUR_MULT_TIME[$game_lvl]."×".$recording_duration."+".self::$AUGUR_PLUS_TIME[$game_lvl]."</p>";
 		return $res;
 	}
 
+	//Scoring
 	public function get_druid_verification_score(){
 		return self::DRUID_VERIF;
 	}
@@ -214,14 +127,14 @@ class GameHandler{
 		if(!is_int($user_lvl)){
 			$user_lvl = $this->unify_Lvl($user_lvl);
 		}
-		return get_mastery_mult($card_lvl, $user_lvl, $won) * self::$STAKES[$game_lvl];
+		return round($this->get_mastery_mult($card_lvl, $user_lvl, $won) * self::$STAKES[$game_lvl]);
 	}
 	public function get_oracle_verification_score($game_lvl, $card_lvl, $user_lvl, $won=true){
 		$res = $this->get_stake($game_lvl, $card_lvl, $user_lvl, $won);
 		if(!$won){
 			$res = -$res/2;
 		}
-		return $res;
+		return round($res);
 	}
 
 	public function get_oracle_divination_score($game_lvl, $card_lvl, $user_lvl, $won=true){//necessary function, in case we change scoring
@@ -236,7 +149,7 @@ class GameHandler{
 		else{
 			$res = -$res;
 		}
-		return $res;
+		return round($res);
 	}
 }
 

@@ -1,15 +1,5 @@
 <?php
 $title = 'Result Druid';
-include('./controllers/notificationMessage.php');
-
-
-
-//notification pour l'oracle
-$notif = new Notification;
-$notif->initNotif();
-$mess = $this->druidName." : +".$this->points." points";
-$notif->addNotif($this->oracle,$mess,$this->druid);
-
 header('Location: index.php?page.home.html');
 ?>
 

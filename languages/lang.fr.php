@@ -62,10 +62,7 @@ $lang['start_describe'] = 'Commence ta description&nbsp;';
 $lang['record'] = 'Jouer';
 $lang['send_description'] = 'Envoie ta description !';
 $lang['erase'] = 'Efface et recommence';
-$pointsCoeff = $points * 0.5;
-//$lang['giveUp']='Enregistrement non fourni. Vous allez donc être sanctionné de 10 points en tant qu\'Oracle, mais pour vous encourager nous vous gratifions de 5 points Druide.';
-//$lang['giveUpWithoutPoints'] = 'Vous n\'avez pas fourni d\'enregistrement. Vous n\'êtes cependant pas sanctionné puisque votre score d\'oracle est ègal à 0. Mais gare à vous la prochaine fois';
-$lang['pointsOracle'] = 'L\'enregistrement a bien été déposé sur le serveur. Vous serez gratifié ou sanctionné de  '.$pointsCoeff.' points en fonction des résultats obtenus par les druides et devins.';
+$lang['pointsOracle'] = 'L\'enregistrement a bien été déposé sur le serveur. Vous serez gratifié ou sanctionné de points en fonction des résultats obtenus par les druides et devins.';
 $lang['giveUpOracle'] = 'L\'enregistrement n\'a pas été déposé sur le serveur.';
 
 // Affichage des cartes en création et lecture : Oracle | Druide | Devin
@@ -132,7 +129,6 @@ $lang['game'] = 'Jouer';
 
 //Résultats, Scores et Points
 $lang['well_done'] = 'Félicitation!';
-$lang['points'] = ' +'.$points.' Points';
 $lang['too_bad'] = 'Dommage!';
 $lang['no_point'] = 'Tu n\'as pas eu de points';
 $lang['result'] = 'Score';
@@ -141,12 +137,14 @@ $lang['score_role'] = 'En fonction des rôles que tu as joué.';
 $lang['scores'] = 'Scores';
 $lang['classement'] = 'Classement';
 $lang['nbLangues'] = 'Nombre de langues';
+$lang['listLangues'] = 'Langues jouées';
 $lang['score_oracle'] = 'Oracle';
 $lang['score_druid'] = 'Druide';
 $lang['score_diviner'] = 'Devin';
 $lang['score_global'] = 'Score global';
-$lang['pointsDruide'] = '+ 10 points';
 $lang['userName'] = 'Joueur';
+$lang['global_score'] = 'Classement général';
+$lang['scores_by_language'] = "Scores par langue";
 
 // Timeout
 $lang['diviner_timeout'] = 'Tu n\'as pas fourni de réponse dans le temps imparti';
@@ -198,6 +196,20 @@ $lang['Oracle_hard'] = "Six mots interdits et 30″ d'enregistrement (mise&nbsp;
 $lang['Devin_easy'] = "2 fois la durée de l'enregistrement pour une mise de 10 points.";
 $lang['Devin_medium'] = "1,5 fois la durée de l'enregistrement pour une mise de 20 points.";
 $lang['Devin_hard'] = "Enregistrement + 8″ pour une mise de 30 points.";
+$lang['Card_created'] = "Merci d'avoir créé une carte&nbsp;: ";
+$lang['Rec_verified'] = "Merci d'avoir vérifié l'enregistrement de ";
+$lang['Oracle_verif'][true] = " a vérifié votre enregistrement et pense que vous n'avez pas utilisé de mot interdit";
+$lang['Oracle_verif'][false] = " a vérifié votre enregistrement et pense que vous n'avez pas utilisé de mot interdit";
+$lang['Oracle_devin'][false] = " a écouté votre enregistrement et n'a pas trouvé le mot…";
+$lang['Oracle_devin'][true] = " a écouté votre enregistrement et a trouvé&nbsp;!";
+$lang['Devin_played'] = "Vous avez écouté un enregistrement de ";
+$lang['Devin_oracle'][true] = "Et vous avez trouvé&nbsp;!";
+$lang['Devin_oracle'][false] = "Mais vous n'avez pas trouvé…";
+
+
+$lang['img_augur']  = "./profil/diviner.jpg";
+$lang['img_druid']  = "./profil/druide.jpg";
+$lang['img_oracle'] = "./profil/oracle.jpg";
 
 //Erreur upload
 $lang['file_unupload'] = 'Attention le fichier a mal été uploadé.';

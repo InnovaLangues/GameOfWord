@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(E_ALL);//error_reporting(0); désactiver
+error_reporting(E_ALL);//error_reporting(0); dÃ©sactiver
 ini_set('display_errors', '1');
 header('Content-Type: text/html; charset=UTF-8');
 require('./sys/utils.func.php');
@@ -14,92 +14,92 @@ require('./languages/language.php');
 // Initialisation
 if ( isset($_POST['cancel_form']) )
 {
-    redirect('');
+	 redirect('');
 }
 $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
 $user = user::getInstance();
 if ( !$user->logged_in() && ($mode != 'register') )
 {
-    $mode = 'login';
+	 $mode = 'login';
 }
 
 $userlogged = $user->logged_in();
 
 
-$modes = $mode ? explode('.', $mode) : array(); // condition  ? if  :else  
+$modes = $mode ? explode('.', $mode) : array(); // condition  ? if  :else
 $modes = array_slice($modes, 0, 1);
-$wmode = implode('.', $modes); // deux premiers paramètres de $mode
+$wmode = implode('.', $modes); // deux premiers paramï¿½tres de $mode
 
 // Traitement des modes
 $html = false;
 switch ( $wmode )
 {
-    case 'login':
-        include('controllers/login.class.php');
-        $controller = new login();
-        $controller->set_mode($mode);
-        $html = $controller->process();
-    break;
-    case 'register':
-        include('controllers/register.class.php');
-        $controller = new register();
-        $controller->set_mode($mode);
-        $html = $controller->process();
-    break;
-    case 'logout':
+	 case 'login':
+		  include('controllers/login.class.php');
+		  $controller = new login();
+		  $controller->set_mode($mode);
+		  $html = $controller->process();
+	 break;
+	 case 'register':
+		  include('controllers/register.class.php');
+		  $controller = new register();
+		  $controller->set_mode($mode);
+		  $html = $controller->process();
+	 break;
+	 case 'logout':
 		$user->set_logout();
-        redirect('');
-    break;
-    case 'profile':
-        include('controllers/edit.class.php');
-        $controller = new edit();
-        $controller->set_mode($mode);
-        $html = $controller->process();
-    break;
-     case 'score':
-        include('controllers/score.class.php');
-        $controller = new score();
-        $controller->set_mode($mode);
-        $html = $controller->process();
-    break;
+		  redirect('');
+	 break;
+	 case 'profile':
+		  include('controllers/edit.class.php');
+		  $controller = new edit();
+		  $controller->set_mode($mode);
+		  $html = $controller->process();
+	 break;
+	  case 'score':
+		  include('controllers/score.class.php');
+		  $controller = new Score();
+		  $controller->set_mode($mode);
+		  $html = $controller->process();
+	 break;
 	case 'infos':
-        include('controllers/infos.class.php');
-        $controller = new infos();
-        $controller->set_mode($mode);
-        $html = $controller->process();
-    break;
-    case 'oracle':
-        include('controllers/oracle.menu.class.php');
-        $controller = new oracle_menu();
-        $controller->set_mode($mode);
-        $html = $controller->process();
-    break;
-    
-    case 'druid':
-        include('controllers/druid.menu.class.php');
-        $controller = new druid_menu();
-        $controller->set_mode($mode);
-        $html = $controller->process();
-    break;
-    
-    case 'diviner':
-        include('controllers/diviner.menu.class.php');
-        $controller = new diviner_menu();
-        $controller->set_mode($mode);
-        $html = $controller->process();
-    break;
-				
-    default:
-        $html = true;
-        unset($_SESSION["CreateCard"]); //Sécurité pour éviter que l'utilisateur ne s'ajoute des points à l'infini lorsqu'il créé une carte (refresh)
+		  include('controllers/infos.class.php');
+		  $controller = new infos();
+		  $controller->set_mode($mode);
+		  $html = $controller->process();
+	 break;
+	 case 'oracle':
+		  include('controllers/oracle.menu.class.php');
+		  $controller = new oracle_menu();
+		  $controller->set_mode($mode);
+		  $html = $controller->process();
+	 break;
 
-        include('./views/page.home.html');
-        $mode = '';
+	 case 'druid':
+		  include('controllers/druid.menu.class.php');
+		  $controller = new druid_menu();
+		  $controller->set_mode($mode);
+		  $html = $controller->process();
+	 break;
+
+	 case 'diviner':
+		include('controllers/diviner.menu.class.php');
+		$controller = new diviner_menu();
+		$controller->set_mode($mode);
+		$html = $controller->process();
+	 break;
+
+	 default:
+		  $html = true;
+		  unset($_SESSION["CreateCard"]); //Sï¿½curitï¿½ pour ï¿½viter que l'utilisateur ne s'ajoute des points ï¿½ l'infini lorsqu'il crï¿½ï¿½ une carte (refresh)
+
+		  include('./views/page.home.html');
+		  $mode = '';
 }
 // Affichage de la page
 if ( !$html )
 {
-    include('./views/page.errors.html');
+	 include('./views/page.errors.html');
 }
 
 ?>

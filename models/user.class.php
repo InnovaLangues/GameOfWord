@@ -1,8 +1,8 @@
 <?php
-
+require_once('./sys/db.class.php');
 class user
 {
-	const SESSION_DURATION = 300; // 300 secondes = 5 minutes
+	const SESSION_DURATION = 600; // 600 secondes = 10 minutes
 	const DEFAULT_LANG = 'en';
 	public $id = false;
 	public $username = '';
@@ -25,9 +25,14 @@ class user
         }
         return self::$_instance;
     }
-    private function __construct()
+    public function __construct($id=false)
     {
-        $this->login();
+		 if($id===false){
+			 $this->login();
+		 }
+		 else{
+			 $this->read($id);
+		 }
     }
     private function __clone() {}
 
@@ -170,7 +175,6 @@ class user
 						$this->languages[$lang_iso->language_code_for($tmp_langs[$i])]=$tmp_lvls[$i];
 					}
 				}
-				//**/include("debug.php");
 			}
 			//end add on for level for languages… multiplicity of info beurk
 			return true;

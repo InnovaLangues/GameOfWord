@@ -2,7 +2,7 @@
 //user.class.php
 //print_r($this->get_lang_lvl("es").($this->get_lang_lvl("sdfjlkkjls")===false ? "yippie" :"argh"));
 
-include("./controllers/update_score_coeff.php");
+/*include("./controllers/update_score_coeff.php");
 $gh= new GameHandler();
 echo $gh->get_mastery_mult("C1","Débutant");
 
@@ -14,8 +14,23 @@ echo "<pre>".
   $lang_iso->language_code_for("sdf,lmsgdlk,")."→".$lang_iso->french_for("sdee")."\n".
   "</pre>";
   print_r($lang_iso->get_all_codes());
-
-  /**/$fich = fopen("./debug.txt","w");
-  /**/fwrite($fich, "blabla".$fileName."\n".$ext);
-  /**/fclose($fich);
+*/
+function myLog($txt){
+	$fich = fopen("./debug.txt","a");
+   fwrite($fich, "\n----\n".$txt."\n");
+   fclose($fich);
+}
+/*  fwrite($fich, "blabla".$fileName."\n".$ext);
+  fclose($fich);
+  require_once("./sys/db.class.php");
+  $db = db::getInstance();
+  $query = "SET @id_enr := null;
+UPDATE `parties` SET  `reussie`='non', `enregistrementID` = (SELECT @id_enr := `enregistrementID`) WHERE idDevin='4' ORDER BY tpsDevin DESC LIMIT 1;
+SELECT @id_enr;";
+  $db->multi_query_last_result($query);
+  $record_id = $db->fetch_assoc()["@id_enr"];
+  //$record_id = $record_id["@id_enr"];
+  echo "<h1>$record_id</h1>";*/
+  //$score = array(true => "youpiii", false => "perduuuu");
+  //echo $score[true]."/".$score[false];
 ?>
