@@ -1,11 +1,10 @@
 <?php
 	session_start();
 	require_once("../sys/db.class.php");
-	require_once("../models/user.class.php");
-	$user = user::getInstance();
-	if(($user->id == $_GET['user_id']) && isset($_GET['card_id'])){
+	if(($_SESSION['userid'] == $_GET['user_id'])
+		&& isset($_GET['card_id'])){
 		$db = db::getInstance();
-		$db->query("UPDATE `cartes` SET `dateSuppression` = CURRENT_TIMESTAMP, `idEraser` = '".$user->id."' WHERE `cartes`.`idCarte` = '".$_GET['card_id']."';");
+		$db->query("UPDATE `cartes` SET `dateSuppression` = CURRENT_TIMESTAMP, `idEraser` = '".$_SESSION['userid']."' WHERE `cartes`.`idCarte` = '".$_GET['card_id']."';");
 		if($db->affected_rows() == 1){
 			echo "OK";
 		}

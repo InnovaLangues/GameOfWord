@@ -8,8 +8,9 @@ include('./sys/load_used_iso.php');
 		<!-- cette formulaire sert à choisir la langue de jeu-->
 		<form id="select_lang">
 			<h2><?php echo $lang['learning'];?>
-				<select name="chooseLang" size="1" id="chooseLang" onchange="saveLangue()">
+				<!--select name="chooseLang" size="1" id="chooseLang" onchange="saveLangue()">
 					<?php
+						//keep for when we want to have people play languages they don't speak…
 						foreach ($usedIsos as $short => $long) {
 							echo "<option value='" . $short."'" ;
 							if(isset($_SESSION["langDevin"]))
@@ -18,6 +19,18 @@ include('./sys/load_used_iso.php');
 								}
 							elseif (strcmp($user->langGame,$short) == 0) { echo " selected"; }
 							echo ">" . $long . "</option>";
+						}
+					?>
+				</select-->
+				<select name="chooseLang" size="1" id="chooseLang" onchange="changeParameters('Devin','lang')">
+					<?php
+						foreach (explode(';',$user->spoken_lang) as $l) {
+							if (strlen($l) > 0) {
+								$code = $lang_iso->language_code_for($l);
+								echo "<option value=" . $code ;
+								if (strcmp($user->langGame,$code) == 0) { echo " selected"; }
+								echo ">" . $l . "</option>";
+							}
 						}
 					?>
 				</select>

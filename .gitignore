@@ -48,5 +48,7 @@ enregistrements/*
 sys/db.config.php
 sys/config.php
 /add_cards.php
+/profil/*/*.jpg
+/profil/*/*.png
+/debug.html
 /debug.txt
-/profil/test1/mimas.jpg

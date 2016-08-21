@@ -134,15 +134,15 @@ class druid_arbitrage
 		require_once('./sys/load_iso.php');
 		$lang_iso = new IsoLang();
 		require_once('./controllers/update_score_coeff.php');
-		if(isset($this->card)){
-			$sh = new ScoreHandler($this->druid, ScoreHandler::DRUID,(int) $this->enregistrement);
-		}
 		//connexion à la BD
 		$db = db::getInstance();
 
 		if(isset($_POST["enregistrement1"])  &&  isset($_POST["oracle"])){
 			$this->enregistrement = $_POST["enregistrement1"];
 			$this->oracle = $_POST['oracle'];
+		}
+		if(isset($this->enregistrement)){
+			$sh = new ScoreHandler($this->druid, ScoreHandler::DRUID,(int) $this->enregistrement);
 		}
 		// après avoir cliqué sur "au bûcher" = description vide ou fautive
 		if(isset($_POST['invalidate']))

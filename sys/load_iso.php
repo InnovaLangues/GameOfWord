@@ -75,7 +75,7 @@ class IsoLang{
 		$this->db->query("SELECT `iso_code`,`$language` FROM `langues`");
 		if($this->db->affected_rows() >= 1){
 			while($tmpObj = $this->db->fetch_object()){
-				$res[$tmpObj->iso_code]=$tmpObj->language;
+				$res[$tmpObj->iso_code]=$tmpObj->{$language};
 			}
 		}
 		else{
