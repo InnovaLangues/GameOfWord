@@ -175,5 +175,26 @@ class ScoreHandler{
 		else{
 			throw new Exception("Ni devin, ni druide, c'est pas normal…");
 		}
+/**/require_once("debug.php");
+/**/$tmpString = $success ? "Gagné ":"Perdu ";
+/**/logScores(user::getInstance(), $this->lang, $tmpString.$this);
+	}
+	public function __toString(){
+		//for debugging purposes
+		$res = "Langue: $this->lang (".
+				$this->recording->get_card_level().")\n";
+		if($this->oracle!==false){
+			$res .= "Oracle: ".$this->oracle->username." (".
+				$this->oracle->get_lang_lvl($this->lang)." / ".$this->recording->get_level().")\n";
+		}
+		if($this->druid!==false){
+			$res .= "Druide: ".$this->druid->username." (".
+				$this->druid->get_lang_lvl($this->lang).")\n";
+		}
+		if($this->augur!==false){
+			$res .= "Devin: ".$this->augur->username." (".
+				$this->augur->get_lang_lvl($this->lang)." / ".$this->augur->userlvl.")\n";
+		}
+		return $res;
 	}
 }?>

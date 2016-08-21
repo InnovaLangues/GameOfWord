@@ -16,8 +16,25 @@ echo "<pre>".
   print_r($lang_iso->get_all_codes());
 */
 function myLog($txt){
-	$fich = fopen("./debug.txt","a");
-   fwrite($fich, "\n----\n".$txt."\n");
+	$fich = fopen("./debug.html","a");
+   fwrite($fich, "<p>".$txt."</p>");
+   fclose($fich);
+}
+
+function logScores($user, $language=false,$title=false){
+	require_once("./models/score.class.php");
+	if($language !== false){
+		$score = new GlobalScoreTable($user);
+	}
+	else{
+		$score = new ScoreTable($user, $language);
+	}
+	$score->get_score_table(false);
+	$fich = fopen("./debug.html","a");
+	if($title !== false){
+		fwrite($fich, "<h2>$title</h2>\n");
+	}
+   fwrite($fich, $score);
    fclose($fich);
 }
 /*  fwrite($fich, "blabla".$fileName."\n".$ext);

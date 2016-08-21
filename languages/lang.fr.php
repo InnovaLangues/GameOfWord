@@ -181,11 +181,11 @@ $lang['enter_email'] = 'Il faut entrer une adresse mail';
 $lang['enter_language'] = 'Il faut choisir une langue';
 $lang['tabooWords'] = 'L\'intitulé de la carte doit être différent des mots taboo';
 $lang['noCardBD'] = 'Il n\'y a pas de carte à jouer dans la base de données… Si vous en <a href=\'index.php?mode=druid.card\'>créez</a>, cette situation sera moins fréquente pour tout le monde ;)';
-$lang['noEnregistrement'] = 'Aucun enregistrement n\'a été trouvé.';
+$lang['noEnregistrement'] = "Il n'y a plus d'enregistrement à arbitrer dans cette langue, essayez-en une autre, ou faites-vous plaisir et jouez un autre rôle…";
 $lang['Becareful'] = 'ATTENTION!';
 $lang['enter_nativelang'] = 'Veuillez entrer votre langue maternelle';
 $lang['Word2find'] = 'Le mot à trouver était&nbsp;: ';
-$lang['home_miss_lang_game'] = 'Veuillez sélectionner une langue de jeu dans votre profil.';
+$lang['home_miss_lang_game'] = 'Veuillez sélectionner une langue de jeu dans votre profil.';' There is no available record';
 
 $lang['languePlay'] = 'Vous jouez en ';
 $lang['level'] = 'au niveau ';

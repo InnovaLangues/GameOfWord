@@ -141,7 +141,7 @@ class druid_arbitrage
 			$this->enregistrement = $_POST["enregistrement1"];
 			$this->oracle = $_POST['oracle'];
 		}
-		if(isset($this->enregistrement)){
+		if(isset($this->enregistrement) && ($this->enregistrement!="") ){
 			$sh = new ScoreHandler($this->druid, ScoreHandler::DRUID,(int) $this->enregistrement);
 		}
 		// après avoir cliqué sur "au bûcher" = description vide ou fautive

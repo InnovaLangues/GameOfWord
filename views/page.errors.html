@@ -1,6 +1,9 @@
 <?php
 $title = 'erreur';
 include('./views/page.header.html');
+if(!isset($lang)){
+	include('./languages/language.php');
+}
 ?>
 <div id="main-container">
 	<h1><?php echo $lang['errors'];?></h1>
