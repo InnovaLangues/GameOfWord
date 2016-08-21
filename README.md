@@ -5,7 +5,7 @@ Game of Words was created as part of the GAMER work package in the Innovalangues
 
 Rules
 -------
-Game of Words is a taboo-like game, developed as a learning aid for foreign language learners. 
+Game of Words is a taboo-like game, developed as a learning aid for foreign language learners.
 
 The game has three roles to play : Oracle, Druid, and Diviner.
 * As an Oracle the user must produce descriptions of words without using the taboo words associated.
@@ -26,6 +26,10 @@ Contributors
 * Reverdy Justine
 * Nejat Maryam
 * Graceffa David
+
+Credits
+--------
+* ./style/default.css/imgs/info.svg by Dave Gandy (http://www.brandeps.com/icon/B/Bell-01)
 
 Installation
 ------------
