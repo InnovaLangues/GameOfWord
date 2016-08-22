@@ -1,5 +1,6 @@
 <?php
 //A class to handle the main rules
+//TODO would it be a better choice to use the class directly rather than creating instances ?
 class GameHandler{
 	const LVL_EASY = 0;
 	const LVL_MEDIUM = 1;
@@ -12,12 +13,12 @@ class GameHandler{
 	//below hardest is USELESS, but it made me feel safer.
 	private static $FORBID_COUNT   = array(self::LVL_EASY => 1,
 														self::LVL_MEDIUM => 3,
-														self::LVL_HARD => 6,
-														self::LVL_HARDEST => 6);
+														self::LVL_HARD => 6/*,
+													self::LVL_HARDEST => 6*/);
 	private static $ORACLE_TIME    = array(self::LVL_EASY => 90,
 														self::LVL_MEDIUM => 60,
-														self::LVL_HARD => 30,
-														self::LVL_HARDEST => 30);
+														self::LVL_HARD => 30/*,
+													self::LVL_HARDEST => 30*/);
 	private static $AUGUR_MIN_TIME = array(self::LVL_EASY => 40,
 														self::LVL_MEDIUM => 20,
 														self::LVL_HARD => 0,
@@ -32,8 +33,8 @@ class GameHandler{
 														self::LVL_HARDEST => 8);
 	private static $STAKES = array(self::LVL_EASY => 10,
 											 self::LVL_MEDIUM => 20,
-											 self::LVL_HARD => 30,
-											 self::LVL_HARDEST => 30);
+											 self::LVL_HARD => 30/*,
+										 self::LVL_HARDEST => 30*/);
 	const DRUID_VERIF = 25;
 	const DRUID_CREATE_CARD = 40;
 	//utilities
@@ -150,6 +151,43 @@ class GameHandler{
 			$res = -$res;
 		}
 		return round($res);
+	}
+
+//quick and dirty rules consistance
+	public function forbid_count_to_string($lang){
+		return self::const_table_to_string($lang, self::$FORBID_COUNT);
+	}
+
+	public function oracle_time_to_string($lang){
+		return self::const_table_to_string($lang, self::$ORACLE_TIME);
+	}
+
+	public function stakes_to_string($lang){
+		return self::const_table_to_string($lang, self::$STAKES);
+	}
+
+	private function const_table_to_string($lang, $static_array){
+		$res="";
+		if($lang == "en"){
+			$or = "or";
+		}
+		else if($lang == "fr"){
+			$or = "ou";
+		}
+		else{
+			throw new Exception("$lang is not handled by const_table");
+		}
+		foreach($static_array as $key => $value){
+			if($res!=""){
+				$res.=", ";
+			}
+			$res.=$value;
+		}
+		$pos = strrpos ($res, ",");
+		if($pos !== false){
+			$res = substr_replace($res, " ".$or, $pos, 1);
+		}
+		return $res;
 	}
 }
 
