@@ -1,13 +1,15 @@
 <?php
 class EmptyScoreLine{
 	protected $highlight;
+	protected $is_global_score;
 	protected $view = './views/empty_score_line.table.display.php';
 
-	public function  __construct($highlight=false, $view=false){
+	public function  __construct($highlight=false, $view=false, $is_global=false){
 		if($view !== false){
 			$this->view = $view;
 		}
 		$this->highlight = $highlight;
+		$this->is_global_score = $is_global;
 	}
 
 	public function __toString(){
@@ -18,6 +20,10 @@ class EmptyScoreLine{
 
 	public function isEmpty(){
 		return true;
+	}
+
+	public function isGlobal(){
+		return $this->is_global_score;
 	}
 }
 
@@ -30,8 +36,8 @@ class ScoreLine extends EmptyScoreLine {
 	protected $position;
 	protected $view = './views/score_line.table.display.php';
 
-	public function __construct($un, $o, $d, $a, $g, $p, $h=false, $v=false){
-		parent::__construct($h, $v);
+	public function __construct($un, $o, $d, $a, $g, $p, $h=false, $v=false, $is_global = false){
+		parent::__construct($h, $v, $is_global);
 		$this->user_name = $un;
 		$this->oracle = $o;
 		$this->druid = $d;
@@ -75,7 +81,7 @@ class GlobalScoreLine extends ScoreLine{
 	protected $view = "./views/global_score_line.table.display.php";
 	//string containing the list of languages used…
 	public function __construct($un, $o, $d, $a, $g, $p, $ll, $h=false, $v=false){
-		parent::__construct($un, $o, $d, $a, $g, $p, $h, $v);
+		parent::__construct($un, $o, $d, $a, $g, $p, $h, $v, true);
 		$this->language_list = $ll;
 	}
 
@@ -207,7 +213,7 @@ class ScoreTable{
 				);
 			}
 			if(count($this->scores) != count($this->incomplete_scores)){
-				array_push($this->incomplete_scores, new EmptyScoreLine());
+				array_push($this->incomplete_scores, new EmptyScoreLine(false,false,$this->is_global()));
 			}
 			//remove scores between nb_incompleteth and too far before the user
 			if($this->nb_incomplete+1 <
@@ -215,7 +221,7 @@ class ScoreTable{
 					array_splice($this->incomplete_scores,
 						$this->nb_incomplete,
 						($this->usr_pos - floor($this->nb_incomplete/2))-$this->nb_incomplete,
-						array(new EmptyScoreLine())
+						array(new EmptyScoreLine(false,false,$this->is_global()))
 					);
 			}
 		}

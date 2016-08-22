@@ -5,5 +5,11 @@ if($scoreLine->highlight){
 else{
 	$class = "";
 }
-$res = "<tr$class><td colspan='6'>…</td></tr>";
+if($scoreLine->isGlobal()){
+	$width = 7;
+}
+else{
+	$width = 6;
+}
+$res = "<tr$class><td colspan='$width'>…</td></tr>";
 ?>
