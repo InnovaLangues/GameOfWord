@@ -73,7 +73,7 @@ class ScoreHandler{
 				$role = "scoreDevin";
 				break;
 		}
-		$sql = "UPDATE `GoW`.`score` SET `$role` = `$role` + ($diff), `scoreGlobal`=`scoreGlobal`+ ($diff) WHERE `score`.`userid` = '$user_id' AND `langue`='".$this->lang_iso->french_for($lang_code)."'";
+		$sql = "UPDATE `score` SET `$role` = `$role` + ($diff), `scoreGlobal`=`scoreGlobal`+ ($diff) WHERE `score`.`userid` = '$user_id' AND `langue`='".$this->lang_iso->french_for($lang_code)."'";
 		$this->db->query($sql);
 		if($this->db->affected_rows() != 1){
 			throw new Exception("store score in db : mais que se passe-t-il ? ($sql)");
