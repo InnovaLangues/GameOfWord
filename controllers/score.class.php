@@ -19,9 +19,12 @@ class Score{
 		$this->db->query($sql);
 		if($this->db->has_result()){
 			while($tempObj = $this->db->fetch_object()){
-				$this->languages[$tempObj->langue] =
-					new ScoreTable($this->user, $tempObj->langue);
-				$this->languages[$tempObj->langue]->get_score_table(false);
+				$this->languages[$tempObj->langue] = $tempObj->langue;
+				//new ScoreTable creates ather database queries, so we separate both processes
+			}
+			foreach($this->languages as $lang){
+				$this->languages[$lang] = new ScoreTable($this->user, $lang);
+				$this->languages[$lang]->get_score_table(false);
 			}
 			$this->languages[GlobalScoreTable::ALL_LANG] =
 				new GlobalScoreTable($this->user);
