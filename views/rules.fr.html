@@ -1,6 +1,6 @@
 <?php include_once("./models/userlvl.class.php"); ?>
 	<h2 class="text-center">Salutations grand sage, et bienvenue dans Game of Words!</h2>
-	<h3 class="text-center">Il est temps de montrer tes talents!</h3>
+	<h4 class="text-center">Il est temps de montrer tes talents!</h4>
 	<p class="text-justify">Game of Words propose un avatar asynchrone et en ligne de jeu de devinettes, réutilisant des mécaniques du jeu de Taboo créé en 1990 par Brian Hersch et Bernard Bougrèle et édité par la société Hasbro. Le but du jeu est de faire deviner des mots aux autres joueurs dans un temps limité. Attention, sur chaque carte mot sont inscrits des mots interdits (les mots de la même famille que le mot à deviner le sont également).</p>
 
 <h4 class="text-center">Un exemple de carte mot :  </h4>
@@ -12,43 +12,43 @@
 <p class="text-center">Ligne </p>
 <p class="text-center">Numéro </p>
 <p class="text-center">Sonner </p>
-<p class="text-justify"><strong>Game of Word te propose 3 rôles</strong>: l’<strong>Oracle</strong> (le «&nbsp;descripteur<&nbsp;») le <strong>Devin</strong> (le «&nbsp;devineur&nbsp;») et le <strong>Druide</strong> («&nbsp;l'arbitre&nbsp;») correspondant chacun à une intervention de joueur du jeu originel. </p>
-	<h3><a>Oracle</a></h3>
-	<h3>Sois un Oracle et énonce les prophéties!</h3>
-	<h4>Si tu choisis d'être un Oracle, trois choix s'offrent à toi:</h4>
+<p class="text-justify"><strong>Game of Word te propose 3 rôles</strong>: l’<strong>Oracle</strong> (le «&nbsp;descripteur&nbsp;») le <strong>Devin</strong> (le «&nbsp;devineur&nbsp;») et le <strong>Druide</strong> («&nbsp;l'arbitre&nbsp;») correspondant chacun à une intervention de joueur du jeu originel. </p>
+	<h2>Oracle</h2>
+	<h4>Sois un Oracle et énonce les prophéties!</h4>
+	<p>Si tu choisis d'être un Oracle, trois choix s'offrent à toi:</p>
 
-	<h3><strong>Description d'une carte au hasard</strong></h3>
+	<h3>Description d'une carte au hasard</h3>
 	<h4>Lis les signes dans le ciel, et prêche la bonne nouvelle!</h4>
 	<p class="text-justify">Une carte comme celle citée précédemment t'apparaîtra. Attention, tu ne peux pas jouer une carte que tu as créée comme druide. Vérifie que ton micro fonctionne, suis les instructions et c'est parti !</p>
 	<p class="text-justify">Tu auras un maximum de  <?php $gh = new GameHandler();echo $gh->oracle_time_to_string("fr") ;?> secondes (selon le niveau de jeu choisi) pour faire deviner ton mot sans utiliser les mots interdits (<?php $gh = new GameHandler();echo $gh->forbid_count_to_string("fr") ;?> selon la difficulté), le mot à deviner ou les mots de la même famille que ces deux derniers. Garde en tête que ta description sera soumise à validation donc il est inutile de tricher! (Sauf si tu veux perdre des points ;) ).</p>
 	<p class="text-justify">Si tu veux réinitialiser ton enregistrement (mais pas le chronomètre) tu peux appuyer sur <img src="style/default.css/imgs/restart.png"/></p>
 	<p class="text-justify">Tu recevras des points si ton enregistrement est validé par le Druide, tu recevras des points, dans le cas contraire, tu en perdras. Si le Devin ne trouve pas le mot décrit, tu perdras des points, mais tu en gagneras s'il interprète correctement ta prophétie.</p>
 
-	<h3><strong>Description d'une carte particulière</strong></h3>
+	<h3>Description d'une carte particulière</h3>
 	<h4>Un Druide t'a donné une carte à suivre... Décris-la!</h4>
 
-	<h3><strong>Création d'une carte</strong></h3>
+	<h3>Création d'une carte</h3>
 	<h4>C'est bien beau de lire les signes dans le ciel, mais s'ils ne disent pas ce dont j'ai envie?</h4>
 	<p class="text-justify"><strong>Ne marche qu'en français</strong>. Génère donc ta propre carte! Clique sur le bouton "carte aléatoire (création)" pour générer automatiquement une carte au hasard. Si cette carte ne te convient pas, tu peux cliquer sur "aléatoire" pour relancer la génération. Tu as 20 secondes pour te décider, estimer le niveau de difficulté de ta carte et cliquer sur "valider" pour jouer ta carte.</p>
 
 
-	<h3><a>Druide</a></h3>
-	<h3><strong>Arbitrage</strong></h3>
+	<h2>Druide</h2>
+	<h3>Arbitrage</h3>
 	<h4>Fais régner l'ordre grâce à tes pouvoirs druidiques!</h4>
-	<p class="text-justify">Tu as droit de vie ou de mort sur les descriptions de l'Oracle! Tu es le censeur, le tout puisant, un mot tabou glissé dans une description? Hop! Tu invalides! Un mot de la même famille sournoisement chuchoté? Hérétique! Au bûcher! Le mot à trouver prononcé par erreur? Pas de pitié qui tienne! MOUAHAHA! Tu gagnes des points quel que soit ton choix, alors soit digne de la confiance qui es accordée aux gens de ton rang.</p>
+	<p class="text-justify">Tu as droit de vie ou de mort sur les descriptions de l'Oracle! Tu es le censeur, le tout-puissant, un mot tabou glissé dans une description? Hop! Tu invalides! Un mot de la même famille sournoisement chuchoté? Hérétique! Au bûcher! Le mot à trouver prononcé par erreur? Pas de pitié qui tienne! MOUAHAHA! Tu gagnes des points quel que soit ton choix, alors sois digne de la confiance qui est accordée aux gens de ton rang.</p>
 
-	<h3><strong>Création de carte</strong></h3>
+	<h3>Création de carte</h3>
 	<h4>Faire la pluie et le beau temps, c'est ton rayon!</h4>
 	<p class="text-justify">Ces stupides Oracles pensent pouvoir créer eux-mêmes des cartes? Tss! Tu peux faire bien mieux que cela! Clique sur "création d'une carte" pour créer une carte de toutes pièces. Rajoute autant de mots tabous que tu voudras ou supprimes-en, à ta guise! N'oublie pas d'estimer le niveau de difficulté de ta carte. Tu peux vider tous les champs en cliquant sur "réinitialiser". Clique sur "valider" lorsque tu as terminé et un aperçu de ta carte te sera affiché ainsi que l'identifiant de ta carte que tu pourras transmettre à tes amis en fanfaronnant. "ÇA, mesdames et messieurs, c'est une carte!"</p>
-	<p class="text-justify">Tu gagneras des points pour chaque carte que tu crées… En effet, n'oublie pas les pouvoir qui te sont conférés, tu peux créer des cartes dans n'importe qu'elle langue, augmentant ainsi les possibilités du jeu.</p>
+	<p class="text-justify">Tu gagneras des points pour chaque carte que tu crées… En effet, n'oublie pas les pouvoirs qui te sont conférés, tu peux créer des cartes dans n'importe qu'elle langue, augmentant ainsi les possibilités du jeu.</p>
 
 
 
-	<h3><strong>Devin</strong></h3>
+	<h2>Devin</h2>
 	<h4>L'Oracle t'a laissé des indices, sauras-tu les lire?</h4>
-	<p class="text-justify">Une partie choisie au hasard parmi celles où tu n'as été ni Druide, ni Devin t'apparaîtra. Vérifie ton casque ou tes enceintes et un compte à rebours se lance… Tu as alors un certain temps (selon le niveau de difficulté) pour entrer le mot à trouver dans le champs prévu à cet effet. Attention, aucune faute d'orthographe ne sera tolérée (même sur les accents)! Vous êtes des sages, que diable! Tu peux proposer autant de mots que tu veux pendant le temps imparti. Si tu trouves le mot, tu gagneras des points (et l'oracle aussi). Sinon, tu feras perdre lui feras perdre des points (et tu en perdras aussi). Quelle pression! Mais tu en es à la hauteur, crois en toi!</p>
+	<p class="text-justify">Une partie choisie au hasard parmi celles où tu n'as été ni Druide, ni Devin t'apparaîtra. Vérifie ton casque ou tes enceintes et un compte à rebours se lance… Tu as alors un certain temps (selon le niveau de difficulté) pour entrer le mot à trouver dans le champs prévu à cet effet. Attention, aucune faute d'orthographe ne sera tolérée (même sur les accents)! Vous êtes des sages, que diable! Tu peux proposer autant de mots que tu veux pendant le temps imparti. Si tu trouves le mot, tu gagneras des points (et l'oracle aussi). Sinon, tu lui en feras perdre (et tu en perdras aussi). Quelle pression! Mais tu es à la hauteur, crois en toi!</p>
 
-	<h3><strong>Score</strong></h3>
+	<h2>Score</h2>
 	<h4>Tu croitras selon des incantations complexes et alambiquées…</h4>
-	<p class="text-justify">Dans ce jeu, les score suivent une formule qui dépend de ton niveau de langue, de celui de la carte et de la difficulté que tu choisis. Tu choisiras une mise de base en termes de difficulté, qui sera assortie de certaines contraintes (plus ou moins de mots interdits, plus ou moins de temps) et d'une mise… Plus c'est difficile, plus vous pouvez gagner… mais plus vous pouvez perdre. De plus chaque carte se voit associer un niveau de difficulté. Si vous jouez une carte qui est dure pour toi, les risques sont faibles : tu gagneras plus si tu gagnes et tu perdras moins si tu perds. Avec des cartes plus facile, points faciles… mais attention, si tu perds malgré cela, tu perdras beaucoup.</p><br/>
+	<p class="text-justify">Dans ce jeu, les score suivent une formule qui dépend de ton niveau de langue, de celui de la carte et de la difficulté que tu choisis. Tu choisiras une mise de base en termes de difficulté, qui sera assortie de certaines contraintes (plus ou moins de mots interdits, plus ou moins de temps) et d'une mise… Plus c'est difficile, plus tu peux gagner… mais plus tu peux perdre. De plus chaque carte se voit associer un niveau de difficulté. Si vous jouez une carte qui est dure pour toi, les risques sont faibles : tu gagneras plus si tu gagnes et tu perdras moins si tu perds. Avec des cartes plus facile, points faciles… mais attention, si tu perds malgré cela, tu perdras beaucoup.</p><br/>
 	<img src="style/default.css/imgs/druidelogo.png" class="img-responsive" alt="Responsive image" align="center" />
