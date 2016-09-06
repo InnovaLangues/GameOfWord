@@ -80,6 +80,11 @@ $lang['word_direction'] = 'Niveau du CECR de ce mot (indépendamment des mots in
 $lang['level_easy'] = 'Facile';
 $lang['level_medium'] = 'Moyen';
 $lang['level_hard'] = 'Difficile';
+$lang['level_beg'] = "Débutant";
+$lang['level_int'] = "Intermédiaire";
+$lang['level_adv'] = "Avancé";
+$lang['level_nat'] = "Natif";
+
 $lang['validate'] = 'Valider';
 $lang['reset'] = 'Réinitialiser';
 $lang['random'] = 'Aléatoire';
