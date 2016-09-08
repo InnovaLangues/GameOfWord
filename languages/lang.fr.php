@@ -28,6 +28,7 @@ $lang['login'] = 'Connexion';
 $lang['logout'] = 'Déconnexion';
 $lang['langue_apprentissage'] = 'Indiquez la/les langue(s) que vous apprenez:';
 $lang['ajout_langue'] = 'ajouter une langue parlée';
+
 //Menu et boutons de formulaires
 $lang['cmd_submit'] = 'Valider';
 $lang['cmd_cancel'] = 'Annuler';
@@ -53,7 +54,7 @@ $lang['select_role'] = 'Selectionez un rôle';
 $lang['card_create'] = 'Création d\'une carte';
 $lang['card_description'] = 'Description d\'une carte';
 $lang['game_arbitrage'] = 'Arbitrage d\'une partie';
-$lang['card_lexinno']='Carte liée à votre lexique';
+$lang['card_lexinno'] = 'Carte liée à votre lexique';
 
 // Description d'une carte par un Oracle oracle.card.display.html
 $lang['warning'] = 'Attention, votre micro n\'a pas été activé.';
@@ -80,10 +81,10 @@ $lang['word_direction'] = 'Niveau du CECR de ce mot (indépendamment des mots in
 $lang['level_easy'] = 'Facile';
 $lang['level_medium'] = 'Moyen';
 $lang['level_hard'] = 'Difficile';
-$lang['level_beg'] = "Débutant";
-$lang['level_int'] = "Intermédiaire";
-$lang['level_adv'] = "Avancé";
-$lang['level_nat'] = "Natif";
+$lang['level_beg'] = 'Débutant';
+$lang['level_int'] = 'Intermédiaire';
+$lang['level_adv'] = 'Avancé';
+$lang['level_nat'] = 'Natif';
 
 $lang['validate'] = 'Valider';
 $lang['reset'] = 'Réinitialiser';
@@ -127,7 +128,7 @@ $lang['RecordCard'] = 'Si vous voulez proposer un enregistrement pour cette cart
 $lang['RecordArbitre'] = 'Si vous voulez arbitrer cet enregistrement cliquez ici : ';
 $lang['restart'] = 'Rejouer une partie ? ';
 $lang['start'] = 'Il est temps de jouer !';
-$lang['start_playback']="Commencer l'écoute";
+$lang['start_playback'] = "Commencer l'écoute";
 $lang['give_up'] = 'Abandonner';
 $lang['devin-nope'] = 'Pas ce mot…';
 $lang['game'] = 'Jouer';
@@ -149,7 +150,7 @@ $lang['score_diviner'] = 'Devin';
 $lang['score_global'] = 'Score global';
 $lang['userName'] = 'Joueur';
 $lang['global_score'] = 'Classement général';
-$lang['scores_by_language'] = "Scores par langue";
+$lang['scores_by_language'] = 'Scores par langue';
 
 // Timeout
 $lang['diviner_timeout'] = 'Tu n\'as pas fourni de réponse dans le temps imparti';
@@ -200,21 +201,20 @@ $lang['Oracle_medium'] = "Trois mots interdits et 1′ d'enregistrement (mise&nb
 $lang['Oracle_hard'] = "Six mots interdits et 30″ d'enregistrement (mise&nbsp;: 30 points).";
 $lang['Devin_easy'] = "2 fois la durée de l'enregistrement pour une mise de 10 points.";
 $lang['Devin_medium'] = "1,5 fois la durée de l'enregistrement pour une mise de 20 points.";
-$lang['Devin_hard'] = "Enregistrement + 8″ pour une mise de 30 points.";
+$lang['Devin_hard'] = 'Enregistrement + 8″ pour une mise de 30 points.';
 $lang['Card_created'] = "Merci d'avoir créé une carte&nbsp;: ";
 $lang['Rec_verified'] = "Merci d'avoir vérifié l'enregistrement de ";
 $lang['Oracle_verif'][true] = " a vérifié votre enregistrement et pense que vous n'avez pas utilisé de mot interdit";
 $lang['Oracle_verif'][false] = " a vérifié votre enregistrement et pense que vous n'avez pas utilisé de mot interdit";
 $lang['Oracle_devin'][false] = " a écouté votre enregistrement et n'a pas trouvé le mot…";
-$lang['Oracle_devin'][true] = " a écouté votre enregistrement et a trouvé&nbsp;!";
-$lang['Devin_played'] = "Vous avez écouté un enregistrement de ";
-$lang['Devin_oracle'][true] = "Et vous avez trouvé&nbsp;!";
+$lang['Oracle_devin'][true] = ' a écouté votre enregistrement et a trouvé&nbsp;!';
+$lang['Devin_played'] = 'Vous avez écouté un enregistrement de ';
+$lang['Devin_oracle'][true] = 'Et vous avez trouvé&nbsp;!';
 $lang['Devin_oracle'][false] = "Mais vous n'avez pas trouvé…";
 
-
-$lang['img_augur']  = "./profil/diviner.jpg";
-$lang['img_druid']  = "./profil/druide.jpg";
-$lang['img_oracle'] = "./profil/oracle.jpg";
+$lang['img_augur'] = './profil/diviner.jpg';
+$lang['img_druid'] = './profil/druide.jpg';
+$lang['img_oracle'] = './profil/oracle.jpg';
 
 //Erreur upload
 $lang['file_unupload'] = 'Attention le fichier a mal été uploadé.';
@@ -225,4 +225,4 @@ $lang['uploadProb'] = 'Le fichier n\'a pas été uploadé...';
 //
 $lang['same_lang'] = 'Vous avez choisi deux fois la même langue  dans langues parlées ';
 //Administration cartes
-$lang['admin'] = "Administration&nbsp;: Cliquer sur la croix pour supprimer la carte";
+$lang['admin'] = 'Administration&nbsp;: Cliquer sur la croix pour supprimer la carte';

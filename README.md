@@ -41,6 +41,8 @@ Contributors
   * Arnaud Bey
   * Benjamin Abrial
   * Mathieu Loiseau
+ * Typos
+  * Yoann Goudin
 
 Credits
 --------

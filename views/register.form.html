@@ -1,11 +1,12 @@
 <?php
-$title = 'S\'enregister';
+$title = 'S\'enregistrer ';
 include('./views/page.header.html');
 require_once('./sys/load_iso.php');
 $lang_iso = new IsoLang();
 include('./controllersJS/display_lang.js');
 
 ?>
+
 <div id="main-container">
 	<div id="jrForm">
 		<form class="form-jr" role="form" id="register" method="post" action="./" enctype="multipart/form-data">
@@ -48,20 +49,6 @@ include('./controllersJS/display_lang.js');
 				<dl>
 					<dt><label for="userlang_spoken" >Choisissez les langues que vous parlez</label></dt>
 					<dd>
-						<datalist id="lang_level">
-							<option value="Débutant">
-							<option value="Intermédiaire">
-							<option value="Avancé">
-							<option value="Natif">
-						</datalist>
-						<datalist id="iso">
-							<?php
-								$tableLang=$lang_iso->get_all_codes();
-								foreach($tableLang as $value){
-									echo "<option value='".$value."'>";
-								}
-							?>
-						</datalist>
 						<table id="userlang_spoken">
 							<tr>
 								<td width="25%" align="center">Langue</td>
@@ -69,21 +56,51 @@ include('./controllersJS/display_lang.js');
 								<td width="50%" align="center">Langue de jeu</td>
 							</tr>
 							<tr>
-								<td align="center"><input list="iso" type="text" name="choix_langs_1" required="required" size="10"  onchange="updateRadio(this);"/></td>
-								<td align="center"><input list="lang_level" name="choix_niveau_1" required="required" size="10"/></td>
+								<td>
+									<select id="languages" name="choix_langs_1" required="required" onchange="updateRadio(this);">
+										<option value="">--</option>
+										<?php
+										$languages = $lang_iso->get_all_codes();
+										$commonlyUsed = $lang_iso->commonlyUsed;
+										?>
+										<optgroup label="Commonly used">
+										<?php
+										foreach($commonlyUsed as $language){
+											echo "<option value='".$language."'>".$language."</option>";
+										}
+										?>
+										</optgroup>
+										<optgroup label="All">
+										<?php
+										foreach($languages as $language){
+											echo "<option value='".$language."'>".$language."</option>";
+										}
+										?>
+										</optgroup>
+									</select>
+								</td>
+								<td align="center">
+									<select id="levels" name="choix_niveau_1" required="required">
+										<option value="">--</option>
+										<?php
+										$levels = ["Débutant", "Intermédiaire", "Avancé", "Natif"];
+										foreach($levels as $level){
+											echo "<option value='".$level."'>".$level."</option>";
+										}
+										?>
+									</select>
+								</td>
 								<td align="center"><input type="radio" name="lang_game" required="required" /></td>
 							</tr>
-
 						</table>
 						<table>
 							<tr>
-								<td><button type="button" id="langueAppriseBtn" onClick="dispalyMoreLanguages();" align="center">Ajouter une langue </button></td>
+								<td><button type="button" id="langueAppriseBtn" onClick="addLanguage();" align="center">Ajouter une langue </button></td>
 							</tr>
 							<tr>
-								<td><button type="button" id="langueAppriseCancel" onClick="dispalyLessLanguages();" align="center">Retirer une langue</button></td>
+								<td><button type="button" id="langueAppriseCancel" onClick="removeLastLanguage();" align="center">Retirer une langue</button></td>
 							</tr>
 						</table>
-
 
 					</dd>
 				</dl>
@@ -102,7 +119,7 @@ include('./controllersJS/display_lang.js');
 				<dl>
 					<dt><label for="userlang">Choisissez une langue d'interface</label></dt><!-- userlang= langue d'interface -->
 					<dd>
-						<select id="userlang" name="userlang" >
+						<select required id="userlang" name="userlang" >
 							<option value =""></option>
 							<option value ="fr">Français</option>
 							<option value ="en">Anglais</option>
