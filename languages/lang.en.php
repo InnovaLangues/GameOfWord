@@ -28,7 +28,10 @@ $lang['login'] = 'Log in';
 $lang['logout'] = 'Log out';
 $lang['user_userlang_maternelle']='native language';
 $lang['langue_apprentissage']='Choose a/the languages that you are studying:';
-$lang['ajout_langue']='Add a language that you are studying';
+$lang['ajout_langue']='Add a studied language';
+$lang['retirer_langue'] = "Delete the last language in the list";
+$lang['choose_lvl'] = "Choose default game level";
+
 
 //Menu et boutons de formulaires
 $lang['cmd_submit'] = 'Submit';
@@ -229,6 +232,11 @@ $lang['uploadProb'] = 'The file has not been uploaded yet...';
 
 //
 $lang['same_lang'] = ' You have chosen twice the same language in langues parlées';
+$lang['spok_lang'] = 'Spoken languages';
+
+$lang['language']="Language";
+$lang['proficiency'] = "Proficiency";
+$lang['game_lang'] = "Game language";
 
 //Administration cartes
 $lang['admin'] = "Administration: Press cross to delete card";

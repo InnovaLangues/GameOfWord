@@ -27,7 +27,9 @@ $lang['user_userlang_interface'] = 'Langue de l\'interface';
 $lang['login'] = 'Connexion';
 $lang['logout'] = 'Déconnexion';
 $lang['langue_apprentissage'] = 'Indiquez la/les langue(s) que vous apprenez:';
-$lang['ajout_langue'] = 'ajouter une langue parlée';
+$lang['ajout_langue'] = 'Ajouter une langue parlée';
+$lang['retirer_langue'] = "Retirer la dernière langue";
+$lang['choose_lvl'] = "Choisissez un niveau de jeu";
 
 //Menu et boutons de formulaires
 $lang['cmd_submit'] = 'Valider';
@@ -224,5 +226,11 @@ $lang['uploadProb'] = 'Le fichier n\'a pas été uploadé...';
 
 //
 $lang['same_lang'] = 'Vous avez choisi deux fois la même langue  dans langues parlées ';
+$lang['spok_lang'] = 'Langues parlées';
+
+$lang['language']="Langue";
+$lang['proficiency'] = "Niveau";
+$lang['game_lang'] = "Langue de jeu";
+
 //Administration cartes
 $lang['admin'] = 'Administration&nbsp;: Cliquer sur la croix pour supprimer la carte';

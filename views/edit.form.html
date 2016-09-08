@@ -48,19 +48,19 @@ include('./controllersJS/display_lang.js');
 					<dd><input type="password" id="password_confirm" name="password_confirm" value="<?php echo $lang['password_confirm'];?>" /></dd>
 				</dl>
 				<dl>
-					<dt><label for="userlang_spoken" ><?php echo "Langues parlées";?></label></dt>
+					<dt><label for="userlang_spoken" ><?php echo $lang['spok_lang'] ;?></label></dt>
 					<dd>
 						<table id="userlang_spoken">
 							<tr>
-								<td width="25%" align="center">Langue</td>
-								<td width="25%" align="center">Niveau</td>
-								<td width="50%" align="center">Langue de jeu</td>
+								<td width="25%" align="center"><?php echo $lang['language']; ?></td>
+								<td width="25%" align="center"><?php echo $lang['proficiency']; ?></td>
+								<td width="50%" align="center"><?php echo $lang['game_lang']; ?></td>
 							</tr>
 							<?php
 								$i=1;
 								$languages = $lang_iso->get_all_codes();
 								$commonlyUsed = $lang_iso->commonlyUsed;
-								$levels = ["Débutant", "Intermédiaire", "Avancé", "Natif"];
+								$levels = ["Débutant" => $lang['level_beg'], "Intermédiaire" => $lang['level_int'], "Avancé" => $lang['level_adv'], "Natif" => $lang['level_nat']];
 
 								$spoken_lang = explode(';',$this->spoken_lang);
 								$niveaux = explode(';',$this->niveau);
@@ -99,9 +99,9 @@ include('./controllersJS/display_lang.js');
 												<select <?php echo $levelid;?> name='choix_niveau_<?php echo $i; ?>' required='required'>
 													<option value=''>--</option>
 													<?php
-													foreach($levels as $level){
+													foreach($levels as $level => $level_display){
 														$selected = ($n === $level) ? "selected" : "";
-														echo "<option value='".$level."' ".$selected.">".$level."</option>";
+														echo "<option value='".$level."' ".$selected.">".$level_display."</option>";
 													}
 													?>
 
@@ -132,7 +132,7 @@ include('./controllersJS/display_lang.js');
 								<td><button type="button" id="langueAppriseBtn" onClick="addLanguage();" align="center"><?php echo $lang['ajout_langue'];?></button></td>
 							</tr>
 							<tr>
-								<td><button type="button" id="langueAppriseCancel" onClick="removeLastLanguage();" align="center"><?php echo "Retirer langue";?></button></td>
+								<td><button type="button" id="langueAppriseCancel" onClick="removeLastLanguage();" align="center"><?php echo $lang['retirer_langue'];?></button></td>
 							</tr>
 						</table>
 
@@ -140,17 +140,17 @@ include('./controllersJS/display_lang.js');
 					</dd>
 				</dl>
 				<dl>
-					<dt><label for="userlvl">Choisissez un niveau de jeu</label></dt>
+					<dt><label for="userlvl"><?php echo $lang['choose_lvl'];?></label></dt>
 					<dd>
 						<select id="userlvl" name="userlvl" required='required'>
 							<option value ="easy" <?php if($this->userlvl == "easy") {
-							 echo "selected='selected'";  } ?> >Facile</option>
+							 echo "selected='selected'";  } ?> ><?php echo $lang['level_easy'];?></option>
 
 							<option value ="medium" <?php if($this->userlvl == "medium") {
-							 echo "selected='selected'";  } ?> >Moyen</option>
+							 echo "selected='selected'";  } ?> ><?php echo $lang['level_medium'];?></option>
 
 							<option value ="hard" <?php if($this->userlvl == "hard") {
-							 echo "selected='selected'";  } ?> >Difficile</option>
+							 echo "selected='selected'";  } ?> ><?php echo $lang['level_hard'];?></option>
 						</select>
 					</dd>
 				</dl>
