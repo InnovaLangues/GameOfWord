@@ -4,7 +4,6 @@ include('./views/page.header.html');
 require_once('./sys/load_iso.php');
 $lang_iso = new IsoLang();
 include('./controllersJS/display_lang.js');
-
 ?>
 <div id="main-container">
 	<div id="jrForm">
@@ -60,6 +59,7 @@ include('./controllersJS/display_lang.js');
 							<?php
 								$i=1;
 								$languages = $lang_iso->get_all_codes();
+								$commonlyUsed = $lang_iso->commonlyUsed;
 								$levels = ["Débutant", "Intermédiaire", "Avancé", "Natif"];
 
 								$spoken_lang = explode(';',$this->spoken_lang);
@@ -73,23 +73,41 @@ include('./controllersJS/display_lang.js');
 										$n = $niveaux[$i];
 										$i++;
 										if (strlen($l) > 0) {
-											echo "<tr><td align='center'>" .
-											"<select ".$languageid ." name='choix_langs_" . $i . "' required='required' onchange=\"updateRadio(this);\">";
-											foreach($languages as $language){
-												$selected = ($l === $language) ? "selected" : "";
-												echo "<option value='".$language."' ".$selected.">".$language."</option>";
-											}
+							?>
+										<tr>
+											<td align='center'>
+												<select <?php echo $languageid;?> name='choix_langs_<?php echo $i; ?>' required='required' onchange='updateRadio(this);'>
+													<option value=''>--</option>
+													<optgroup label='Commonly Used'>
+														<?php
+														foreach($commonlyUsed as $language){
+															echo "<option value='".$language."'>".$language."</option>";
+														}
+														?>
+													</optgroup>
+													<optgroup label='All'>
+														<?php
+														foreach($languages as $language){
+															$selected = ($l === $language) ? "selected" : "";
+															echo "<option value='".$language."' ".$selected.">".$language."</option>";
+														}
+														?>
+													</optgroup>
+												</select>
+											</td>
+											<td align='center'>
+												<select <?php echo $levelid;?> name='choix_niveau_<?php echo $i; ?>' required='required'>
+													<option value=''>--</option>
+													<?php
+													foreach($levels as $level){
+														$selected = ($n === $level) ? "selected" : "";
+														echo "<option value='".$level."' ".$selected.">".$level."</option>";
+													}
+													?>
 
-											echo "</select>" .
-											"</td>" .
-											"<td align='center'>".
-											"<select ".$levelid." name='choix_niveau_" . $i . "' required='required'>";
-											foreach($levels as $level){
-												$selected = ($n === $level) ? "selected" : "";
-												echo "<option value='".$level."' ".$selected.">".$level."</option>";
-											}
-
-											echo "</select></td>";
+												</select>
+											</td>
+											<?php
 											if (strcmp($l,$userlang_game) == 0) {
 												echo "<td align='center'><input type='radio' name='lang_game'  required='required' checked value='" . $l . "'/></td></tr>";
 											} else {
