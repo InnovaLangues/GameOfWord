@@ -179,10 +179,14 @@ class ScoreHandler{
 /**/$tmpString = $success ? "Gagné ":"Perdu ";
 /**/logScores(user::getInstance(), $this->lang, $tmpString.$this);
 	}
+
 	public function __toString(){
 		//for debugging purposes
-		$res = "Langue: $this->lang (".
+		$res = "";
+		if(isset($this->recording)){
+			$res .= "Langue: $this->lang (".
 				$this->recording->get_card_level().")\n";
+		}
 		if($this->oracle!==false){
 			$res .= "Oracle: ".$this->oracle->username." (".
 				$this->oracle->get_lang_lvl($this->lang)." / ".$this->recording->get_level().")\n";
