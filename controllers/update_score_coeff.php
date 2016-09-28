@@ -175,9 +175,10 @@ class ScoreHandler{
 		else{
 			throw new Exception("Ni devin, ni druide, c'est pas normal…");
 		}
-/**/require_once("debug.php");
-/**/$tmpString = $success ? "Gagné ":"Perdu ";
-/**/logScores(user::getInstance(), $this->lang, $tmpString.$this);
+/* //To debug scores:
+		require_once("debug.php");
+		$tmpString = $success ? "Gagné ":"Perdu ";
+		logScores(user::getInstance(), $this->lang, $tmpString.$this);*/
 	}
 
 	public function __toString(){
