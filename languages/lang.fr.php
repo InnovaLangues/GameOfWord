@@ -51,8 +51,8 @@ $lang['devin'] = 'Devin';
 $lang['learning'] = 'Vous jouez en ';
 
 //Sélection des modes de jeux
-$lang['select_mode'] = 'Selectionez un mode';
-$lang['select_role'] = 'Selectionez un rôle';
+$lang['select_mode'] = 'Sélectionnez un mode';
+$lang['select_role'] = 'Sélectionnez un rôle';
 $lang['card_create'] = 'Création d\'une carte';
 $lang['card_description'] = 'Description d\'une carte';
 $lang['game_arbitrage'] = 'Arbitrage d\'une partie';
