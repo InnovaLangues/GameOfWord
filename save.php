@@ -15,10 +15,6 @@ foreach(array('audio') as $type) {
 		}
 	}
 
-
-	//echo ($fileName);
-	$temps= date("d/m/Y H:i");
-
 	// récupère dans un tableau de hachage le nom du fichier sans l'extension, l'extension et le chemin
 	$file = pathinfo('./enregistrements/'.$fileName);
 
@@ -65,11 +61,10 @@ foreach(array('audio') as $type) {
 			$duration = $mp3_file->getDuration();
 		}
 		$sql = 'INSERT INTO enregistrement
-                (`cheminEnregistrement`,`idOracle`,`OracleLang`,`tpsEnregistrement`,`carteID`,`nivcarte`,`duration`,`nivpartie`)
+                (`cheminEnregistrement`,`idOracle`,`OracleLang`,`carteID`,`nivcarte`,`duration`,`nivpartie`)
 				 VALUES('.$db->escape($fileName).','.
 					$_GET["userid"]. ','.
 					$_GET["gamelang"]. ','.
-					$db->escape($temps).','.
 					$_GET["cardid"]. ','.
 					$_GET["levelcard"].','.
 					$duration.','.

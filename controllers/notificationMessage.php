@@ -12,8 +12,6 @@ class Notification
 		$this->user = user::getInstance();
 		//connexion à la BD
 		$this->db = db::getInstance();
-
-		$this->time = date('Y-m-d H:i:s');
 	}
 
 	function readNotif()
@@ -44,13 +42,13 @@ class Notification
 	}
 
 	function addNotif($userid,$notification,$emetteur){
-		$sql = "INSERT INTO `notif`(`userid`, `message`, `emetteur` , `time`) VALUES ($userid,".$this->db->escape($notification).",$emetteur,'".$this->time."')";
+		$sql = "INSERT INTO `notif`(`userid`, `message`, `emetteur`) VALUES ($userid,".$this->db->escape($notification).",'$emetteur')";
 		$result=$this->db->query($sql);
 	}
 
 	function addNotifGAME($userid,$notification,$role){
 		//add an image to your notification…
-		$sql = "INSERT INTO `notif` (`userid`, `message`, `emetteur` ,`game` , `time`) VALUES ($userid,".$this->db->escape($notification).",0,'".$role."','".$this->time."')";
+		$sql = "INSERT INTO `notif` (`userid`, `message`, `emetteur` ,`game`) VALUES ($userid,".$this->db->escape($notification).",0,'".$role."')";
 		$result=$this->db->query($sql);
 	}
 

@@ -48,7 +48,7 @@ class diviner_result
 			$lang_iso = new IsoLang();
 			//Récupération des infos nécessaires
 			$db = db::getInstance();
-			$query = "SET @id_enr := null;
+			$query = "SET @id_enr = NULL;
 				UPDATE `parties` SET  `reussie`=".$db->escape((string) $this->reussie).", `enregistrementID` = (SELECT @id_enr := `enregistrementID`) WHERE idDevin='".$this->devin."' ORDER BY tpsDevin DESC LIMIT 1;
 				SELECT @id_enr;";
 			$db->multi_query_last_result($query);

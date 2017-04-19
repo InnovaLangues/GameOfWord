@@ -15,7 +15,6 @@ class druid_card
 	private $userlang = '';
 	private $user= '';
 	private $createur= '';
-	private $et_c_est_le_temps_qui_court = '';
 	private $theme='';
 	private $theme_carte='';
 	private $errors = array();
@@ -49,11 +48,6 @@ class druid_card
 		$this->user = user::getInstance();
 		$this->userlang = $this->user->langGame;
 		$this->createur = $this->user->id;
-
-		//récupération de la date au format jour/mois/année/heure
-		$this->et_c_est_le_temps_qui_court = date("d/m/Y H:i");
-
-
 
 		// récupération du formulaire de création de carte
 		 $this->submit = isset($_POST['submit_form']);

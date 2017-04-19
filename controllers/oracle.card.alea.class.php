@@ -62,9 +62,6 @@ class oracle_card_alea
 		    $this->res['tabou3'] = isset($_POST['tabou3']) ? trim($_POST['tabou3']) : '';
 		    $this->res['tabou4'] = isset($_POST['tabou4']) ? trim($_POST['tabou4']) : '';
 		    $this->res['tabou5'] = isset($_POST['tabou5']) ? trim($_POST['tabou5']) : '';
-
-		    $this->et_c_est_le_temps_qui_court = date("d/m/Y H:i");
-
 		}
 
 		// initialisation du booléen de codiion finale d'acceptation de la génération

@@ -22,8 +22,6 @@ class druid_arbitrage
 	private $oracle = '';
 	private $enregistrement='';
 
-	private $et_c_est_le_temps_qui_court ='d/m/Y H:i';
-
 	private $valid = 'valid';
 	private $invalid = 'invalid';
 
@@ -48,9 +46,6 @@ class druid_arbitrage
 		$this->user = user::getInstance();
 		$this->druid = $this->user->id;
 		$this->userlang = $this->user->langGame;
-
-		//récupération des points en fonction du niveau de jeu
-		$this->et_c_est_le_temps_qui_court = date("d/m/Y H:i");
 
 		return true;
 	}
@@ -149,11 +144,10 @@ class druid_arbitrage
 		{
 			// Requête d'insertion des info dans la table 'arbitrage'
 			$sql = 'INSERT INTO arbitrage
-			(enregistrementID,idDruide,tpsArbitrage,validation)
+			(enregistrementID,idDruide,validation)
 				VALUES(' .
 					$db->escape((string) $this->enregistrement ) . ', ' .
 					$db->escape((string) $this->druid) . ', ' .
-					$db->escape((string) $this->et_c_est_le_temps_qui_court) . ', ' .
 					$db->escape((string) $this->invalid ) . ')' ;
 
 			$db->query($sql);
@@ -175,11 +169,10 @@ class druid_arbitrage
 		}elseif (isset($_POST['validate'])){
 			// insertion des informations dans la table arbitrage
 			$sql = 'INSERT INTO arbitrage
-			(enregistrementID,idDruide,tpsArbitrage,validation)
+			(enregistrementID,idDruide,validation)
 				VALUES(' .
 					$db->escape((string) $this->enregistrement ) . ', ' .
 					$db->escape((string) $this->druid) . ', ' .
-					$db->escape((string) $this->et_c_est_le_temps_qui_court) . ', ' .
 					$db->escape((string) $this->valid ) . ') ' ;
 				$db->query($sql);
 

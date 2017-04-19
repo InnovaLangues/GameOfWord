@@ -28,7 +28,7 @@ $userlogged = $user->logged_in();
 
 $modes = $mode ? explode('.', $mode) : array(); // condition  ? if  :else
 $modes = array_slice($modes, 0, 1);
-$wmode = implode('.', $modes); // deux premiers param�tres de $mode
+$wmode = implode('.', $modes); // deux premiers paramètres de $mode
 
 // Traitement des modes
 $html = false;
@@ -91,7 +91,7 @@ switch ( $wmode )
 
 	 default:
 		  $html = true;
-		  unset($_SESSION["CreateCard"]); //S�curit� pour �viter que l'utilisateur ne s'ajoute des points � l'infini lorsqu'il cr�� une carte (refresh)
+		  unset($_SESSION["CreateCard"]); //Sécurité pour éviter que l'utilisateur ne s'ajoute des points à l'infini lorsqu'il créé une carte (refresh)
 
 		  include('./views/page.home.html');
 		  $mode = '';

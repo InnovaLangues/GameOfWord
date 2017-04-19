@@ -8,8 +8,6 @@
 -- Version de PHP: 5.5.9-1ubuntu4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `arbitrage` (
   `arbitrageID` int(11) NOT NULL AUTO_INCREMENT,
   `enregistrementID` int(11) NOT NULL,
   `idDruide` int(11) NOT NULL,
-  `tpsArbitrage` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `tpsArbitrage` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `validation` enum('valid','invalid') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`arbitrageID`),
   KEY `validation` (`validation`),
@@ -117,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `enregistrement` (
   `idOracle` int(30) NOT NULL,
   `OracleLang` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `nivpartie` enum('easy','medium','hard') NOT NULL DEFAULT 'easy' COMMENT 'niveau de la partie oracle',
-  `tpsEnregistrement` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `tpsEnregistrement` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `carteID` int(11) NOT NULL,
   `nivcarte` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `validation` enum('valid','invalid','limbo') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'limbo',
@@ -178,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `notif` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` int(11) NOT NULL,
   `game` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `time` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `time`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -191,9 +189,9 @@ CREATE TABLE IF NOT EXISTS `notif` (
 CREATE TABLE IF NOT EXISTS `parties` (
   `partieID` int(11) NOT NULL AUTO_INCREMENT,
   `enregistrementID` int(11) NOT NULL,
-  `tpsDevin` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `tpsDevin` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idDevin` int(11) NOT NULL,
-  `tpsdejeu` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `tpsdejeu` datetime NULL DEFAULT NULL,
   `reussie` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`partieID`),
   KEY `enregistrementID` (`enregistrementID`),
@@ -226,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `score` (
   `scoreDruide` int(100) NOT NULL,
   `scoreDevin` int(100) NOT NULL,
   `langue` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `first_game_time` text NOT NULL,
+  `first_game_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`scoreID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -264,10 +262,10 @@ CREATE TABLE IF NOT EXISTS `themes_cartes` (
 CREATE TABLE IF NOT EXISTS `user` (
   `userid` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
-  `useremail` varchar(100) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
-  `userpass` varchar(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `useremail` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `userpass` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `userlang` varchar(32) NOT NULL,
-  `valkey` varchar(100) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `valkey` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `userlang_game` varchar(100) NOT NULL,
   `photo` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `userlvl` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -299,7 +297,7 @@ INSERT INTO `user` (`userid`, `username`, `useremail`, `userpass`, `userlang`, `
 INSERT INTO `user_niveau` (`id`, `userid`, `spoken_lang`, `niveau`) VALUES
 (1, 1, 'Français;', 'Natif;');
 INSERT INTO `score` (`scoreID`, `userid`, `scoreGlobal`, `scoreOracle`, `scoreDruide`, `scoreDevin`, `langue`, `first_game_time`) VALUES
-(1, 1, 0, 0, 0, 0, 'Français', '');
+(1, 1, 0, 0, 0, 0, 'Français', CURRENT_TIMESTAMP);
 
 -- --------------------------------------------------------
 

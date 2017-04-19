@@ -21,8 +21,6 @@
 
 	if (!$resultat->num_rows>0){
 		$score=0;
-		//$time = date('Y-m-d H:i:s');
-
 		$sql = "INSERT INTO `score`(`userid`, `scoreGlobal`, `scoreOracle`, `scoreDruide`, `scoreDevin`, `langue`) VALUES ($id,$score,$score,$score,$score,'".$lang_iso->french_for($_SESSION["langDevin"])."')";
 
 		$db->query($sql);

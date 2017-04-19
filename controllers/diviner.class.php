@@ -31,7 +31,6 @@ class diviner_game
 
 	private $adresse = '';
 	private $reussie = 'en cours';
-	private $temps='';
 	private $mess='';
 
 
@@ -70,7 +69,6 @@ class diviner_game
 		else{
 			$this->userlang = $this->user->langGame;
 		}
-		$this->temps = date("d/m/Y H:i:s");
 		unset($_SESSION["motDeviner"]); //permet de supprimer la sécurité qui empêche le joueur de s'ajouter des points à l'infini
 		unset($_SESSION["timeOutOracle"]); //permet de supprimer la sécurité qui empêche le joueur d'enlever des points à l'oracle à l'infini
 
@@ -143,9 +141,7 @@ class diviner_game
 				//On vérifie ici que l'enregistrement est bien sur le serveur
 				if (file_exists($this->adresse)){
 					//récupération du contenu de la carte
-					$carte = new Card($this->raisin->carteID);
-					$this->card = $carte;
-
+					$this->card = new Card($this->raisin->carteID);
 					//Gestion du temps
 					$gh = new GameHandler();
 					$this->time = $gh->get_augur_time($this->user->userlvl, $this->raisin->duration);
@@ -194,7 +190,7 @@ class diviner_game
 					VALUES(' .
 						$db->escape((string) $this->raisin->enregistrementID).','.
 						$db->escape((string) $this->diviner) . ','.
-						$db->escape((string) $this->temps) . ','.
+						'CURRENT_TIMESTAMP,'.
 						$db->escape((string) $this->reussie).')';
 				$db->query($sql);
 			return false;
