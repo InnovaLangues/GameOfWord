@@ -23,26 +23,28 @@ Requirements
 Contributors
 --------------
 * Design (in alphabetical order)
- * Pauline Ballot
- * Chloe Cimpello
- * Ada Gazidedja
- * Racha Hallal
- * Mathieu Loiseau
- * Justine Reverdy
- * Virginie Zampa
-* Code (in chronological order)
- * 1st iteration
+  * Pauline Ballot
   * Chloe Cimpello
-  * Justine Reverdy
- * 2nd iteration
-  * Maryam Nejat
-  * David Graceffa
- * patches
-  * Arnaud Bey
-  * Benjamin Abrial
+  * Ada Gazidedja
+  * Racha Hallal
   * Mathieu Loiseau
- * Typos
+  * Vanessa Piccoli
+  * Justine Reverdy
+  * Virginie Zampa
+* Code (in chronological order)
+  * 1st iteration
+    * Chloe Cimpello
+    * Justine Reverdy
+  * 2nd iteration
+    * Maryam Nejat
+    * David Graceffa
+  * Patches
+    * Arnaud Bey
+    * Benjamin Abrial
+    * Mathieu Loiseau
+* Typos
   * Yoann Goudin
+  * Haydée Silva
 
 Credits
 --------

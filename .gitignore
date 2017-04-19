@@ -48,7 +48,6 @@ enregistrements/*
 sys/db.config.php
 sys/config.php
 /add_cards.php
-/profil/*/*.jpg
-/profil/*/*.png
+/profil/*/*
 /debug.html
 /debug.txt
