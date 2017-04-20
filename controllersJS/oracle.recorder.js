@@ -1,4 +1,3 @@
-navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
 var fileName;
 
 function OracleRecorder(recordRTCOptions){
