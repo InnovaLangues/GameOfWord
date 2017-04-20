@@ -37,14 +37,14 @@ $lang['choose_lvl'] = "Choose default game level";
 $lang['cmd_submit'] = 'Submit';
 $lang['cmd_cancel'] = 'Cancel';
 $lang['register'] = 'Register';
-$lang['rules'] = 'Rules';
+$lang['rules'] = 'Rules and information';
 $lang['about'] = 'About';
+$lang['niouzes'] = 'News and disclaimer';
 
 //Page d'accueil: menu, home, page.header.html
 $lang['menu_profile'] = 'Profile';
 $lang['menu_logout'] = 'Logout';
 $lang['homepage'] = 'Home';
-$lang['rules'] = 'Rules';
 $lang['home_welcome'] = 'Welcome';
 
 $lang['oracle'] = 'Oracle';
@@ -63,7 +63,7 @@ $lang['game_arbitrage']='Referee a game';
 // Description d'une carte par un Oracle oracle.card.display.html
 $lang['warning'] = 'Warning';
 $lang['cut_sound'] = 'You have not authorised your microphone. Therefore you will return back to the principal menu of the game.';
-$lang['start_describe'] = 'Start your description :';
+$lang['start_describe'] = 'Start your description:';
 $lang['record'] = 'Play';
 $lang['send_description'] = 'Send your description !';
 $lang['erase'] = 'Erase and restart';
@@ -125,14 +125,14 @@ $lang['invalidate'] = 'Burn at the stake!';
 
 //Ecoute d'une description : Devin
 $lang['listen_diviner'] = 'Listen carefully to the Oracle description.';
-$lang['id_card'] = 'You are guessing the card :';
-$lang['card_creator'] = 'This card was created by :';
-$lang['card_oracle'] = 'You listen to the description of :';
-$lang['card_level'] = 'Level of the card : ';
+$lang['id_card'] = 'You are guessing the card:';
+$lang['card_creator'] = 'This card was created by:';
+$lang['card_oracle'] = 'You are listening to a description by';
+$lang['card_level'] = 'Level of the card: ';
 $lang['guess'] = 'Guess !';
 $lang['which_word'] = 'What is the word described ?';
-$lang["RecordCard"] ='If you want to record yourself click here : ';
-$lang["RecordArbitre"] ='If you want to judge this record click here : ';
+$lang["RecordCard"] ='If you want to record yourself click here: ';
+$lang["RecordArbitre"] ='If you want to judge this record click here: ';
 $lang["restart"] ='Play again ? ';
 $lang["start"] ='It\'s time to play the game !';
 $lang['start_playback']="Play recording";

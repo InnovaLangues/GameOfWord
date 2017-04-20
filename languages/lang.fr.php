@@ -35,14 +35,14 @@ $lang['choose_lvl'] = "Choisissez un niveau de jeu";
 $lang['cmd_submit'] = 'Valider';
 $lang['cmd_cancel'] = 'Annuler';
 $lang['register'] = 'Enregistrer';
-$lang['rules'] = 'Règles';
-$lang['about'] = 'A propos';
+$lang['rules'] = 'Règles et informations';
+$lang['about'] = 'À propos';
+$lang['niouzes'] = "Actualités et notices d'information";
 
 //Page d'accueil: menu, home, page.header.html
 $lang['menu_profile'] = 'Profil';
 $lang['menu_logout'] = 'Déconnexion';
 $lang['homepage'] = 'Accueil';
-$lang['rules'] = 'Règles du Jeu';
 $lang['home_welcome'] = 'Bienvenue';
 
 $lang['oracle'] = 'Oracle';

@@ -203,3 +203,13 @@ body{
 	background-color: black;
 	color:white;
 }
+.onglet_0{
+	cursor:pointer;
+}
+
+.onglet_1{
+	cursor:default;
+}
+#onglets{
+	margin-bottom:0.7em;
+}
