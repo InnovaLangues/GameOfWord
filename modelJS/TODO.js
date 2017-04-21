@@ -3,7 +3,7 @@
 function renders(minutes, seconds){
 	if(seconds == Math.floor(seconds)){
 		if (seconds < 10){
-			seconds = "0" + seconds;  
+			seconds = "0" + seconds;
 		}
 		$('#countdown').html(minutes + ":" + seconds);
 	}
@@ -21,21 +21,17 @@ function finChrono(){
 }
 
 
-
-
-
-//Bouton Rec qui clignote					   
-function FaireClignoterImage (){ 
+//Bouton Rec qui clignote
+function FaireClignoterImage (){
      $( "#rec1" ).fadeTo( "fast", 0, function() {
      	$( "#rec1" ).fadeTo( "fast" , 1, function() {
 	  	});
   	});
-} 
+}
 
 // au moment de l'appel à la méthode getUserMedia
 var recorder, recordVideo;
 var recButton;
-
 
 var record = document.getElementById('record'); //Bouton d'enregistrement
 var valid = document.getElementById('valid'); //Bouton pour valider
@@ -48,9 +44,7 @@ var container = document.getElementById('container');
 
 var recordIsOn;
 var audioStream;
-var fileName;	
-
-
+var fileName;
 
 $("#secondPage").hide();
 $("#thirdPage").hide();
@@ -64,7 +58,7 @@ var zeRecorder = new OracleRecorder() ;
 function mikeError(){
 	var redirect = "index.php";
 	popUp(redirect);
-	
+
 }
 
 
@@ -73,9 +67,9 @@ function startRecording(){
 	$("#secondPage").show("slow");
 	if(!monChrono.isRunning()){
 		monChrono.start();
-	}	
-	$(document).ready(function(){ 
-    setInterval('FaireClignoterImage()',800); 
+	}
+	$(document).ready(function(){
+    setInterval('FaireClignoterImage()',800);
 	});
 }
 
@@ -85,12 +79,9 @@ function stopRecording(url, bob){
 	$("#thirdPage").show("slow");
 	if(monChrono.isRunning()){
 		window.clearTimeout(monChrono.timer);
-
 	}
 	$("#form-cmd").hide("slow");
 }
-
-
 
 zeRecorder.onMikeError(mikeError);
 zeRecorder.onStart(startRecording);

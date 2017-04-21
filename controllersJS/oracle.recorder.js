@@ -2,7 +2,6 @@ var fileName;
 
 function OracleRecorder(recordRTCOptions){
 	//Constructor of a recorder that requires RecordRTC and recordRTCOptions which are mono 44,1kHz by default
-
 	if(typeof recordRTCOptions == "undefined"){
 		recordRTCOptions = {type: 'audio',
 							bufferSize: 16384,
@@ -11,9 +10,6 @@ function OracleRecorder(recordRTCOptions){
 							disableLogs: true};
 	}
 	this.recordRTCOptions = recordRTCOptions ;
-	this.startRecordingSuccess = function(){alert('zer');};
-	this.mikeError = function(){alert('zer');};
-	this.stopRecordingSuccess = function(audioURL, recBlob){alert('zer');};
 	this.recorder = false ;
 	this.stream = false ;
 
@@ -32,53 +28,56 @@ function OracleRecorder(recordRTCOptions){
 
 	this.onMikeError = function(callback){
 		//a fuction called, when the microphone is not shared
-		self.mikeError = function(){
+		self.mikeError = function(err){
+			console.error(err);
 			callback() ;
 			self.recorder = false;
 		}
 	};
 
 //actual processes
-	this.startRecording = function(){
-		if(self.recorder !== false){
-			//would have tested with self.stream,
-			//but the stream exists even if it is reset in mikeError
-			//there might be leftover streams in memory
-			self.startRecordingSuccess();
-			self.recorder.startRecording();
-		}
-		else{
-			self.stream = navigator.getUserMedia({video: false, audio: true},
-				function(stream){
-					if(window.isChrome){
-						stream = new window.MediaStream(stream.getAudioTracks());
-					}
-					if (stream.getAudioTracks().length === 0) {
-						console.log('you have no webcam nore mic available on your device');
-					}
-					else {
-						self.recorder = RecordRTC(stream, self.recordRTCOptions);
-						self.startRecordingSuccess();
-						self.recorder.startRecording();
-					}
-				},
-				self.mikeError);
-		}
-	};
-
 	this.stopRecording = function(){
 		self.recorder.stopRecording(function(audioURL){
-			self.stopRecordingSuccess(audioURL, self.recorder.getBlob());
+			self.stopRecordingSuccess(audioURL, self.recorder.blob);
 			previewRec(audioURL);
-			fileName = 'oracle' + Math.round(Math.random() * 999999) + 1;
+			fileName = 'oracle' + Math.round(Math.random() * 999999 + 1);
 			var fileReader = new FileReader();
 			fileReader.onload = function(event) {
 				var newBlob = new Blob([event.target.result], {type:"audio/ogg", endings:"native"});
 				//~ POST_using_XHR( newBlob );
 				PostBlob(newBlob, 'audio', fileName + ".ogg");
-		   };
-		   	fileReader.readAsArrayBuffer(self.recorder.blob);
+			};
+			fileReader.readAsArrayBuffer(self.recorder.blob);
 		});
+	};
+
+	this.startRecording = function(){
+		if(self.stream !== false){
+			//clearRecordedData, seems to lose the second parameter of getUserMedia
+			//so we start a brand new recorder with the same stream
+			self.recorder = RecordRTC(self.stream, self.recordRTCOptions);
+			self.recorder.startRecording();
+			self.startRecordingSuccess();
+		}
+		else{
+			navigator.getUserMedia(
+				{video: false, audio: true},
+				function(stream){
+					self.stream = stream;
+					if(window.isChrome){
+						self.stream = new window.MediaStream(stream.getAudioTracks());
+					}
+					if (stream.getAudioTracks().length === 0) {
+						console.log('you have no webcam nore mic available on your device');
+					}
+					else {
+						self.recorder = RecordRTC(self.stream, self.recordRTCOptions);
+						self.recorder.startRecording();
+						self.startRecordingSuccess();
+					}
+				},
+				self.mikeError);
+		}
 	};
 }
 
