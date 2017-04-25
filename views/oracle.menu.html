@@ -32,20 +32,21 @@ $lang_iso = new IsoLang();
 
 	<h2><?php echo $lang['select_mode']; ?></h2>
 		<ul id="modes" class="nav nav-tabs">
-<?php
+<!--?php Carte à la volée : expérimental
 	// Test de vérification de la langue de l'utilisateur. Si il n'apprend pas le français, il ne peux (pour l'instant) pas créer de carte aléatoire.
 	if ($user->langGame !== 'fr'  ) { ?>
 			<li type="button" class="btn btn-primary btn-lg btn-block" disabled="disabled">
 				<a href="?mode=oracle.card.alea" title="card_alea"><?php echo $lang['card_alea']; ?></a>
 			</li>
-<?php
+< ?php
 	} else {
-?>
+? >
 			<li type="button" class="btn btn-primary btn-lg btn-block">
 				<a href="?mode=oracle.card.alea" title="card_alea"><?php echo $lang['card_alea']; ?></a>
 			</li>
+< ?php
+	}-->
 <?php
-	}
 	if($this->lexicon->has_content()){
 		if(isset($_SESSION["idCard"])){
 			$disable="";
