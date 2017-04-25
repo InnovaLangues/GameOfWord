@@ -27,7 +27,7 @@
 	}
 
 
-	$mess = "Diviner : ".$lang["languePlay"].$lang_iso->french_for($_SESSION["langDevin"]);
+	$mess = "Augur : ".$lang["languePlay"].$lang_iso->french_for($_SESSION["langDevin"]);
 
 
 	$notif = new Notification();

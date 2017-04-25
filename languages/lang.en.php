@@ -49,7 +49,7 @@ $lang['home_welcome'] = 'Welcome';
 
 $lang['oracle'] = 'Oracle';
 $lang['druide'] = 'Druid';
-$lang['devin'] = 'Diviner';
+$lang['devin'] = 'Augur';
 $lang['learning'] = 'You\'re playing in ';
 $lang['userName'] = 'Player';
 
