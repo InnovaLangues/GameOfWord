@@ -107,7 +107,7 @@ class ScoreHandler{
 					$notif->addNotifGAME($this->druid->id, $lang['Card_created'].$score." pts",$lang['img_druid']);
 				}
 			}
-			else{//card verification
+			else{//recording verification
 				$score = $this->gh->get_druid_verification_score();
 				$this->store_in_db(
 					$this->druid->id,

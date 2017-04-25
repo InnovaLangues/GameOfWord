@@ -55,6 +55,7 @@ class diviner_result
 			$this->record_id = $db->fetch_assoc()["@id_enr"];
 			$tmpRecording  = new Recording($this->record_id);
 			$this->oracle  = $tmpRecording->get_oracle_id();
+			$this->rec_level = $tmpRecording->get_level();
 
 			//mise à jour des scores
 			require_once('./controllers/update_score_coeff.php');

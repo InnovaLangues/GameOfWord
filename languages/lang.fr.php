@@ -127,7 +127,7 @@ $lang['guess'] = 'Devine !';
 $lang['which_word'] = 'Quel est le mot décrit ?';
 $lang['NoGame'] = 'Il n\'y a plus de carte à jouer. Peut-être pourriez vous en ajouter quelques unes <a href=\'index.php?mode=druid.card\'>ici</a>…';
 $lang['RecordCard'] = 'Si vous voulez proposer un enregistrement pour cette carte cliquez ici&nbsp; ';
-$lang['RecordArbitre'] = 'Si vous voulez arbitrer cet enregistrement cliquez ici : ';
+$lang['RecordArbitre'] = 'Si vous pensez que cet enregistrement est invalide, vous pouvez prendre les choses en main&nbsp;:';
 $lang['restart'] = 'Rejouer une partie ? ';
 $lang['start'] = 'Il est temps de jouer !';
 $lang['start_playback'] = "Commencer l'écoute";
@@ -213,6 +213,9 @@ $lang['Oracle_devin'][true] = ' a écouté votre enregistrement et a trouvé&nbs
 $lang['Devin_played'] = 'Vous avez écouté un enregistrement de ';
 $lang['Devin_oracle'][true] = 'Et vous avez trouvé&nbsp;!';
 $lang['Devin_oracle'][false] = "Mais vous n'avez pas trouvé…";
+
+$lang['druidNotReady'] = "Tous les paramètres nécessaires à la gestion d'une décision n'ont pas été spécifiés…";
+$lang['page_errors'] = "Erreur durant le traitement de la requête";
 
 $lang['img_augur'] = './profil/diviner.jpg';
 $lang['img_druid'] = './profil/druide.jpg';

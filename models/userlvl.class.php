@@ -36,6 +36,7 @@ class GameHandler{
 											 self::LVL_HARD => 30/*,
 										 self::LVL_HARDEST => 30*/);
 	const DRUID_VERIF = 25;
+	const DRUID_VERIF_ERROR = 100;
 	const DRUID_CREATE_CARD = 40;
 	//utilities
 	//To unify the way levels are defined throughout the game
@@ -114,10 +115,12 @@ class GameHandler{
 	public function get_druid_verification_score(){
 		return self::DRUID_VERIF;
 	}
+	public function get_druid_verification_error_score(){
+		return self::DRUID_VERIF_ERROR;
+	}
 	public function get_druid_create_card_score(){
 		return self::DRUID_CREATE_CARD;
 	}
-
 	private function get_stake($game_lvl, $card_lvl, $user_lvl, $won=true){
 		if(!is_int($game_lvl)){
 			$game_lvl = $this->unify_Lvl($game_lvl);

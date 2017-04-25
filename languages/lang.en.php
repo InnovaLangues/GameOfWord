@@ -132,7 +132,7 @@ $lang['card_level'] = 'Level of the card: ';
 $lang['guess'] = 'Guess !';
 $lang['which_word'] = 'What is the word described ?';
 $lang["RecordCard"] ='If you want to record yourself click here: ';
-$lang["RecordArbitre"] ='If you want to judge this record click here: ';
+$lang["RecordArbitre"] ='If you think this recording should have been declared invalid, take matters into your own hands: ';
 $lang["restart"] ='Play again ? ';
 $lang["start"] ='It\'s time to play the game !';
 $lang['start_playback']="Play recording";
@@ -219,6 +219,9 @@ $lang['Oracle_devin'][true] = " listened to your recording and found the word!";
 $lang['Devin_played'] = "You listened to a recording by ";
 $lang['Devin_oracle'][true] = "And you found the word!";
 $lang['Devin_oracle'][false] = "And you did not find the word…";
+
+$lang['druidNotReady'] = "All the required variables for a Druid decision have not been set…";
+$lang['page_errors'] = "Error in processing query";
 
 $lang['img_augur']  = "./profil/diviner.jpg";
 $lang['img_druid']  = "./profil/druide.jpg";

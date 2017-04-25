@@ -6,23 +6,25 @@ include('./views/page.header.html');
 	<div id="jrForm">
 		<form class="form-jr" role="form" id="diviner.timeout" method="post" action="./index.php">
 			<fieldset>
-					<?php
-						$this->carte->set_view("./views/card.inline.display.php");
-						echo $this->carte;
-						$_SESSION["idCard"] = $this->carte->get_id();
-						$_SESSION["idEnregistrement"] = $this->record_id;
-					?>
-
-					<p><?php echo $lang["RecordCard"]?><a id="ImgDivin" href="index.php?mode=oracle.byid"><img src="./style/default.css/imgs/recON.png" width='20px' height='20px'></a>
-					</p>
-
-					<p><?php echo $lang["RecordArbitre"];?><a id="ImgDivin" href="index.php?mode=druid.arbitrage"><img src="./style/default.css/imgs/arbitre.png" width='20px' height='20px'></a>
-					</p>
-					<p><?php echo $lang["restart"];?><a id="ImgDivin" href="index.php?mode=diviner.game"><img src="./style/default.css/imgs/restart.png" width='20px' height='20px'></a>
-					</p>
-					</br></br>
+				<?php
+					$this->carte->set_view("./views/card.inline.display.php");
+					require_once("./models/userlvl.class.php");
+					$gh = new GameHandler();
+					$this->carte->set_forbidden_count($gh->get_forbidden_count($this->rec_level));
+					echo $this->carte;
+					$_SESSION["idCard"] = $this->carte->get_id();
+					$_SESSION["idEnregistrement"] = $this->record_id;
+				?>
+				<input type="hidden" name="enregistrement1" value="<?php echo $this->record_id; ?>" />
+				<input type="hidden" name="invalidate" value="et oué, gros" />
+				<input type="hidden" name="mode" value="druid.arbitrage" />
+				<input type="hidden" name="oracle" value="<?php echo $this->oracle; ?>" />
+				<input type="hidden" name="revoke" value="true" /><!--To say we are revoking a prior decision-->
+				<p><?php echo $lang["RecordArbitre"];?> </p>
 				<div id="form-cmd">
-					<input class="btn btn-lg btn-primary btn-block" type="submit" id="submit_form" name="submit_form" value="<?php echo $lang['return']; ?>" class="submit_buttons" />
+					<input class="btn btn-lg btn-primary btn-block submit_buttons" name="submit_form" value="<?php echo $lang['invalidate']; ?>" type="submit" />
+					<input class="btn btn-lg btn-primary btn-block submit_buttons" onclick="window.location.href='./index.php?mode=diviner.game'" value="<?php echo $lang['restart']; ?>" />
+					<input class="btn btn-lg btn-primary btn-block submit_buttons" value="<?php echo $lang['return']; ?>" onclick="window.location.href='./index.php'"/>
 				</div>
 			</fieldset>
 		</form>

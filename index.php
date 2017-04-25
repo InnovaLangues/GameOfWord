@@ -10,7 +10,6 @@ require('./models/user.class.php');
 require('./models/userlvl.class.php');
 require('./languages/language.php');
 
-
 // Initialisation
 if ( isset($_POST['cancel_form']) )
 {
