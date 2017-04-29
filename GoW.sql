@@ -62,92 +62,29 @@ CREATE TABLE IF NOT EXISTS `cartes` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `coeff_niveau_langue`
---
-
-CREATE TABLE IF NOT EXISTS `coeff_niveau_langue` (
-  `niveau_langue` enum('Débutant','Intermédiaire','Avancé','Natif') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `coeff` float NOT NULL,
-  UNIQUE KEY `niveau_langue_2` (`niveau_langue`),
-  KEY `niveau_langue` (`niveau_langue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `coeff_niveau_langue`
---
-
-INSERT INTO `coeff_niveau_langue` (`niveau_langue`, `coeff`) VALUES
-('Débutant', 1.5),
-('Intermédiaire', 1.2),
-('Avancé', 1),
-('Natif', 0.5);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `coeff_statut`
---
-
-CREATE TABLE IF NOT EXISTS `coeff_statut` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `coeff` float NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Contenu de la table `coeff_statut`
---
-
-INSERT INTO `coeff_statut` (`id`, `coeff`) VALUES
-(1, 1),
-(2, 1.25),
-(3, 1.5);
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `enregistrement`
 --
 
-CREATE TABLE IF NOT EXISTS `enregistrement` (
+CREATE TABLE `enregistrement` (
   `enregistrementID` int(11) NOT NULL AUTO_INCREMENT,
   `cheminEnregistrement` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `duration` tinyint(3) UNSIGNED NOT NULL COMMENT 'the length in seconds of the recording (max 255 sec)',
   `idOracle` int(30) NOT NULL,
   `OracleLang` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `nivpartie` enum('easy','medium','hard') NOT NULL DEFAULT 'easy' COMMENT 'niveau de la partie oracle',
-  `tpsEnregistrement` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `carteID` int(11) NOT NULL,
   `nivcarte` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `validation` enum('valid','invalid','limbo') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'limbo',
-  `duration` tinyint(3) unsigned NOT NULL COMMENT 'the length in seconds of the recording (max 255 sec)',
+  `nivpartie` enum('easy','medium','hard') NOT NULL DEFAULT 'easy' COMMENT 'niveau de la partie oracle',
+  `tpsEnregistrement` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `validation` enum('valid','invalid','limbo','given up') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'limbo',
+  `nbSuccess` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a permis de trouver le mot',
+  `nbTentatives` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a été passé à un devin',
+  `mise` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'La mise calculée en fonction du niveau de la carte du joueur et de la difficulté choisie',
   PRIMARY KEY (`enregistrementID`),
   UNIQUE KEY `cheminEnregistrement` (`cheminEnregistrement`),
   KEY `idOracle` (`idOracle`),
   KEY `carteID` (`carteID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Structure de la table `game_lvl`
---
-
-CREATE TABLE IF NOT EXISTS `game_lvl` (
-  `userlvl` enum('easy','medium','hard') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'easy',
-  `time` int(8) NOT NULL DEFAULT '0',
-  `points` int(8) NOT NULL DEFAULT '0',
-  `pointsSanction` int(8) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userlvl`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `game_lvl`
---
-
-INSERT INTO `game_lvl` (`userlvl`, `time`, `points`, `pointsSanction`) VALUES
-('easy', 90, 10, 0),
-('medium', 60, 20, 0),
-('hard', 45, 40, 0);
 
 -- --------------------------------------------------------
 
@@ -218,15 +155,66 @@ CREATE TABLE IF NOT EXISTS `sanctionCarte` (
 
 CREATE TABLE IF NOT EXISTS `score` (
   `scoreID` int(11) NOT NULL AUTO_INCREMENT,
-  `userid` int(100) NOT NULL,
-  `scoreGlobal` int(100) NOT NULL,
-  `scoreOracle` int(100) NOT NULL,
-  `scoreDruide` int(100) NOT NULL,
-  `scoreDevin` int(100) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `scoreGlobal` int(11) NOT NULL,
+  `scoreOracle` int(11) NOT NULL,
+  `scoreDruide` int(11) NOT NULL,
+  `scoreDevin` int(11) NOT NULL,
   `langue` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `first_game_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`scoreID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `stats_devin`
+--
+
+CREATE TABLE `stats_devin` (
+  `userid` int(11) NOT NULL COMMENT 'l''id de l''utilisateur',
+  `langue` varchar(20) NOT NULL COMMENT 'langue de jeu',
+  `nbEnregistrements` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombre d''enregistrements écoutés',
+  `nbMotsTrouves` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombres de mots associés aux enregistrements trouvés',
+  `score` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score de devin (pas calculable avec les données de la table)',
+  PRIMARY KEY (`userid`,`langue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques de jeu en tant que devin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `stats_druide`
+--
+
+CREATE TABLE `stats_druide` (
+  `userid` int(11) NOT NULL COMMENT 'id de l''utilisateur',
+  `langue` varchar(20) NOT NULL COMMENT 'langue concernée',
+  `nbCartes` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb cartes créées',
+  `nbArbitrages` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb arbitrages effectués',
+  `nbErrArbitrage` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb d''erreurs d''arbitrage',
+  `score` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score (peut être calculé uniquement avec les données de la table)',
+  PRIMARY KEY (`userid`,`langue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques d''activité en tant que Druide';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `stats_oracle`
+--
+
+CREATE TABLE `stats_oracle` (
+  `userid` int(11) NOT NULL,
+  `langue` varchar(20) NOT NULL,
+  `nbJeux` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de parties',
+  `nbAbandons` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''abandons',
+  `nbEnregistrements` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements envoyés',
+  `nbErreurs` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements erronés ou techniquements ratés',
+  `nbLectures` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de devins qui ont lu un enregistrement de l''utilisateur',
+  `nbSucces` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de succès des devins',
+  `score` mediumint(8) NOT NULL DEFAULT '0' COMMENT 'Score résultant (prends aussi en compte les niveaux, ne peut être calculé directement à partir des infos de la table)',
+  PRIMARY KEY (`userid`,`langue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques de l''Oracle';
+
 
 -- --------------------------------------------------------
 
@@ -502,6 +490,8 @@ INSERT INTO `langues` (`iso_code`, `french`, `english`) VALUES
 ('za', 'Zhuang', NULL),
 ('zh', 'Chinois', NULL),
 ('zu', 'Zoulou', NULL);
+
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
