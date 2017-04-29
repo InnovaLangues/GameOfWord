@@ -19,10 +19,10 @@ class Recording
 	public function __construct($rec_id){
 		$this->db = db::getInstance();
 		$this->id = $rec_id;
-		$this->db->query("SELECT `idOracle`,`OracleLang`,`nivpartie`,`nivcarte`,`carteID` FROM `enregistrement` WHERE `enregistrementID`='$this->id';");
+		$this->db->query("SELECT `idOracle`,`oracleLang`,`nivpartie`,`nivcarte`,`carteID` FROM `enregistrement` WHERE `enregistrementID`='$this->id';");
 		if($this->db->affected_rows() == 1){
 			$tmpObj = $this->db->fetch_object();
-			$this->lang = $tmpObj->OracleLang;
+			$this->lang = $tmpObj->oracleLang;
 			$this->level = $tmpObj->nivpartie;
 			$this->card_level = $tmpObj->nivcarte;
 			$this->oracle_id = $tmpObj->idOracle;

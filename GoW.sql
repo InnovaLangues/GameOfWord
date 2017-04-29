@@ -153,13 +153,13 @@ CREATE TABLE IF NOT EXISTS `sanctionCarte` (
 -- Structure de la table `score`
 --
 
-CREATE TABLE IF NOT EXISTS `score` (
-  `scoreID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `score` (
+  `scoreID` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `scoreGlobal` int(11) NOT NULL,
-  `scoreOracle` int(11) NOT NULL,
-  `scoreDruide` int(11) NOT NULL,
-  `scoreDevin` int(11) NOT NULL,
+  `scoreGlobal` int(11) NOT NULL DEFAULT '0',
+  `scoreOracle` int(11) NOT NULL DEFAULT '0',
+  `scoreDruide` int(11) NOT NULL DEFAULT '0',
+  `scoreDevin` int(11) NOT NULL DEFAULT '0',
   `langue` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `first_game_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`scoreID`)
@@ -286,6 +286,9 @@ INSERT INTO `user_niveau` (`id`, `userid`, `spoken_lang`, `niveau`) VALUES
 (1, 1, 'Français;', 'Natif;');
 INSERT INTO `score` (`scoreID`, `userid`, `scoreGlobal`, `scoreOracle`, `scoreDruide`, `scoreDevin`, `langue`, `first_game_time`) VALUES
 (1, 1, 0, 0, 0, 0, 'Français', CURRENT_TIMESTAMP);
+INSERT INTO `stats_devin` (`userid`, `langue`, `nbEnregistrements`, `nbMotsTrouves`, `score`) VALUES ('1', 'Français', '0', '0', '0');
+INSERT INTO `stats_druide` (`userid`, `langue`, `nbCartes`, `nbArbitrages`, `nbErrArbitrage`, `score`) VALUES ('1', 'Français', '0', '0', '0', '0');
+INSERT INTO `stats_oracle` (`userid`, `langue`, `nbJeux`, `nbAbandons`, `nbEnregistrements`, `nbErreurs`, `nbLectures`, `nbSucces`, `score`) VALUES ('1', 'Français', '0', '0', '0', '0', '0', '0', '0');
 
 -- --------------------------------------------------------
 

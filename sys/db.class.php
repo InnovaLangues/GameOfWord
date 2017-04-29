@@ -58,6 +58,22 @@ class db
 		return $this->result;
 	}
 
+	public function transaction($query_array){
+		$this->handler->begin_transaction();
+		$i=1;
+		foreach ($query_array as $query) {
+			$this->query($query);
+			if(!$this->result){
+				$commit = false;
+				$this->handler->rollback();
+				throw new Exception("Error “".$this->handler->error."” in “".$query."” (query #".$i.").");
+			}
+			$i++;
+		}
+		$this->handler->commit();
+		return $this->result;
+	}
+
 	public function fetch_object(){
 		if($this->result){
 			return $this->result->fetch_object();

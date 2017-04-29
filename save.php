@@ -60,8 +60,9 @@ foreach(array('audio') as $type) {
 			$mp3_file = new MP3File("./enregistrements/$fileName");
 			$duration = $mp3_file->getDuration();
 		}
+		//TODO update d'après structure BD (et l'enregistrement au début du recording → UPDATE)
 		$sql = 'INSERT INTO enregistrement
-                (`cheminEnregistrement`,`idOracle`,`OracleLang`,`carteID`,`nivcarte`,`duration`,`nivpartie`)
+                (`cheminEnregistrement`,`idOracle`,`oracleLang`,`carteID`,`nivcarte`,`duration`,`nivpartie`)
 				 VALUES('.$db->escape($fileName).','.
 					$_GET["userid"]. ','.
 					$_GET["gamelang"]. ','.
