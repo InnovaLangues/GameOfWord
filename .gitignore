@@ -47,6 +47,7 @@ Temporary Items
 enregistrements/*
 sys/db.config.php
 sys/config.php
+sys/config_*
 /add_cards.php
 /profil/*/*
 /debug.html
