@@ -40,7 +40,7 @@ function OracleRecorder(recordRTCOptions){
 		self.recorder.stopRecording(function(audioURL){
 			self.stopRecordingSuccess(audioURL, self.recorder.blob);
 			previewRec(audioURL);
-			fileName = 'oracle' + Math.round(Math.random() * 999999 + 1);
+			fileName = 'rec_' + Math.round((Date.now()-1400000000000)/92) + "" + Math.round(Math.random() * 99);
 			var fileReader = new FileReader();
 			fileReader.onload = function(event) {
 				var newBlob = new Blob([event.target.result], {type:"audio/ogg", endings:"native"});
