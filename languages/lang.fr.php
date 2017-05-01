@@ -235,5 +235,10 @@ $lang['language']="Langue";
 $lang['proficiency'] = "Niveau";
 $lang['game_lang'] = "Langue de jeu";
 
+//traces
+$lang["AJAX_query_fail"] = "La requête suivante n'a pu s'effectuer avec succès : ";
+$lang["AJAX_fail"] = "Il y aurait dû y avoir un appel à la base de donnée, il n'a pas marché, vous jouez sûrement pour du beurre. Désolé…";
+$lang["AJAX_noquery"] = "Pas de requête, en fait…";
+
 //Administration cartes
 $lang['admin'] = 'Administration&nbsp;: Cliquer sur la croix pour supprimer la carte';

@@ -110,7 +110,7 @@ $lang['card_lexinno']='Linked to your lexicon';
 
 // Description d'une carte : Oracle
 $lang['card_descr'] = 'Card Description';
-$lang['description'] = 'You let the others guess your description of the<span class="motatrouver"> first word</span> without using <span class="motTaboo"> the others words</span>';
+$lang['description'] = 'You let the others guess your description of the<span class="motatrouver"> first word</span> without using <span class="motTaboo">the other words</span>';
 $lang['beware_time']=' You can restart your recording as much as you want but beware, you are limited in time. If you don\'t send your recording, you loose the points from Oracle, but you get some points from Druide.';
 $lang['card_preview'] = 'Card Preview';
 $lang['id_describe'] = 'Here is your Card ID, send it to your friend so they can play with it ! ';
@@ -240,6 +240,12 @@ $lang['spok_lang'] = 'Spoken languages';
 $lang['language']="Language";
 $lang['proficiency'] = "Proficiency";
 $lang['game_lang'] = "Game language";
+
+//traces
+$lang["AJAX_query_fail"] = "Could not properly perform action: ";
+$lang["AJAX_fail"] = "A call to the database was supposed to happen, it did not. Chances are you're playing for nothing. Sorry…";
+$lang["AJAX_noquery"] = "No query, actually…";
+
 
 //Administration cartes
 $lang['admin'] = "Administration: Press cross to delete card";

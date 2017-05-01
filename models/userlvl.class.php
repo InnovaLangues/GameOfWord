@@ -1,6 +1,5 @@
 <?php
 //A class to handle the main rules
-//TODO would it be a better choice to use the class directly rather than creating instances ?
 class GameHandler{
 	const LVL_EASY = 0;
 	const LVL_MEDIUM = 1;
@@ -8,6 +7,7 @@ class GameHandler{
 	const LVL_HARDEST = 3;
 	const ACT_CREATECARD = 5;
 	const ACT_VERIFYRECORD = 6;
+	//key in array is card difficulty - user level → the lower the index, the easier the game
 	private static $MULTIPLIERS_WIN = array(2 => 2, 1 => 1.5, 0 => 1, -1 => 0.75, -2 => 0.5, -3 => 0.33);
 	private static $MULTIPLIERS_LOSE = array(2 => 0.5, 1 => 0.75, 0 => 1, -1 => 1.25, -2 => 1.5, -3 => 2);
 	//below hardest is USELESS, but it made me feel safer.
@@ -38,6 +38,7 @@ class GameHandler{
 	const DRUID_VERIF = 25;
 	const DRUID_VERIF_ERROR = 100;
 	const DRUID_CREATE_CARD = 40;
+
 	//utilities
 	//To unify the way levels are defined throughout the game
 	public function unify_Lvl($level){
@@ -115,13 +116,16 @@ class GameHandler{
 	public function get_druid_verification_score(){
 		return self::DRUID_VERIF;
 	}
+
 	public function get_druid_verification_error_score(){
 		return self::DRUID_VERIF_ERROR;
 	}
+
 	public function get_druid_create_card_score(){
 		return self::DRUID_CREATE_CARD;
 	}
-	private function get_stake($game_lvl, $card_lvl, $user_lvl, $won=true){
+
+	public function get_stake($game_lvl, $card_lvl, $user_lvl, $won=true){
 		if(!is_int($game_lvl)){
 			$game_lvl = $this->unify_Lvl($game_lvl);
 		}
@@ -133,6 +137,7 @@ class GameHandler{
 		}
 		return round($this->get_mastery_mult($card_lvl, $user_lvl, $won) * self::$STAKES[$game_lvl]);
 	}
+
 	public function get_oracle_verification_score($game_lvl, $card_lvl, $user_lvl, $won=true){
 		$res = $this->get_stake($game_lvl, $card_lvl, $user_lvl, $won);
 		if(!$won){
@@ -193,5 +198,4 @@ class GameHandler{
 		return $res;
 	}
 }
-
 ?>

@@ -105,28 +105,38 @@ include('./sys/config.php');
 <script type="text/javascript" src="controllersJS/oracle.recorder.js"></script>
 
 <!-- code spécifique -->
-
 <script type="text/javascript" src="modelJS/TODO.js"></script>
+
 <script>
+function storeAction(){
+	$.ajax({
+		url: "score_traces.api.php?action=see_card&card_id=<?php echo $this->card->get_id(); ?>&game_level=<?php echo $this->user->userlvl; ?>",
+		dataType: "JSON"
+	}).done(function(data){
+	if(!data.status){
+			window.alert("<?php echo $lang["AJAX_fail"] ?>\n"+data.msg);
+		}
+	}).fail(function(){
+		window.alert("<?php echo $lang["AJAX_fail"] ?>");
+	});
+}
 
 // Timer
-var monChrono = new MyTimer(renders, <?php echo $this->time; ?> , finChrono, 10,pressurise);
+var monChrono = new MyTimer(renders, <?php echo $this->time; ?> , finChrono, 10, pressurise, storeAction);
 
 function handleSubmit(){
 	document.getElementById("descriptioncarte").submit();
-    }
+}
+
 function delaySubmit(){
 	deleteAudioVideoFiles();
-        window.setTimeout(handleSubmit, 500);
-    };
-
-
-function menu(){
-document.location.href="index.php";
+   window.setTimeout(handleSubmit, 500);
 }
 
 
-
+function menu(){
+	document.location.href="index.php";
+}
 </script>
 
 

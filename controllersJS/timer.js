@@ -1,4 +1,4 @@
-function MyTimer(render, duration, callback, pressure, pressuriser){
+function MyTimer(render, duration, callback, pressure, pressuriser, onStart){
 	//constructor of a timer, displayed in element selected by "timerSelector"
 	//which calls "render(minutes, seconds)" every second
 	//lasts "duration" (in seconds)
@@ -28,6 +28,13 @@ function MyTimer(render, duration, callback, pressure, pressuriser){
 		this.pressurise = pressuriser;
 	}
 
+	if(typeof onStart == "function"){
+		this.onStart = onStart;
+	}
+	else{
+		this.onStart = function(){};
+	}
+
 	var self = this;
 
 	this.isRunning = function(){
@@ -49,7 +56,7 @@ function MyTimer(render, duration, callback, pressure, pressuriser){
 			self.nextClick = self.clickDuration ;
 		}
 		if (self.timeRemaining <= 0) {
-			self.stop();		
+			self.stop();
 		}
 		else{//because we're using seconds…
 			self.timer = window.setTimeout(self.secondPassed, self.nextClick * 1000);
@@ -58,9 +65,12 @@ function MyTimer(render, duration, callback, pressure, pressuriser){
 
 	this.start = function(){
 		self.timeRemaining = self.duration;
+		if(self.timeRemaining == self.duration){
+			self.onStart();
+		}
 		self.nextClick = false;
 		self.running = true ;
-		if( (self.clickDuration*1000) % (self.clickUnderPressureDuration * 1000) === 0){
+		if( self.clickDuration % self.clickUnderPressureDuration === 0){
 			self.secondPassed();
 		}
 		else{
