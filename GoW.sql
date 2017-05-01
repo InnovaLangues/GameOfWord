@@ -80,9 +80,8 @@ CREATE TABLE `enregistrement` (
   `nbTentatives` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a été passé à un devin',
   `mise` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'La mise calculée en fonction du niveau de la carte du joueur et de la difficulté choisie',
   PRIMARY KEY (`enregistrementID`),
-  UNIQUE KEY `cheminEnregistrement` (`cheminEnregistrement`),
-  KEY `idOracle` (`idOracle`),
-  KEY `carteID` (`carteID`)
+  UNIQUE KEY `no_replay` (`OracleLang`,`carteID`),
+  KEY `cheminEnregistrement` (`cheminEnregistrement`) USING BTREE;
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 

@@ -1,44 +1,35 @@
 <?php
 require('./sys/config.php');
-require_once('./sys/db.class.php');
-
+require_once("./controllers/score.handler.class.php");
 $ext = ".mp3";
 
-	//script pour supprimer le fichier sur le serveur
-	if (isset($_POST['delete-file'])) {
-		$fileName = 'enregistrements/'.$_POST['delete-file'];
-		if($conversion!==false){
-			//#format
-			if(!unlink($fileName.'.mp3')) {
-				echo $fileName;			
-				echo(' problem deleting files.');
-			}
-			else {	
-				echo(' both wav/webm files deleted successfully.');
-			}
+//script pour supprimer le fichier sur le serveur
+if (isset($_POST['delete-file'])) {
+	$fileName = 'enregistrements/'.$_POST['delete-file'];
+	if($conversion!==false){
+		//#format
+		if(!unlink($fileName.'.mp3')) {
+			echo $fileName;
+			echo(' problem deleting files.');
 		}
-		else{
-			$ext = ".ogg";
-			if(!unlink($fileName.'.ogg')) {
-				echo $fileName;			
-				echo(' problem deleting files.');
-			}
-			else {	
-				echo(' both wav/webm files deleted successfully.');
-			}		
+		else {
+			$full_name = $_POST['delete-file'].".mp3";
+			echo(' both wav/webm files deleted successfully.');
 		}
-
-		
-		
-		//connexion à la BD et suppression de la ligne de l'enregistrement
-		$db=db::getInstance();
-		$sql = 'DELETE FROM enregistrement
-				WHERE (cheminEnregistrement=\''.$_POST['delete-file'].$ext.'\')';
-		$db->query($sql);
-				
-		//suppression du fichier dans la serveur
-		
-
 	}
-	
+	else{
+		$ext = ".ogg";
+		if(!unlink($fileName.'.ogg')) {
+			echo $fileName;
+			echo(' problem deleting files.');
+		}
+		else {
+			$full_name = $_POST['delete-file'].".ogg";
+			echo(' both wav/webm files deleted successfully.');
+		}
+	}
+	$sh = new ScoreHandler2();
+	$sh->abort_record($full_name);
+}
+
 ?>

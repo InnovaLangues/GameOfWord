@@ -32,14 +32,19 @@ else{
 					$msg.="see_card";
 				}
 				break;
-			default ;
+			case "post_record":
+				//not done through here (see  ./save.php)
+			case "abort_record":
+			 //not done through here (see  ./delete.php)
+			default :
 				$msg = $lang["AJAX_noquery"];
 		}
 }
 
-echo json_encode(array(
-	"status" => $res,
-	"msg" => $msg
-));
-
+if(!isset($_GET["noAJAX"])){
+	echo json_encode(array(
+		"status" => $res,
+		"msg" => $msg
+	));
+}
 ?>

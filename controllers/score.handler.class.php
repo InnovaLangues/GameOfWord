@@ -6,6 +6,7 @@ require_once('./models/card.class.php');
 require_once('./sys/load_iso.php');
 require_once('./models/userlvl.class.php');
 /**/require_once("./controllers/update_score_coeff.php");/**///transition to new scoreHandler
+/**/require_once("./debug.php");
 
 class ScoreHandler2{
 	private $db;
@@ -47,10 +48,9 @@ class ScoreHandler2{
 									$gameLevel."','given up', '".
 									$this->gh->get_stake($gameLevel, $card->get_level(), $user_level).
 		"');";
-		//ICITE j'en suis là et il faudrait que je fasse 1/3 de la somme des stakes de ceux qui sont given-up ou mieux…
 		if(!$this->db->query($query)){
 			$res = false;
-			throw new Exception("“$query” could not be performed.");
+			throw new Exception("“".$query."” could not be performed.\n".$this->db->get_error());
 		}
 		else{
 			$res = true;
@@ -58,5 +58,31 @@ class ScoreHandler2{
 		return $res;
 	}
 
+	public function post_record($cardId, $rec_path, $rec_length){
+		$query = "UPDATE `enregistrement` SET `cheminEnregistrement` = '$rec_path', `duration`='$rec_length', `tpsEnregistrement`=CURRENT_TIMESTAMP, `validation` = 'limbo' WHERE `enregistrement`.`idOracle` = ".$this->user->id." AND `enregistrement`.`carteID`='$cardId'; ";
+		if(!$this->db->query($query)){
+			$res = false;
+			throw new Exception("“".$query."” could not be performed.\n".$this->db->get_error());
+		}
+		else{
+			$res = true;
+		}
+		return $res;
+	}
 
+	public function abort_record($recording_path){
+		$query = "UPDATE `enregistrement` SET `validation` = 'given up', `tpsEnregistrement`=CURRENT_TIMESTAMP WHERE `enregistrement`.`cheminEnregistrement` = '$recording_path'; ";
+		if(!$this->db->query($query)){
+			$res = false;
+			throw new Exception("“".$query."” could not be performed.\n".$this->db->get_error());
+		}
+		elseif ($this->db->affected_rows != 1) {
+			$res = false;
+			throw new Exception("“".$query."” affected ".$this->db->affected_rows.".\nDatabase consistence jeopardized");
+		}
+		else{
+			$res = true;
+		}
+		return $res;
+	}
 }?>

@@ -118,6 +118,10 @@ class db
 		return $this->result;
 	}
 
+	public function get_error(){
+		return $this->handler->error;
+	}
+
 	public function escape($str)
 	{
 		return is_string($str) ? '\'' . $this->handler->real_escape_string($str) . '\'' : intval($str);

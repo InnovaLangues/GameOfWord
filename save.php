@@ -1,9 +1,15 @@
 <?php
+session_start();
 require_once('./sys/config.php');
-require_once('./sys/db.class.php');
+require_once("./controllers/score.handler.class.php");
+
+function audio_convert($file, $filename){
+	$commandeConv = str_replace(array("%source%", "%target%"), array("./enregistrements/".$filename.".ogg","./enregistrements/".$filename.".mp3"), $file);
+	return $commandeConv;
+}
+
 $fileName = '';
 $ext = ".ogg";
-$db=db::getInstance();
 
 foreach(array('audio') as $type) {
 	if (isset($_FILES["audio-blob"])) {
@@ -18,32 +24,21 @@ foreach(array('audio') as $type) {
 	// récupère dans un tableau de hachage le nom du fichier sans l'extension, l'extension et le chemin
 	$file = pathinfo('./enregistrements/'.$fileName);
 
-
 	// convertit en mp3
-			if($conversion!==false){
-				//#format
-				if($conversion=="mp3"){
-					$conversion = "avconv -i %source% -acodec libmp3lame -q:a 2 -ac 1 %target%";
-				}
-				$commande = audio_convert($conversion, $file['filename']);
-				exec($commande);
-				// Supression du fichier.wav du serveur.
-				exec("rm ./enregistrements/".$file['filename'].".ogg");
-				$ext = ".mp3";
-				echo $file['filename'].$ext;
-				echo $commande;
-
-			}
-			else{
-				echo $file['filename'].$ext;
-			}
-
-
-
+	if($conversion!==false){
+		//#format
+		if($conversion=="mp3"){
+			$conversion = "avconv -i %source% -acodec libmp3lame -q:a 2 -ac 1 %target%";
+		}
+		$commande = audio_convert($conversion, $file['filename']);
+		exec($commande);
+		// Supression du fichier.wav du serveur.
+		exec("rm ./enregistrements/".$file['filename'].".ogg");
+		$ext = ".mp3";
+	}
 
 	// ajout 15/02
 	//$_SESSION['userid']=$userid;
-
 	//enregistrement dans la BD de la partie de l'oracle
 	if($fileName!='')
 	//$userid = $_POST["filename"];
@@ -60,23 +55,9 @@ foreach(array('audio') as $type) {
 			$mp3_file = new MP3File("./enregistrements/$fileName");
 			$duration = $mp3_file->getDuration();
 		}
-		//TODO update d'après structure BD (et l'enregistrement au début du recording → UPDATE)
-		$sql = 'INSERT INTO enregistrement
-                (`cheminEnregistrement`,`idOracle`,`oracleLang`,`carteID`,`nivcarte`,`duration`,`nivpartie`)
-				 VALUES('.$db->escape($fileName).','.
-					$_GET["userid"]. ','.
-					$_GET["gamelang"]. ','.
-					$_GET["cardid"]. ','.
-					$_GET["levelcard"].','.
-					$duration.','.
-					$_GET['gamelevel'].')';
-		$db->query($sql);
+		$sh = new ScoreHandler2();
+		$sh->post_record($_GET["cardid"], $fileName, $duration);
+		echo $fileName;
 	}
 }
-
-function audio_convert($file, $filename){
-	$commandeConv = str_replace(array("%source%", "%target%"), array("./enregistrements/".$filename.".ogg","./enregistrements/".$filename.".mp3"), $file);
-	return $commandeConv;
-}
-
 ?>

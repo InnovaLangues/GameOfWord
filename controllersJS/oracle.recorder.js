@@ -143,7 +143,7 @@ var gamelevel = $("#level").attr("data-gamelevel");
 var levelcard = $("#level").attr("data-levelcard");
 
 	// POST the Blob using XHR2
-xhr('save.php?userid="'+userid+'"&userlang="'+userlang+'"&gamelang="'+gamelang+'"&cardid="'+cardid+'"&levelcard="'+levelcard+'"'+'&gamelevel="'+gamelevel+'"', formData, progress, percentage, function(fileURL) {
+xhr('save.php?cardid='+cardid, formData, progress, percentage, function(fileURL) {
 	var href = location.href.substr(0, location.href.lastIndexOf('/') + 1);
 		progress.parentNode.removeChild(progress);
 		strong.parentNode.removeChild(strong);
