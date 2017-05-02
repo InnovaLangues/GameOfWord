@@ -8,4 +8,5 @@
 		include 'languages/lang.' . $userlang . '.php';
 	}
 	include 'languages/errors.php';
+	include 'languages/notifs_codes.php';
 ?>

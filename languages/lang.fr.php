@@ -197,7 +197,7 @@ $lang['home_miss_lang_game'] = 'Veuillez sélectionner une langue de jeu dans vo
 
 $lang['languePlay'] = 'Vous jouez en ';
 $lang['level'] = 'au niveau ';
-$lang['levelChange'] = 'Niveau de la prochaine partie&nbsp;:';
+$lang['levelChange'] = 'Niveau de la prochaine partie&nbsp;: ';
 $lang['Oracle_easy'] = "Un seul mot interdit et 1′30″ d'enregistrement (mise&nbsp;: 10 points).";
 $lang['Oracle_medium'] = "Trois mots interdits et 1′ d'enregistrement (mise&nbsp;: 20 points).";
 $lang['Oracle_hard'] = "Six mots interdits et 30″ d'enregistrement (mise&nbsp;: 30 points).";
@@ -208,6 +208,8 @@ $lang['Card_created'] = "Merci d'avoir créé une carte&nbsp;: ";
 $lang['Rec_verified'] = "Merci d'avoir vérifié l'enregistrement de ";
 $lang['Oracle_verif'][true] = " a vérifié votre enregistrement et pense que vous n'avez pas utilisé de mot interdit";
 $lang['Oracle_verif'][false] = " a vérifié votre enregistrement et pense que vous n'avez pas utilisé de mot interdit";
+$lang['Oracle_started'] = "Partie “Oracle” commencée, sans dépôt du fichier, vous perdrez ";
+$lang['Oracle_posted'] = "Vous avez osé valider votre description, courageux…";
 $lang['Oracle_devin'][false] = " a écouté votre enregistrement et n'a pas trouvé le mot…";
 $lang['Oracle_devin'][true] = ' a écouté votre enregistrement et a trouvé&nbsp;!';
 $lang['Devin_played'] = 'Vous avez écouté un enregistrement de ';
@@ -216,10 +218,6 @@ $lang['Devin_oracle'][false] = "Mais vous n'avez pas trouvé…";
 
 $lang['druidNotReady'] = "Tous les paramètres nécessaires à la gestion d'une décision n'ont pas été spécifiés…";
 $lang['page_errors'] = "Erreur durant le traitement de la requête";
-
-$lang['img_augur'] = './profil/diviner.jpg';
-$lang['img_druid'] = './profil/druide.jpg';
-$lang['img_oracle'] = './profil/oracle.jpg';
 
 //Erreur upload
 $lang['file_unupload'] = 'Attention le fichier a mal été uploadé.';

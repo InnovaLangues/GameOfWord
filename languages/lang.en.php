@@ -214,6 +214,8 @@ $lang['Card_created'] = "Thank you for creating a card: ";
 $lang['Rec_verified'] = "Thank you for verifying the recording of ";
 $lang['Oracle_verif'][true] = " verified your recording and thinks you didn't use forbidden words";
 $lang['Oracle_verif'][false] = " verified your recording and thinks you used forbidden words";
+$lang['Oracle_started'] = "Oracle game started, if you give up the recording you'll lose ";
+$lang['Oracle_posted'] = "You took the risk of posting your description, you, brave Oracle!";
 $lang['Oracle_devin'][false] = " listened to your recording and didn't find the word…";
 $lang['Oracle_devin'][true] = " listened to your recording and found the word!";
 $lang['Devin_played'] = "You listened to a recording by ";
@@ -222,10 +224,6 @@ $lang['Devin_oracle'][false] = "And you did not find the word…";
 
 $lang['druidNotReady'] = "All the required variables for a Druid decision have not been set…";
 $lang['page_errors'] = "Error in processing query";
-
-$lang['img_augur']  = "./profil/diviner.jpg";
-$lang['img_druid']  = "./profil/druide.jpg";
-$lang['img_oracle'] = "./profil/oracle.jpg";
 
 //Erreur upload
 $lang['file_unupload'] = 'Attention, the file was not fully uploaded.';
