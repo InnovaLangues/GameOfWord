@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('./sys/config.php');
-require_once("./controllers/score.handler.class.php");
+require_once("./controllers/traces.handler.class.php");
 
 function audio_convert($file, $filename){
 	$commandeConv = str_replace(array("%source%", "%target%"), array("./enregistrements/".$filename.".ogg","./enregistrements/".$filename.".mp3"), $file);
@@ -55,8 +55,8 @@ foreach(array('audio') as $type) {
 			$mp3_file = new MP3File("./enregistrements/$fileName");
 			$duration = $mp3_file->getDuration();
 		}
-		$sh = new ScoreHandler2();
-		$sh->post_record($_GET["cardid"], $fileName, $duration);
+		$th = new TracesHandler();
+		$th->post_record($_GET["cardid"], $fileName, $duration);
 		echo $fileName;
 	}
 }

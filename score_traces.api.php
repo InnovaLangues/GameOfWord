@@ -4,7 +4,7 @@ error_reporting(E_ALL);//error_reporting(0); désactiver
 ini_set('display_errors', '1');
 require_once('./models/user.class.php');
 require('./languages/language.php');
-require_once('./controllers/score.handler.class.php');
+require_once('./controllers/traces.handler.class.php');
 
 $res = false;
 $msg = $lang["AJAX_query_fail"] ;
@@ -14,22 +14,22 @@ if(!isset($_GET["action"])){
 }
 else{
 		switch($_GET["action"]){
-			case "see_card":
+			case "oracle_see_card":
 				if(isset($_GET["card_id"])
 				 && isset($_GET["game_level"])){
-					$sh = new ScoreHandler2();
+					$th = new TracesHandler();
 					require_once('./models/card.class.php');
 					$card = new Card($_GET["card_id"]);
-					if($sh->see_card($card, $_GET["game_level"])){
+					if($th->oracle_see_card($card, $_GET["game_level"])){
 						$res = true;
 						$msg = "";
 					}
 					else{
-						$msg.="see_card";
+						$msg.="oracle_see_card";
 					}
 				}
 				else{
-					$msg.="see_card";
+					$msg.="oracle_see_card";
 				}
 				break;
 			case "post_record":

@@ -110,7 +110,7 @@ include('./sys/config.php');
 <script>
 function storeAction(){
 	$.ajax({
-		url: "score_traces.api.php?action=see_card&card_id=<?php echo $this->card->get_id(); ?>&game_level=<?php echo $this->user->userlvl; ?>",
+		url: "score_traces.api.php?action=oracle_see_card&card_id=<?php echo $this->card->get_id(); ?>&game_level=<?php echo $this->user->userlvl; ?>",
 		dataType: "JSON"
 	}).done(function(data){
 	if(!data.status){

@@ -1,6 +1,6 @@
 <?php
 require('./sys/config.php');
-require_once("./controllers/score.handler.class.php");
+require_once("./controllers/traces.handler.class.php");
 $ext = ".mp3";
 
 //script pour supprimer le fichier sur le serveur
@@ -28,8 +28,8 @@ if (isset($_POST['delete-file'])) {
 			echo(' both wav/webm files deleted successfully.');
 		}
 	}
-	$sh = new ScoreHandler2();
-	$sh->abort_record($full_name);
+	$th = new TracesHandler();
+	$th->abort_record($full_name);
 }
 
 ?>
