@@ -65,24 +65,24 @@ CREATE TABLE IF NOT EXISTS `cartes` (
 -- Structure de la table `enregistrement`
 --
 
-CREATE TABLE `enregistrement` (
+CREATE TABLE IF NOT EXISTS `enregistrement` (
   `enregistrementID` int(11) NOT NULL AUTO_INCREMENT,
-  `cheminEnregistrement` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `duration` tinyint(3) UNSIGNED NOT NULL COMMENT 'the length in seconds of the recording (max 255 sec)',
+  `cheminEnregistrement` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `duration` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the length in seconds of the recording (max 255 sec)',
   `idOracle` int(30) NOT NULL,
-  `OracleLang` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `OracleLang` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `carteID` int(11) NOT NULL,
-  `nivcarte` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `nivcarte` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `nivpartie` enum('easy','medium','hard') NOT NULL DEFAULT 'easy' COMMENT 'niveau de la partie oracle',
   `tpsEnregistrement` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `validation` enum('valid','invalid','limbo','given up') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'limbo',
-  `nbSuccess` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a permis de trouver le mot',
+  `nbSucces` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a permis de trouver le mot',
   `nbTentatives` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a été passé à un devin',
   `mise` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'La mise calculée en fonction du niveau de la carte du joueur et de la difficulté choisie',
   PRIMARY KEY (`enregistrementID`),
-  UNIQUE KEY `no_replay` (`OracleLang`,`carteID`),
-  KEY `cheminEnregistrement` (`cheminEnregistrement`) USING BTREE;
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `no_replay` (`OracleLang`,`carteID`) USING BTREE,
+  UNIQUE KEY `cheminEnregistrement` (`cheminEnregistrement`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- --------------------------------------------------------
