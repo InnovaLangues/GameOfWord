@@ -61,9 +61,9 @@ class oracle_card_byid
 		else{
 			// Sélection "dans ce cas là on laisse les gens jouer avec n'importe quelle carte (pour le moment) à terme on pourrait utiliser la item factory pour vérifier que le joueur a droit…"
 			$this->card = new Card((int) $this->carteId);
-			$gh = new GameHandler();
-			$this->time = $gh->get_oracle_time($this->user->userlvl);
-			$this->card->set_forbidden_count($gh->get_forbidden_count($this->user->userlvl));
+			$sv = new ScoreValues();
+			$this->time = $sv->get_oracle_time($this->user->userlvl);
+			$this->card->set_forbidden_count($sv->get_forbidden_count($this->user->userlvl));
 		}
 		return $res;
 	}

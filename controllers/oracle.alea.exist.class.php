@@ -50,9 +50,9 @@ class oracle_alea_exist
     		$this->card=$card;
 
 			//Gestion des règles
-			$gh = new GameHandler();
-			$this->time = $gh->get_oracle_time($this->user->userlvl);
-			$this->card->set_forbidden_count($gh->get_forbidden_count($this->user->userlvl));
+			$sv = new ScoreValues();
+			$this->time = $sv->get_oracle_time($this->user->userlvl);
+			$this->card->set_forbidden_count($sv->get_forbidden_count($this->user->userlvl));
 
     		$res = true;
     	}

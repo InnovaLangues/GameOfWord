@@ -9,8 +9,8 @@ include('./views/page.header.html');
 				<?php
 					$this->carte->set_view("./views/card.inline.display.php");
 					require_once("./models/userlvl.class.php");
-					$gh = new GameHandler();
-					$this->carte->set_forbidden_count($gh->get_forbidden_count($this->rec_level));
+					$sv = new ScoreValues();
+					$this->carte->set_forbidden_count($sv->get_forbidden_count($this->rec_level));
 					echo $this->carte;
 					$_SESSION["idCard"] = $this->carte->get_id();
 					$_SESSION["idEnregistrement"] = $this->record_id;

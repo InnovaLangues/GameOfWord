@@ -1,6 +1,6 @@
 <?php
 //A class to handle the main rules
-class GameHandler{
+class ScoreValues{
 	const LVL_EASY = 0;
 	const LVL_MEDIUM = 1;
 	const LVL_HARD = 2;
@@ -38,6 +38,20 @@ class GameHandler{
 	const DRUID_VERIF = 25;
 	const DRUID_VERIF_ERROR = 100;
 	const DRUID_CREATE_CARD = 40;
+	const RECORDING_SCORE_FORMULA =
+		"IF(`validation`='given up',
+			-ROUND(`mise`/3),
+			IF(`validation`='invalid',
+				-ROUND(1.5*`mise`),
+				IF(`validation`='valid',
+					ROUND(`mise`*(0.5+`nbSucces`/`nbTentatives`)),
+					0
+				)
+			)
+		)";
+
+	private static $DRUID_STRINGS = array(0 => 'invalid',
+												1 => 'valid');
 
 	//utilities
 	//To unify the way levels are defined throughout the game
@@ -125,6 +139,14 @@ class GameHandler{
 		return self::DRUID_CREATE_CARD;
 	}
 
+	public function get_druid_string($valid){
+		return self::$MULTIPLIERS_WIN[$valid];
+	}
+
+	public function get_recording_score_sql_formula(){
+		return self::RECORDING_SCORE_FORMULA;
+	}
+
 	public function get_stake($game_lvl, $card_lvl, $user_lvl, $won=true){
 		if(!is_int($game_lvl)){
 			$game_lvl = $this->unify_Lvl($game_lvl);
@@ -160,6 +182,8 @@ class GameHandler{
 		}
 		return round($res);
 	}
+
+
 
 //quick and dirty rules consistance
 	public function forbid_count_to_string($lang){

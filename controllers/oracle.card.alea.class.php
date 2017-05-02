@@ -243,9 +243,9 @@ class oracle_card_alea
 				$carte->store();
 				$this->card = $carte ;
 				//Gestion des règles
-				$gh = new GameHandler();
-				$this->time = $gh->get_oracle_time($this->user->userlvl);
-				$this->card->set_forbidden_count($gh->get_forbidden_count($this->user->userlvl));
+				$sv = new ScoreValues();
+				$this->time = $sv->get_oracle_time($this->user->userlvl);
+				$this->card->set_forbidden_count($sv->get_forbidden_count($this->user->userlvl));
 				unset($this->res);
 			// affichage de la carte
 				include('./views/oracle.card.display.html');

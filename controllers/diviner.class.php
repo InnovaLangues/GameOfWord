@@ -59,7 +59,7 @@ class diviner_game
 		$this->user = user::getInstance();
 		$this->diviner = $this->user->id;
 
-		//récupération des points de sanction (not handled by gameHandler et tant pis)
+		//récupération des points de sanction (not handled by ScoreValues et tant pis)
 		$this->pointsSanction = loosePointsDevin;
 
 
@@ -143,8 +143,8 @@ class diviner_game
 					//récupération du contenu de la carte
 					$this->card = new Card($this->raisin->carteID);
 					//Gestion du temps
-					$gh = new GameHandler();
-					$this->time = $gh->get_augur_time($this->user->userlvl, $this->raisin->duration);
+					$sv = new ScoreValues();
+					$this->time = $sv->get_augur_time($this->user->userlvl, $this->raisin->duration);
 
 					// récupération du pseudo de l'oracle pour savoir qui on écoute
 					$db = db::getInstance();

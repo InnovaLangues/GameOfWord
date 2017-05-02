@@ -13,7 +13,7 @@ class ScoreHandler{
 	private $recording;
 	private $lang;
 	private $lang_iso;
-	private $gh;//game handler
+	private $sv;//game handler
 	const ORACLE = 1;
 	const DRUID = 2;
 	const AUGUR = 3;
@@ -25,7 +25,7 @@ class ScoreHandler{
 	public function __construct($user1_or_id = true, $user1_role_or_lang = self::AUGUR, $recording_or_id = false){
 		$this->db = db::getInstance();
 		$this->lang_iso = new IsoLang();
-		$this->gh = new GameHandler();
+		$this->gh = new ScoreValues();
 		if($user1_or_id === true){
 			$user = user::getInstance();
 		}
