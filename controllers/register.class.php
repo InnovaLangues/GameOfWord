@@ -1,5 +1,5 @@
 <?php
-
+require_once('./sys/load_iso.php');
 class register
 {
 	 private $submit = false;
@@ -15,9 +15,14 @@ class register
 	 private $niveau='';
 	 private $GameLvl='';
 	 private $userlang_game = '';
+	 private $lang_iso;
 
 
 	 private $mode = '';
+
+	 public function __construct(){
+		 $this->lang_iso =  new IsoLang();
+	 }
 
 	 public function set_mode($mode)
 	 {
@@ -36,10 +41,6 @@ class register
 	 }
 
 	 private function init(){
-		  require_once('./sys/load_iso.php');
-		 $lang_iso = new IsoLang();
-
-
 		  $this->submit = isset($_POST['submit_form']);
 		  if ( $this->submit )
 		  {
@@ -74,7 +75,7 @@ class register
 		$this->niveau .= isset($_POST['choix_niveau_'.$i]) ? trim($_POST['choix_niveau_'.$i]).';' : '';
 		if (!isset($_POST['choix_niveau_'.$i])) { break; }
 		 }
-		 $this->userlang_game = isset($_POST['lang_game']) ? $lang_iso->language_code_for(trim($_POST['lang_game'])) : '';
+		 $this->userlang_game = isset($_POST['lang_game']) ? $this->lang_iso->language_code_for(trim($_POST['lang_game'])) : '';
 		  }
 		  return true;
 	 }
@@ -164,12 +165,8 @@ class register
 			if($key!=""){
 				array_push($sql, 'INSERT INTO `score` (`userid`, `langue`)'.
 						"VALUES(@USER_ID,".$db->escape((string) $key).");");
-				array_push($sql, "INSERT INTO `stats_devin` (`userid`, `langue`)
-					VALUES(@USER_ID,".$db->escape((string) $key).");");
-				array_push($sql, "INSERT INTO `stats_druide` (`userid`, `langue`)
-					VALUES(@USER_ID,".$db->escape((string) $key).");");
-				array_push($sql, "INSERT INTO `stats_oracle` (`userid`, `langue`)
-					VALUES(@USER_ID,".$db->escape((string) $key).");");
+				array_push($sql, "INSERT INTO `stats` (`userid`, `langue`)
+					VALUES(@USER_ID,".$db->escape($this->lang_iso->any_to_iso($key)).");");
 			}
 		}
 		array_push($sql, "SELECT @USER_ID as `id`;");

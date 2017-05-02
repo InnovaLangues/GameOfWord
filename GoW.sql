@@ -107,13 +107,15 @@ CREATE TABLE IF NOT EXISTS `mots_interdits` (
 
 CREATE TABLE IF NOT EXISTS `notif` (
   `userid` int(11) NOT NULL,
+  `type` TINYINT UNSIGNED NULL DEFAULT NULL COMMENT 'type of the message',
   `message` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `emetteur` int(11) NOT NULL,
+  `emetteur` int(11) NOT NULL DEFAULT '0',
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` int(11) NOT NULL,
   `game` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `time`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -149,70 +151,28 @@ CREATE TABLE IF NOT EXISTS `sanctionCarte` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `score`
+-- Structure de la table `stats`
 --
 
-CREATE TABLE `score` (
-  `scoreID` int(11) NOT NULL,
-  `userid` int(11) NOT NULL,
-  `scoreGlobal` int(11) NOT NULL DEFAULT '0',
-  `scoreOracle` int(11) NOT NULL DEFAULT '0',
-  `scoreDruide` int(11) NOT NULL DEFAULT '0',
-  `scoreDevin` int(11) NOT NULL DEFAULT '0',
-  `langue` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `first_game_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`scoreID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `stats_devin`
---
-
-CREATE TABLE `stats_devin` (
-  `userid` int(11) NOT NULL COMMENT 'l''id de l''utilisateur',
-  `langue` varchar(20) NOT NULL COMMENT 'langue de jeu',
-  `nbEnregistrements` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombre d''enregistrements écoutés',
-  `nbMotsTrouves` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombres de mots associés aux enregistrements trouvés',
-  `score` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score de devin (pas calculable avec les données de la table)',
-  PRIMARY KEY (`userid`,`langue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques de jeu en tant que devin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `stats_druide`
---
-
-CREATE TABLE `stats_druide` (
-  `userid` int(11) NOT NULL COMMENT 'id de l''utilisateur',
-  `langue` varchar(20) NOT NULL COMMENT 'langue concernée',
-  `nbCartes` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb cartes créées',
-  `nbArbitrages` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb arbitrages effectués',
-  `nbErrArbitrage` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb d''erreurs d''arbitrage',
-  `score` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score (peut être calculé uniquement avec les données de la table)',
-  PRIMARY KEY (`userid`,`langue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques d''activité en tant que Druide';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `stats_oracle`
---
-
-CREATE TABLE `stats_oracle` (
+CREATE TABLE `stats` (
   `userid` int(11) NOT NULL,
   `langue` varchar(20) NOT NULL,
-  `nbJeux` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de parties',
-  `nbAbandons` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''abandons',
-  `nbEnregistrements` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements envoyés',
-  `nbErreurs` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements erronés ou techniquements ratés',
-  `nbLectures` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de devins qui ont lu un enregistrement de l''utilisateur',
-  `nbSucces` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de succès des devins',
-  `score` mediumint(8) NOT NULL DEFAULT '0' COMMENT 'Score résultant (prends aussi en compte les niveaux, ne peut être calculé directement à partir des infos de la table)',
+  `nbJeux_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de parties',
+  `nbAbandons_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''abandons',
+  `nbEnregistrements_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements envoyés',
+  `nbErreurs_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements erronés ou techniquements ratés',
+  `nbLectures_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de devins qui ont lu un enregistrement de l''utilisateur',
+  `nbSucces_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de succès des devins',
+  `score_oracle` mediumint(8) NOT NULL DEFAULT '0' COMMENT 'Score résultant (prends aussi en compte les niveaux, ne peut être calculé directement à partir des infos de la table)',
+  `nbCartes_druide` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb cartes créées',
+  `nbArbitrages_druide` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb arbitrages effectués',
+  `nbErrArbitrage_druide` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nb d''erreurs d''arbitrage',
+  `score_druide` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score (peut être calculé uniquement avec les données de la table)',
+  `nbEnregistrements_devin` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombre d''enregistrements écoutés',
+  `nbMotsTrouves_devin` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombres de mots associés aux enregistrements trouvés',
+  `score_devin` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score de devin (pas calculable avec les données de la table)',
   PRIMARY KEY (`userid`,`langue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques de l''Oracle';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques des joueurs';
 
 
 -- --------------------------------------------------------
