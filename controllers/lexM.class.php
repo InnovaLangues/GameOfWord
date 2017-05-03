@@ -1,23 +1,20 @@
 <?php
-
-class LexInnovaLink{
+require_once('./sys/load_iso.php');
+class LexM_link{
 	private $user ;
+	private $lang_iso;
 	private $lexiconUrl = "http://totoro.imag.fr/lexinnova/api/Lexinnova@user@/@lang@/cdm-headword/*/cdm-headword/?strategy=NOT_EQUAL" ;
 	private $content ;
-	private $lang_codes = array("es"=>"esp",
-								"fr"=>"fre",
-								"en"=>"eng");
-
-
 	public function __construct($user){
 		$this->user = $user ;
+		$this->lang_iso = new IsoLang();
 		$this->lexiconUrl = str_replace(array("@user@", "@lang@"),
 			array($this->user->username,
-				  $this->lang_codes[$this->user->langGame]),
+				  $this->lang_iso->any_to_iso($this->user->langGame)),
 			$this->lexiconUrl);
 		$headers = get_headers($this->lexiconUrl, 1);
 		if($headers[0] == 'HTTP/1.1 200 OK'){
-			$this->content = simplexml_load_file($this->lexiconUrl);			
+			$this->content = simplexml_load_file($this->lexiconUrl);
 		}
 		else{
 			$this->content = false ;
