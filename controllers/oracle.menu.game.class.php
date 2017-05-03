@@ -1,5 +1,5 @@
 <?php
-require_once("./controllers/lexInnova.class.php");
+require_once("./controllers/lexM.class.php");
 unset($_SESSION["idCard"]);
 
 class oracle_menu_game
@@ -30,7 +30,7 @@ class oracle_menu_game
 		$this->oracle = $this->user->id;
 		$this->userlang = $this->user->userlang;
 		/*Lexicon*/
-		$this->lexicon = new LexInnovaLink($this->user);
+		$this->lexicon = new LexM_link($this->user);
 		if($this->lexicon->count_entries() > 0){
 			require_once("./models/item.factory.class.php");
 			$cardFactory = new ItemFactory($this->oracle,$this->user->langGame);
