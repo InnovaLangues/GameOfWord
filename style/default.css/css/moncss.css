@@ -127,22 +127,38 @@
 	 text-align:center;
 	 margin-top : 5px;
 	 margin-bottom : 5px;
+	 position:relative;
+	 padding-right:24px;
+	 padding-left:64px;
+	 overflow:auto;
 }
 #notificationsMess p {
-			font-family: playball;
+	 font-family: serif;
+	 font-weight:normal;
 	 color:white;
   	 font-size: 15px;
 	 height:64px;
+	 font-size:small;
+
 }
 #Img{
-	float:left;
-	position:relative;
+	top:0;
+	left:0;
+	position:absolute;
 	width:64px;
 	height:64px;
 }
 #delete{
-	float:right;
-
+	position:absolute;
+	top:0;
+	right:0;
+}
+#delete button{
+	box-sizing: content-box;
+	width:16px;
+	height:16px;
+	border-width:1px;
+	padding:3px;
 }
 #notificationFooter {
 	 background-color: #e9eaed;
