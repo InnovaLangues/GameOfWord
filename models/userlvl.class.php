@@ -40,11 +40,11 @@ class ScoreValues{
 	const DRUID_CREATE_CARD = 40;
 	const RECORDING_SCORE_FORMULA =
 		"IF(`validation`='given up',
-			-ROUND(`mise`/3),
+			-ROUND(`miseD`/3),
 			IF(`validation`='invalid',
-				-ROUND(1.5*`mise`),
+				-ROUND(1.5*`miseD`),
 				IF(`validation`='valid',
-					ROUND(`mise`*(0.5+`nbSucces`/`nbTentatives`)),
+					ROUND(`miseV`*(0.5+`nbSucces`/`nbTentatives`)),
 					0
 				)
 			)

@@ -78,9 +78,10 @@ CREATE TABLE IF NOT EXISTS `enregistrement` (
   `validation` enum('valid','invalid','limbo','given up') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'limbo',
   `nbSucces` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a permis de trouver le mot',
   `nbTentatives` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a été passé à un devin',
-  `mise` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'La mise calculée en fonction du niveau de la carte du joueur et de la difficulté choisie',
+  `miseD` tinyint(4) UNSIGNED NOT NULL DEFAULT '1' COMMENT 'La mise en cas de défaite calculée en fonction du niveau de la carte du joueur et de la difficulté choisie',
+  `miseV` tinyint(4) UNSIGNED NOT NULL DEFAULT '1' COMMENT 'La mise calculée en cas de victoire en fonction du niveau de la carte du joueur et de la difficulté choisie',
   PRIMARY KEY (`enregistrementID`),
-  UNIQUE KEY `no_replay` (`OracleLang`,`carteID`) USING BTREE,
+  UNIQUE KEY `no_replay` (`OracleLang`,`carteID`,`idOracle`) USING BTREE,
   UNIQUE KEY `cheminEnregistrement` (`cheminEnregistrement`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -107,16 +108,16 @@ CREATE TABLE IF NOT EXISTS `mots_interdits` (
 
 CREATE TABLE IF NOT EXISTS `notif` (
   `userid` int(11) NOT NULL,
-  `type` TINYINT UNSIGNED NULL DEFAULT NULL COMMENT 'type of the message',
-  `message` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `type` tinyint(3) UNSIGNED DEFAULT NULL COMMENT 'type of the message',
+  `message` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `emetteur` int(11) NOT NULL DEFAULT '0',
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` int(11) NOT NULL,
   `game` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `time`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `type` (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

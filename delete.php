@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('./sys/config.php');
 require_once("./controllers/traces.handler.class.php");
 $ext = ".mp3";

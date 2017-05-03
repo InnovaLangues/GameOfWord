@@ -216,6 +216,7 @@ $lang['Oracle_verif'][true] = " verified your recording and thinks you didn't us
 $lang['Oracle_verif'][false] = " verified your recording and thinks you used forbidden words";
 $lang['Oracle_started'] = "Oracle game started, if you give up the recording you'll lose ";
 $lang['Oracle_posted'] = "You took the risk of posting your description, you, brave Oracle!";
+$lang['Oracle_abort'] = "Recording deleted. Small penalty, but nothing like the one you would have got with forbidden words…";
 $lang['Oracle_devin'][false] = " listened to your recording and didn't find the word…";
 $lang['Oracle_devin'][true] = " listened to your recording and found the word!";
 $lang['Devin_played'] = "You listened to a recording by ";

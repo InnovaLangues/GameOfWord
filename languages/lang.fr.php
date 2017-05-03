@@ -210,6 +210,7 @@ $lang['Oracle_verif'][true] = " a vérifié votre enregistrement et pense que vo
 $lang['Oracle_verif'][false] = " a vérifié votre enregistrement et pense que vous n'avez pas utilisé de mot interdit";
 $lang['Oracle_started'] = "Partie “Oracle” commencée, sans dépôt du fichier, vous perdrez ";
 $lang['Oracle_posted'] = "Vous avez osé valider votre description, courageux…";
+$lang['Oracle_abort'] = "Enregistrement supprimé. Petite pénalité, mais moins lourde qu'en envoyant un enregistrement avec mots interdits…";
 $lang['Oracle_devin'][false] = " a écouté votre enregistrement et n'a pas trouvé le mot…";
 $lang['Oracle_devin'][true] = ' a écouté votre enregistrement et a trouvé&nbsp;!';
 $lang['Devin_played'] = 'Vous avez écouté un enregistrement de ';
