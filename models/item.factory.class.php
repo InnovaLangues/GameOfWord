@@ -178,10 +178,10 @@ class ItemFactory //a quick and dirty class…
 					$res = $this->db->query($tmp_query);
 					//recursion
 					if($res){
-						$this->get_recording($queryType, $parameter);
+						return $this->get_recording($queryType, $parameter);
 					}
 					else{
-						throw new Exception("Error chain in : ".$this->query." (recording not found) <br />".$tmp_query);
+						throw new Exception("Error chain in : ".$this->query." (recording not found) <br />Update error in: ".$tmp_query);
 					}
 				}
 			}
