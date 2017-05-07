@@ -42,9 +42,9 @@ class ScoreValues{
 		"IF(`validation`='given up',
 			-ROUND(`miseD`/3),
 			IF(`validation`='invalid',
-				-ROUND(1.5*`miseD`),
+				-ROUND(1.2*`miseD`),
 				IF(`validation`='valid',
-					ROUND(`miseV`*(0.5+`nbSucces`/`nbTentatives`)),
+					ROUND(`miseV`*(0.5+(`nbSucces`*1.2)/GREATEST(1,`nbTentatives`))),
 					0
 				)
 			)
@@ -140,7 +140,7 @@ class ScoreValues{
 	}
 
 	public function get_druid_string($valid){
-		return self::$MULTIPLIERS_WIN[$valid];
+		return self::$DRUID_STRINGS[$valid];
 	}
 
 	public function get_recording_score_sql_formula(){
