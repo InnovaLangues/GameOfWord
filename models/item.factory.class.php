@@ -112,7 +112,6 @@ class ItemFactory //a quick and dirty class…
 				$res = false;
 				break;
 		}
-
 		return true;
 	}
 
@@ -166,11 +165,25 @@ class ItemFactory //a quick and dirty class…
 	}
 
 	public function get_recording($queryType, $parameter = NULL){
+	//also checks if the recording exists
 		if($this->generate_query($queryType,$parameter)){
 			$this->db->query($this->query);
 			$res = $this->db->affected_rows();
 			if($res == 1){
 				$res = $this->db->fetch_object();
+				//checks whether the file exists makes it invalid otherwise
+				if(!file_exists("enregistrements/".$res->cheminEnregistrement)){
+					//set recording to invalid
+					$tmp_query = "UPDATE `enregistrement` SET `validation` = 'invalid', `tpsEnregistrement`=CURRENT_TIMESTAMP WHERE `enregistrement`.`enregistrementID` = ".$res->enregistrementID;
+					$res = $this->db->query($tmp_query);
+					//recursion
+					if($res){
+						$this->get_recording($queryType, $parameter);
+					}
+					else{
+						throw new Exception("Error chain in : ".$this->query." (recording not found) <br />".$tmp_query);
+					}
+				}
 			}
 		}
 		else{
