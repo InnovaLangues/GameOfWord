@@ -15,6 +15,7 @@ if(isset($lang)){
 	$lang['notif']['Oracle_started'] = 13;
 	$lang['notif']['Oracle_posted'] = 14;
 	$lang['notif']['Oracle_abort'] = 15;
+	$lang['notif']['Rec_verified'] = 16;
 
 	//images
 	$lang['img_augur']  = "./profil/diviner.jpg";

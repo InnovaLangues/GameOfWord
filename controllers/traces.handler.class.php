@@ -133,42 +133,72 @@ class TracesHandler{
 	public function druid_validate($recordingID, $validate=true, $revoke=false){
 		$queries = array();
 		//insert new arbitrage
-		array_push($queries, "INSERT INTO `arbitrage` (`enregistrementID`, `idDruide` , `validation`)
-			VALUES('$recordingID', '".$this->user->id."', '".$this->sv->get_druid_string($validate)."');");
+		array_push($queries, "INSERT INTO `arbitrage` (`enregistrementID`, `idDruide` , `validation`) VALUES(
+			'$recordingID',
+			'".$this->user->id."',
+			'".$this->sv->get_druid_string($validate)."');");
 		if($revoke){
 			array_push($queries, "SET @arbitrage_id = LAST_INSERT_ID();");
 		}
 
 		//update recording
 			//previous score and variables
-		array_push($queries, "SELECT @previous_recording_score := ".$this->sv->get_recording_score_sql_formula().", @language:=`OracleLang`, @oracle_id:= `idOracle` FROM `enregistrement` WHERE `enregistrementID`='$recordingID';");
+		array_push($queries, "SELECT @previous_recording_score := ".$this->sv->get_recording_score_sql_formula().", @lang:=`OracleLang`, @oracle_id:= `idOracle` FROM `enregistrement` WHERE `enregistrementID`='$recordingID';");
 			//new recording validation
 		array_push($queries, "UPDATE `enregistrement` SET `validation` =  '".
 			$this->sv->get_druid_string($validate)."' WHERE `enregistrementID`='$recordingID';");
-			//update oracle score
-		if($validate){
-			$nb_err = "";
-			if($revoke){
+		//update oracle score
+			//the score itself
+		array_push($queries, "SELECT @recording_score_diff :=  ".$this->sv->get_recording_score_sql_formula()."-(@previous_recording_score) FROM `enregistrement` WHERE `enregistrementID`='$recordingID';");
+		$nb_err = "";
+		if($revoke){
+			if($validate){
 				$nb_err = ", `nbErreurs_oracle` = `nbErreurs_oracle` - 1";
 			}
-			array_push($queries, "UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`='$recordingID')-(@previous_recording_score)$nb_err");
-		}
-		else{
-			$nb_err = "";
-			if($revoke){
+			else{
 				$nb_err = ", `nbErreurs_oracle` = `nbErreurs_oracle` + 1";
 			}
-			array_push($queries, "UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`='$recordingID')-(@previous_recording_score)$nb_err");
 		}
+		elseif (!$validate) {
+			$nb_err = ", `nbErreurs_oracle` = `nbErreurs_oracle` + 1";
+		}
+		array_push($queries, "UPDATE `stats` SET `score_oracle`=`score_oracle`+@recording_score_diff$nb_err WHERE `userid`=@oracle_id AND `langue`=@lang;");
 
 		//update druid score
-		array_push($queries, "UPDATE `stats` SET `nbArbitrages_druide` = `nbArbitrages_druide`+1, `score_druide` = `score_druide`+".$this->sv->get_druid_verification_score()." WHERE `stats`.`userid` = '".$this->user->id."' AND `stats`.`langue` = @language;");
+		array_push($queries, "UPDATE `stats` SET `nbArbitrages_druide` = `nbArbitrages_druide`+1, `score_druide` = `score_druide`+".$this->sv->get_druid_verification_score()." WHERE `stats`.`userid` = '".$this->user->id."' AND `stats`.`langue` = @lang;");
 		//update former druids score
 		if($revoke){
-			array_push($queries, "UPDATE `stats` SET `nbErrArbitrage_druide` = `nbErrArbitrage_druide`+1, `score_druide` = IF()`score_druide`-".$this->sv->get_druid_verification_error_score()." WHERE `stats`.`userid` IN (SELECT `idDruide` FROM `arbitrage` WHERE `enregistrementID`='$recordingID' AND `arbitrageID` < @arbitrage_id AND 'validation'!='".
+			array_push($queries, "UPDATE `stats` SET `nbErrArbitrage_druide` = `nbErrArbitrage_druide`+1, `score_druide` = IF(`score_druide`-".$this->sv->get_druid_verification_error_score()." WHERE `stats`.`langue` = @lang AND `stats`.`userid` IN (SELECT `idDruide` FROM `arbitrage` WHERE `enregistrementID`='$recordingID' AND `arbitrageID` < @arbitrage_id AND 'validation'!='".
 				$this->sv->get_druid_string($validate).");");
-			array_push($queries, "UPDATE `stats` SET `nbErrArbitrage_druide` = `nbErrArbitrage_druide`+1, `score_druide` = IF()`score_druide`+".$this->sv->get_druid_verification_error_score()." WHERE `stats`.`userid` IN (SELECT `idDruide` FROM `arbitrage` WHERE `enregistrementID`='$recordingID' AND `arbitrageID` < @arbitrage_id AND 'validation'='".
+			array_push($queries, "UPDATE `stats` SET `nbErrArbitrage_druide` = `nbErrArbitrage_druide`+1, `score_druide` = IF(`score_druide`+".$this->sv->get_druid_verification_error_score()." WHERE `stats`.`langue` = @lang AND `stats`.`userid` IN (SELECT `idDruide` FROM `arbitrage` WHERE `enregistrementID`='$recordingID' AND `arbitrageID` < @arbitrage_id AND 'validation'='".
 				$this->sv->get_druid_string($validate)."');");
 		}
+		//the notifications
+		array_push($queries, $this->notif->addNotif(
+			"@oracle_id",
+			"CONCAT('".$this->user->username.$this->messages['Oracle_verif'][$validate]."',
+				' (', @recording_score_diff,' pts)')",
+			$this->user->id,
+			$this->messages['notif']['Oracle_verif'][$validate],
+			false
+		));
+		array_push($queries, $this->notif->addNotif(
+			$this->user->id,
+			"'".$this->messages['Rec_verified']."'",
+			"@oracle_id",
+			$this->messages['notif']['Rec_verified'],
+			false
+		));
+		//TODO, il faudrait des notifications de réhabilitation / révocation, mais je vais pas m'en sortir si je les fais maintenant…
+		/**/require_once("debug.php");
+		/**/myLog("<h2>Druid action</h2><pre>".print_r($queries, true)."</pre>");
+		if(!$this->db->transaction($queries)){
+			$res = false;
+			throw new Exception("“".print_r($queries,true)."” could not be performed.\n".$this->db->get_error());
+		}
+		else{
+			$res = true;
+		}
+		return $res;
 	}
 }?>

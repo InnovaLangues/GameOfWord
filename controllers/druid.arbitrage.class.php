@@ -1,6 +1,9 @@
 <?php
 require_once("./models/item.factory.class.php");
 require_once("./models/card.class.php");
+require_once('./sys/db.class.php');
+require_once("./controllers/traces.handler.class.php");
+
 
 class druid_arbitrage
 {
@@ -95,6 +98,7 @@ class druid_arbitrage
 				$this->adresse = "enregistrements/".$this->raisin->cheminEnregistrement ;
 				$this->enregistrement = $this->raisin->enregistrementID;
 				// récupération du pseudo du joueur arbitré
+				$db = db::getInstance();
 				 $sql = 'SELECT username FROM user WHERE userid ="'.$this->raisin->idOracle.'"';
 				 $this->result=$db->query($sql);
 				 $this->res2= mysqli_fetch_assoc($this->result);
@@ -124,72 +128,17 @@ class druid_arbitrage
 	private function display_et_scores(){
 		require_once('./sys/load_iso.php');
 		$lang_iso = new IsoLang();
-		if( ($this->invalidate!==true)
-		 && ($this->invalidate!==false){
+		if( ($this->invalidate()!==true)
+		 && ($this->invalidate()!==false) ){
 			 include('./views/druid.arbitrage.html');
 		 }
 		else{
 			$th = new TracesHandler();
 			//could change $this->invalidate to validate…
-			$th->druid_validate($this->enregistrement, !$this->invalidate, $this->revoke);
+			$th->druid_validate($this->enregistrement, !$this->invalidate(), $this->revoke);
 			//for dynamic notification don't want to take the time to understand them…
 			$_SESSION["notif"]["notification_done"]["Druide"] = 'pointsDruide';
 			header('Location: index.php?page.home.html');
-		}
-
-
-
-
-
-
-
-
-
-		require_once('./controllers/update_score_coeff.php');
-		if(isset($this->enregistrement) && ($this->enregistrement!="") ){
-			$sh = new ScoreHandler($this->druid, ScoreHandler::DRUID,(int) $this->enregistrement);
-		}
-		// après avoir cliqué sur "au bûcher" = description vide ou fautive
-		if($this->invalidate() === true){
-			// Requête d'insertion des info dans la table 'arbitrage'
-			$sql = '' ;
-
-			$db->query($sql);
-		//	mettre à jour le champs "validation" de la table enregistrement pour que cet enregistrement devienne jouable
-			$sql = 'UPDATE enregistrement
-				SET validation =  ' .$db->escape((string) $this->invalid ) . '
-				WHERE enregistrementID="'.$this->enregistrement .'" ' ;
-				$db->query($sql);
-
-			//Requête de modification du score de l'Oracle dont la description est jetée en pâture aux flammes du bûcher purificateur
-			//Requête de modification du score du Druide après l'accomplissement de son fastidieux travail d'inquisition
-			$sh->update_scores(false);
-
-
-
-			// après avoir cliqué sur "valider" = description correcte et jouable
-		}elseif ($this->invalidate() === false){
-			// insertion des informations dans la table arbitrage
-			$sql = 'INSERT INTO arbitrage
-			(enregistrementID,idDruide,validation)
-				VALUES(' .
-					$db->escape((string) $this->enregistrement ) . ', ' .
-					$db->escape((string) $this->druid) . ', ' .
-					$db->escape((string) $this->valid ) . ') ' ;
-				$db->query($sql);
-
-			//	mettre à jour le champs "validation" de la table enregistrement pour que cet enregistrement devienne jouable
-			$sql = 'UPDATE enregistrement
-			SET validation =  ' .$db->escape((string) $this->valid ) . '
-			WHERE enregistrementID="'.$this->enregistrement .'" ' ;
-			$db->query($sql);
-
-			// Requête de modification du score de l'Oracle dont la description est élevée au rang de prediction divine
-			//Requête de modification du score du Druide l'accomplissement de son fastidieux travail d'inquisition
-			$sh->update_scores(true);
-
-		}
-		else{
 		}
 		return true;
 	}

@@ -161,7 +161,7 @@ CREATE TABLE `stats` (
   `nbJeux_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de parties',
   `nbAbandons_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''abandons',
   `nbEnregistrements_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements envoyés',
-  `nbErreurs_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements erronés ou techniquements ratés',
+  `nbErreurs_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements erronés ou techniquement ratés',
   `nbLectures_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de devins qui ont lu un enregistrement de l''utilisateur',
   `nbSucces_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de succès des devins',
   `score_oracle` mediumint(8) NOT NULL DEFAULT '0' COMMENT 'Score résultant (prends aussi en compte les niveaux, ne peut être calculé directement à partir des infos de la table)',

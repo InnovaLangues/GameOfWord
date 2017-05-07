@@ -26,31 +26,36 @@ class Notification
 	function readNotif(){
 		if($this->is_query_performer()){
 			//récupération des messages de notification;
-			$sql = 'SELECT * FROM `notif` WHERE `userid`="'.$this->user->id.'" ORDER BY `time` DESC';
-			$result=$this->db->query($sql);
-			// comptage du nombre de résultats
-			$nb_result=$result->num_rows;
+			$sql = 'SELECT * FROM `notif` WHERE `userid`='.$this->user->id.' ORDER BY `time` DESC';
+			if($result=$this->db->query($sql)){
+				// comptage du nombre de résultats
+				$nb_result=$result->num_rows;
 
-			//pour chaque enregistrement:
-			if ($nb_result > 0){
-				while($res = mysqli_fetch_assoc($result)){
-					if($res['emetteur'] != 0){
-						$sql = "SELECT `photo` FROM `user` WHERE `userid`=".$res['emetteur'];
-						$resultat=$this->db->query($sql);
-						$res2 = mysqli_fetch_assoc($resultat);
-						$emetteur = $res2["photo"];
+				//pour chaque enregistrement:
+				if ($nb_result > 0){
+					while($res = mysqli_fetch_assoc($result)){
+						if($res['emetteur'] != 0){
+							$sql = "SELECT `photo` FROM `user` WHERE `userid`=".$res['emetteur'];
+							$resultat=$this->db->query($sql);
+							$res2 = mysqli_fetch_assoc($resultat);
+							$emetteur = $res2["photo"];
+						}
+						else{
+							$emetteur = $res["game"];
+						}
+						$this->messNotif[$res['id']][$res['state']][$emetteur][$res["time"]] = $res['message'];
 					}
-					else{
-						$emetteur = $res["game"];
-					}
-					$this->messNotif[$res['id']][$res['state']][$emetteur][$res["time"]] = $res['message'];
 				}
 			}
 		}
 	}
 
-	function addNotif($userid,$notification,$emetteur,$type="NULL"){
-		$sql = "INSERT INTO `notif`(`userid`, `type`, `message`, `emetteur`) VALUES ($userid,$type,".$this->db->escape($notification).",'$emetteur');";
+	function addNotif($userid,$notification,$emetteur,$type="NULL",$escapeChars=true){
+		$text = $notification;
+		if($escapeChars){
+			$text = $this->db->escape($text);
+		}
+		$sql = "INSERT INTO `notif`(`userid`, `type`, `message`, `emetteur`) VALUES ($userid,$type,$text,$emetteur);";
 		if($this->is_query_performer()){
 			$result=$this->db->query($sql);
 		}
@@ -60,9 +65,13 @@ class Notification
 		return $result;
 	}
 
-	function addNotifGAME($userid,$notification,$role,$type="NULL"){
+	function addNotifGAME($userid,$notification,$role,$type="NULL",$escapeChars=true){
+		$text = $notification;
+		if($escapeChars){
+			$text = $this->db->escape($text);
+		}
 		//add an image to your notification…
-		$sql = "INSERT INTO `notif` (`userid`, `type`, `message`, `emetteur` ,`game`) VALUES ($userid,$type,".$this->db->escape($notification).",0,'".$role."');";
+		$sql = "INSERT INTO `notif` (`userid`, `type`, `message`, `emetteur` ,`game`) VALUES ($userid,$type,$text,0,'".$role."');";
 		if($this->is_query_performer()){
 			$result=$this->db->query($sql);
 		}
@@ -99,7 +108,7 @@ class Notification
 	}
 
 	function cancelLastNotifOfType($user_id,$type){
-		$sql= "DELETE FROM `notif` WHERE `notif`.`userid`='$user_id' AND `notif`.`type` = '$type' ORDER BY `notif`.`time` DESC LIMIT 1;";
+		$sql= "DELETE FROM `notif` WHERE `notif`.`userid`=$user_id AND `notif`.`type` = '$type' ORDER BY `notif`.`time` DESC LIMIT 1;";
 		if($this->is_query_performer()){
 			$result=$this->db->query($sql);
 		}
