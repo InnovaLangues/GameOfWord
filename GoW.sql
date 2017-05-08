@@ -130,11 +130,9 @@ CREATE TABLE IF NOT EXISTS `parties` (
   `enregistrementID` int(11) NOT NULL,
   `tpsDevin` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idDevin` int(11) NOT NULL,
-  `tpsdejeu` datetime NULL DEFAULT NULL,
-  `reussie` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `reussie` enum('en cours','non','oui') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en cours',
   PRIMARY KEY (`partieID`),
-  KEY `enregistrementID` (`enregistrementID`),
-  KEY `idDevin` (`idDevin`)
+  UNIQUE KEY `un_enr_par_joueur` (`idDevin`,`enregistrementID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
