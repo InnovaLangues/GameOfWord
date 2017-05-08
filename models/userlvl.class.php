@@ -49,7 +49,7 @@ class ScoreValues{
 				)
 			)
 		)";
-
+	const AUGUR_SCORE_FORMULA = "ROUND(`nbMotsTrouves_devin`/`nbEnregistrements_devin`*`sommeMises_devin`)";
 	private static $DRUID_STRINGS = array(0 => 'invalid',
 												1 => 'valid');
 
@@ -147,6 +147,10 @@ class ScoreValues{
 		return self::RECORDING_SCORE_FORMULA;
 	}
 
+	public function get_augur_score_formula(){
+		return self::AUGUR_SCORE_FORMULA;
+	}
+
 	public function get_stake($game_lvl, $card_lvl, $user_lvl, $won=true){
 		if(!is_int($game_lvl)){
 			$game_lvl = $this->unify_Lvl($game_lvl);
@@ -183,7 +187,9 @@ class ScoreValues{
 		return round($res);
 	}
 
-
+	public function get_augur_divination_stake($game_lvl, $card_lvl, $user_lvl){
+		return $this->get_stake($game_lvl, $card_lvl, $user_lvl, true);
+	}
 
 //quick and dirty rules consistance
 	public function forbid_count_to_string($lang){

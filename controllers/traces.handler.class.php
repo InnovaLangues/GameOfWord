@@ -14,7 +14,6 @@ class TracesHandler{
 	private $druid = false;
 	private $augur = false;
 	private $queries;
-	private $recording;
 	private $user;
 	private $lang_iso;
 	private $sv;//game handler
@@ -45,7 +44,7 @@ class TracesHandler{
 		array_push($this->queries, $query);
 	}
 
-	public function oracle_see_card($card, $gameLevel){
+	public function oracle_see_card($card){
 		try{
 			$lang = $this->lang_iso->any_to_iso($card->get_lang());
 			$user_level = $this->user->get_lang_lvl($lang);
@@ -54,15 +53,15 @@ class TracesHandler{
 		}
 		//once a card is seen it is stored in db for score and next play
 		$this->reinit_queries();
-		$stakes = array("V" => $this->sv->get_stake($gameLevel, $card->get_level(), $user_level, true),
-							 "D" => $this->sv->get_stake($gameLevel, $card->get_level(), $user_level, false));
+		$stakes = array("V" => $this->sv->get_stake($this->user->userlvl, $card->get_level(), $user_level, true),
+							 "D" => $this->sv->get_stake($this->user->userlvl, $card->get_level(), $user_level, false));
 			//create recording
 		$this->add_query("INSERT INTO `enregistrement` (`idOracle`, `OracleLang`, `carteID`, `nivcarte`, `nivpartie`, `validation`, `miseD`, `miseV`)
 					 VALUES ('".$this->user->id."','".
 									$lang."', '".
 									$card->get_id()."', '".
 									$card->get_level()."', '".
-									$gameLevel."','given up', '".$stakes['D']."', '".$stakes['V']."');");
+									$this->user->userlvl."','given up', '".$stakes['D']."', '".$stakes['V']."');");
 		//score
 		$this->add_query("SET @recording_id = LAST_INSERT_ID();");
 		$this->add_query("UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`=@recording_id), `nbAbandons_oracle`=`nbAbandons_oracle`+1, `nbJeux_oracle`=`nbJeux_oracle`+1 WHERE `userid`='".$this->user->id."' AND `langue`='$lang';");
@@ -200,8 +199,6 @@ class TracesHandler{
 			false
 		));
 		//TODO, il faudrait des notifications de réhabilitation / révocation, mais de toute façon il y a pas vraiment la fonctionnalité…
-		/**/require_once("debug.php");
-		/**/myLog("<h2>Druid action</h2><pre>".print_r($this->queries, true)."</pre>");
 		if(!$this->db->transaction($this->queries)){
 			$res = false;
 			throw new Exception("“".print_r($this->queries,true)."” could not be performed.\n".$this->db->get_error());
@@ -214,18 +211,47 @@ class TracesHandler{
 
 	//so that if the augur reloads to give up without loss there's a penalty
 	//and not for oracle
-	public function augur_start_play(){
-
+	public function augur_start_play($rec_id, $rec_lang, $rec_level){
+		$this->reinit_queries();
+		$user_level = $this->user->get_lang_lvl($this->lang_iso->any_to_iso($rec_lang));
+		$stake = $this->sv->get_augur_divination_stake($this->user->userlvl, $rec_level, $user_level);
+		//create game
+		$this->add_query("INSERT INTO `parties` (`enregistrementID`, `idDevin`, `mise`, `nivPartie`, `nivCarte`) VALUES ('$rec_id', '".$this->user->id."', '$stake', '".$this->user->userlvl."', '$rec_level');");
+		//update stats
+		$this->add_query("UPDATE `stats` SET `nbEnregistrements_devin` = `nbEnregistrements_devin`+1, `sommeMises_devin`=`sommeMises_devin`+$stake WHERE `userid`='".$this->user->id."';");
+		$this->add_query("UPDATE `stats` SET `score_devin`='".$this->sv->get_augur_score_formula()."' WHERE `userid`='".$this->user->id."';");
+		$this->add_query($this->notif->addNotifGAME($this->user->id,
+		$this->messages['Augur_playing'],
+		$this->messages['img_oracle'],
+		$this->messages['notif']['Augur_playing']));
+		if(!$this->db->transaction($this->queries)){
+			$res = false;
+			throw new Exception("“".print_r($this->queries,true)."” could not be performed.\n".$this->db->get_error());
+		}
+		else{
+			$res = true;
+		}
+		return $res;
 	}
 
 	//don't find (end timer, either by giving up or not)
 	//augur & oracle
 	public function augur_loss(){
+		//update partie + durée (NULL = vidé le chrono) réussite non
+		//stats devin cf. start play (→ on ne change pas)
+
+		//enr + 1 tentative
+		//stats oracle +1 lecture → update score
+
 
 	}
 
 	//augur (and oracle) win
 	public function augur_win(){
+		//update partie + durée réussite oui
+		//stats devin : +1 nbMotsTrouves_devin + mise / update score
+		//enr +1 tentative + 1 succès
+		//oracle +1 lecture +1 succès → update score.
 
 	}
 }?>

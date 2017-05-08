@@ -1,4 +1,3 @@
-<script type="text/javascript" src="controllersJS/popup.js"></script>
 <script type="text/javascript" src="controllersJS/timer.js"></script>
 
 <?php $title = 'Devin';
@@ -21,7 +20,7 @@ function pressurise(){
 }
 
 function finChrono(){
-	document.location.href="index.php?mode=diviner.timeout"
+	document.location.href="index.php?mode=diviner.timeout&duration="+monChrono.getElapsedTime();
 	if(!monChrono.isRunning()){
 		$('#countdown').css('background-color', 'white');
 		$('#countdown').html("Buzz Buzz");
@@ -38,29 +37,7 @@ function give_up(){
 <div id="main-container">
 	<div id="jrForm">
 		<div class="form-jr">
-
-				 <?php
-				 //Si l'utilisateur a quitté la partie précédente
-				 if ( $this->lang ) {
-				 	foreach ($this->lang as $mess){
-				 	?>
-				 	<!--Popup Overlay -->
-					<div id="facebox">
-						<div class="content">
-							<div style="padding:5px;">
-								<h2><?php echo $lang['Becareful']; ?></h2><br/><h3><?php echo $lang[$mess]; ?></h3>
-								<button class="close" style="cursor: pointer; background:#000; color:white; text-align:center; font-weight:bold; position:absolute; bottom:20%; left:50%; padding:0 2px; width:200px; height:30px; line-height:20px">OK</button>
-								<div class="resume">&nbsp;</div>
-							</div>
-						</div>
-					</div>
-					<!-- Fin Popup -->
-				 	<?php
-				 	}
-				 	?>
-				 	<script>popUp();</script>
 				<?php
-				 }
 				// S'il y a des erreurs dans la class diviner.class.php
 				 if ( $this->errors ) {
 				 ?>
@@ -127,7 +104,7 @@ function give_up(){
 
 	//if (document.getElementById('motadeviner').value == document.getElementById('mot').value ) {
 		if (motentre == motadeviner) {
-				document.location.href="index.php?mode=diviner.result";
+				document.location.href="index.php?mode=diviner.result&duration="+monChrono.getElapsedTime();
 			}
 	// Si le devin donne une réponse fausse, on vide la zone de texte
 		else {

@@ -2,6 +2,8 @@
 require_once("./models/item.factory.class.php");
 require_once("./models/card.class.php");
 require_once("./models/userlvl.class.php");
+require_once("./controllers/traces.handler.class.php");
+/**/include_once("debug.php");
 
 class diviner_game
 {
@@ -11,12 +13,12 @@ class diviner_game
 	private $lang = array();
 	private $motadeviner='';
 	private $nivcarte = '';
+	private $th ;
 
 
 	private $userlang = '';
 	private $user= '';
 	private $diviner= '';
-	private $pointsSanction ='';
 
 	private $raisin ='';
 	private $res2 = '';
@@ -26,8 +28,6 @@ class diviner_game
 	private $sanction ='';
 	private $score='';
 
-
-	private $carteValide = false;
 
 	private $adresse = '';
 	private $reussie = 'en cours';
@@ -43,7 +43,6 @@ class diviner_game
 	{
 		if ( $this->init() )
         {
-			$this->sanctionLastPartie();
 			if($this->selectpartie()){
 				$this->update();
 			}
@@ -59,80 +58,19 @@ class diviner_game
 		$this->user = user::getInstance();
 		$this->diviner = $this->user->id;
 
-		//récupération des points de sanction (not handled by ScoreValues et tant pis)
-		$this->pointsSanction = loosePointsDevin;
-
-
 		if(isset($_SESSION["langDevin"])){
 			$this->userlang = $_SESSION["langDevin"];
 		}
 		else{
 			$this->userlang = $this->user->langGame;
 		}
-		unset($_SESSION["motDeviner"]); //permet de supprimer la sécurité qui empêche le joueur de s'ajouter des points à l'infini
-		unset($_SESSION["timeOutOracle"]); //permet de supprimer la sécurité qui empêche le joueur d'enlever des points à l'oracle à l'infini
-
+		$this->th = new TracesHandler();
 		return true;
-	}
-
-	private function sanctionLastPartie()
-	{ // fonction qui permet de vérifier l'état de la dernière partie et de sanctionner le joueur de 5 pts s'il a quitté la partitatut = "en cours")
-		include_once('./sys/load_iso.php');
-		$lang_iso = new IsoLang();
-	    $db =  db::getInstance();
-		$sql =  "SELECT *
-			FROM parties WHERE idDevin = \"".$this->diviner."\"
-			ORDER BY parties.tpsDevin DESC
-			LIMIT 1";
-			$res=$db->query($sql);
-			$this->sanction = mysqli_fetch_assoc($res);
-
-		if($this->sanction['reussie'] == "en cours"){
-
-		   $sql = "SELECT *
-            	FROM sanctionCarte
-                WHERE idDevin ='".$this->diviner."' AND enregistrementID='".$this->sanction['enregistrementID']."'";
-                $res = $db->query($sql);
-                $this->existSanction = mysqli_num_rows($res);
-				if($this->existSanction == 0){
-					//Ajout de la carte sanctionné dans la BDD
-					$sql = "INSERT INTO sanctionCarte
-					(idDevin,enregistrementID)
-					VALUES (".$this->diviner.",".$this->sanction['enregistrementID'].")";
-
-                   	if( $res = $db->query($sql)){
-						$sql = "SELECT scoreDevin, scoreGlobal
-						FROM score
-						WHERE userid ='".$this->diviner."' AND langue='" . $lang_iso->french_for($this->userlang) . "'";
-						$res = $db->query($sql);
-						$this->score = mysqli_fetch_assoc($res);
-
-						if ($this->score['scoreDevin'] >= $this->pointsSanction) { #à modifier avec un fichier config
-
-
-							$this->score['scoreDevin']-=$this->pointsSanction;
-							$this->score['scoreGlobal']-=$this->pointsSanction;
-
-							$sql='UPDATE score
-							SET scoreDevin="'.$this->score['scoreDevin'].'", scoreGlobal ="'.$this->score['scoreGlobal'].'"
-							WHERE userid="'.$this->diviner.'" AND langue="' . $lang_iso->french_for($this->userlang) . '"';
-							$res=$db->query($sql);
-							array_push($this->lang,"sanction");
-						}
-						else
-						{
-					 		array_push($this->lang,"sanction_without_points");
-
-						}
-		      	    }
-				}
-		}
 	}
 
 	private function selectpartie(){
 		$res = false;
 		try{
-			/**/include_once("debug.php");
 			$recordingFactory = new ItemFactory($this->diviner,$this->user->langGame);
 			$this->raisin = $recordingFactory->get_recording(ItemFactory::VALID_RECORDING_NOT_ME);
 			if(is_object($this->raisin)){
@@ -148,6 +86,7 @@ class diviner_game
 					$this->time = $sv->get_augur_time($this->user->userlvl, $this->raisin->duration);
 
 					// récupération du pseudo de l'oracle pour savoir qui on écoute
+					require_once("./sys/db.class.php");
 					$db = db::getInstance();
 					$sql = 'SELECT username
 							FROM user WHERE userid ="'.$this->raisin->idOracle.'"';
@@ -176,25 +115,15 @@ class diviner_game
 		catch(Exception $e){
 			array_push($this->errors,'NoGame');
 		}
-		$this->setcarteValide($res);
 		return $res;
 	}
 
-	private function update()
-	{
-		//Insertion des informations dans la table parties
-		//connexion à  la bd
-			$db = db::getInstance();
-
-			 $sql = 'INSERT INTO parties
-				(enregistrementID,idDevin,tpsDevin,reussie)
-					VALUES(' .
-						$db->escape((string) $this->raisin->enregistrementID).','.
-						$db->escape((string) $this->diviner) . ','.
-						'CURRENT_TIMESTAMP,'.
-						$db->escape((string) $this->reussie).')';
-				$db->query($sql);
-			return false;
+	private function update(){
+		//update dans ce contexte, crée uniquement une nouvelle partie
+		//la vue appellera diviner timeout/result selon la situation
+		$this->th->augur_start_play($this->raisin->enregistrementID,
+											 $this->raisin->OracleLang,
+											 $this->raisin->nivcarte);
 	}
 
 	private function display()
@@ -202,10 +131,6 @@ class diviner_game
 		include('./views/diviner.game.html');
 
         return true;
-	}
-
-    public function setcarteValide ($state){
-		$this->carteValide=$state;
 	}
 }
 

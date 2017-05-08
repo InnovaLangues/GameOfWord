@@ -20,7 +20,7 @@ else{
 					$th = new TracesHandler();
 					require_once('./models/card.class.php');
 					$card = new Card($_GET["card_id"]);
-					if($th->oracle_see_card($card, $_GET["game_level"])){
+					if($th->oracle_see_card($card)){
 						$res = true;
 						$msg = "";
 					}
