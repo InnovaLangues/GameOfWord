@@ -213,6 +213,7 @@ $lang['Oracle_posted'] = "Vous avez osé valider votre description, courageux…
 $lang['Oracle_abort'] = "Enregistrement supprimé. Petite pénalité, mais moins lourde qu'en envoyant un enregistrement avec mots interdits…";
 $lang['Oracle_devin'][false] = " a écouté votre enregistrement et n'a pas trouvé le mot…";
 $lang['Oracle_devin'][true] = ' a écouté votre enregistrement et a trouvé&nbsp;!';
+$lang['Augur_playing']="Vous écoutez un enregistrement, si vous ne terminez pas cette activité, vous perdrez seul…";
 $lang['Devin_played'] = 'Vous avez écouté un enregistrement de ';
 $lang['Devin_oracle'][true] = 'Et vous avez trouvé&nbsp;!';
 $lang['Devin_oracle'][false] = "Mais vous n'avez pas trouvé…";
