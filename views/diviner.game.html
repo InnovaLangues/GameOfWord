@@ -11,7 +11,7 @@ include('./views/page.header.html');
 function renders(minutes, seconds){
 	if(seconds == Math.floor(seconds)){
 		if (seconds < 10){
-			seconds = "0" + seconds;  
+			seconds = "0" + seconds;
 		}
 		$('#countdown').html(minutes + ":" + seconds);
 	}
@@ -39,7 +39,7 @@ function give_up(){
 	<div id="jrForm">
 		<div class="form-jr">
 
-				 <?php 
+				 <?php
 				 //Si l'utilisateur a quitté la partie précédente
 				 if ( $this->lang ) {
 				 	foreach ($this->lang as $mess){
@@ -48,7 +48,7 @@ function give_up(){
 					<div id="facebox">
 						<div class="content">
 							<div style="padding:5px;">
-								<h2><?php echo $lang['Becareful']; ?></h2><br/><h3><?php echo $lang[$mess]; ?></h3> 
+								<h2><?php echo $lang['Becareful']; ?></h2><br/><h3><?php echo $lang[$mess]; ?></h3>
 								<button class="close" style="cursor: pointer; background:#000; color:white; text-align:center; font-weight:bold; position:absolute; bottom:20%; left:50%; padding:0 2px; width:200px; height:30px; line-height:20px">OK</button>
 								<div class="resume">&nbsp;</div>
 							</div>
@@ -57,12 +57,12 @@ function give_up(){
 					<!-- Fin Popup -->
 				 	<?php
 				 	}
-				 	?> 
+				 	?>
 				 	<script>popUp();</script>
 				<?php
-				 } 
-				// S'il y a des erreurs dans la class diviner.class.php	
-				 if ( $this->errors ) { 
+				 }
+				// S'il y a des erreurs dans la class diviner.class.php
+				 if ( $this->errors ) {
 				 ?>
 				<fieldset class="errors">
 				<legend>Erreurs</legend>
@@ -72,12 +72,12 @@ function give_up(){
 							<?php
 								 echo $lang[$error]; ?>
 						</li>
-					
+
 					</ul>
-				</fieldset>  
-				<?php } 
+				</fieldset>
+				<?php }
 				}
-				else { 
+				else {
 				?>
 				<script>monChrono.start();</script>
 				<fieldset>
@@ -86,11 +86,11 @@ function give_up(){
 						<dl>
 							<dt><label for="carteID"><?php echo $lang['id_card'];?></label>  <?php echo  $this->raisin->carteID.'</br>'; ?></dt>
 							<dt><label for="createur"><?php echo $lang['card_creator'];?></label>  <?php echo $this->res4['username'].'</br>'; ?></dt>
-							<dt><label for="oracle"><?php echo $lang['card_oracle'];?></label>  <?php echo $this->res2['username'].'</br>'; ?></dt>						
+							<dt><label for="oracle"><?php echo $lang['card_oracle'];?></label>  <?php echo $this->res2['username'].'</br>'; ?></dt>
 						</dl>
 						<h3><?php echo $lang['which_word'];?> </h3>
 						<div class="inner" style="height: 5em;">
-						<audio id="audio" autoplay controls></audio> 
+						<audio id="audio" autoplay controls></audio>
 						<button class="btn btn-primary"  type="button" id="start-audio"><?php echo $lang['start_playback'] ?></button>
 						<button class="btn btn-primary"  type="button" id="give-up"><?php echo $lang['give_up'] ?></button>
 						</div>
@@ -103,8 +103,9 @@ function give_up(){
 					<div id="form-cmd">
 					<!--	<input class="btn btn-lg btn-primary btn-block" type="submit" id="submit_form" name="submit_form" value="<?php// echo $lang['validate']; ?>" class="submit_buttons" /> -->
 						<input class="btn btn-lg btn-primary btn-block" type="button" id="valide" onclick="validate()" value="<?php echo $lang['validate']; ?>" />
-						<input type="hidden" name="mode" value="<?php echo $this->mode; ?>"/> 
+						<input type="hidden" name="mode" value="<?php echo $this->mode; ?>"/>
 						<input type="hidden" id='motadeviner' value="<?php echo $this->card->get_word(); ?>"/>
+						<input type="hidden" id='idPartie' value="<?php echo $this->card->get_word(); ?>"/><!--TODO-->
 					</div>
 				</fieldset>
 				<?php } ?>
@@ -114,21 +115,21 @@ function give_up(){
 </div>
 
 <script type="text/javascript">
-// RÃ©sultats 
+// RÃ©sultats
 	// Si le devin donne la bonne réponse
 	function validate() {
-		
+
 		var motadeviner=document.getElementById('motadeviner').value;
 		var motentre=document.getElementById('mot').value;
 		//fonction qui rend insensible Ã  la casse et enlÃ¨ve les espaces en trop
 		var motentre=(motentre.replace(/\s{2,}/g, ' ').trim().toLowerCase());
 		var motadeviner=(motadeviner.replace(/\s{2,}/g, ' ').trim().toLowerCase());
-				
+
 	//if (document.getElementById('motadeviner').value == document.getElementById('mot').value ) {
 		if (motentre == motadeviner) {
 				document.location.href="index.php?mode=diviner.result";
 			}
-	// Si le devin donne une réponse fausse, on vide la zone de texte 
+	// Si le devin donne une réponse fausse, on vide la zone de texte
 		else {
 			console.log('OK');
 			var inputElt = document.getElementById('mot');
@@ -147,7 +148,7 @@ function give_up(){
 			}, 1000);
 		}
 	}
-	
+
 //test keypress
 $(document).keypress(function(e) {
     if(e.which == 13) {
@@ -185,8 +186,8 @@ $(document).keypress(function(e) {
                 if (start) start.startPlay();
             window.isAudio = true;
             this.disabled = true;
-            
-            
+
+
         };
         giveup.onclick = give_up ;
 </script>

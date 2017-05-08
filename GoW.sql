@@ -128,24 +128,15 @@ CREATE TABLE IF NOT EXISTS `notif` (
 CREATE TABLE IF NOT EXISTS `parties` (
   `partieID` int(11) NOT NULL AUTO_INCREMENT,
   `enregistrementID` int(11) NOT NULL,
-  `tpsDevin` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idDevin` int(11) NOT NULL,
-  `reussie` enum('en cours','non','oui') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en cours',
+  `tpsDevin` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'heure de début de la partie',
+  `duree_Partie` tinyint(4) DEFAULT NULL COMMENT 'Au bout de combien de temps le joueur a trouvé (ou abandonné)',
+  `reussite` enum('en cours','non','oui') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en cours',
+  `mise` tinyint(3) UNSIGNED NOT NULL COMMENT 'la mise de la partie (pas de miseV/miseD)',
   PRIMARY KEY (`partieID`),
   UNIQUE KEY `un_enr_par_joueur` (`idDevin`,`enregistrementID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Structure de la table `sanctionCarte`
---
-
-CREATE TABLE IF NOT EXISTS `sanctionCarte` (
-  `idDevin` int(11) NOT NULL,
-  `enregistrementID` int(11) NOT NULL,
-  UNIQUE KEY `idDevin` (`idDevin`,`enregistrementID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -153,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `sanctionCarte` (
 -- Structure de la table `stats`
 --
 
-CREATE TABLE `stats` (
+CREATE TABLE IF NOT EXISTS `stats` (
   `userid` int(11) NOT NULL,
   `langue` varchar(20) NOT NULL,
   `nbJeux_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de parties',
@@ -169,9 +160,10 @@ CREATE TABLE `stats` (
   `score_druide` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score (peut être calculé uniquement avec les données de la table)',
   `nbEnregistrements_devin` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombre d''enregistrements écoutés',
   `nbMotsTrouves_devin` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombres de mots associés aux enregistrements trouvés',
+  `sommeMises_devin` mediumint(8) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'La somme des mises des parties jouées en tant que devin',
   `score_devin` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score de devin (pas calculable avec les données de la table)',
   PRIMARY KEY (`userid`,`langue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques des joueurs';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques et scores des joueurs';
 
 
 -- --------------------------------------------------------

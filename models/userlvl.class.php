@@ -42,7 +42,7 @@ class ScoreValues{
 		"IF(`validation`='given up',
 			-ROUND(`miseD`/3),
 			IF(`validation`='invalid',
-				-ROUND(1.2*`miseD`),
+				-ROUND(4*`miseD`/3),
 				IF(`validation`='valid',
 					ROUND(`miseV`*(0.5+(`nbSucces`*1.2)/GREATEST(1,`nbTentatives`))),
 					0

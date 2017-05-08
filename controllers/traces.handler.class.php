@@ -13,6 +13,7 @@ class TracesHandler{
 	private $oracle = false;
 	private $druid = false;
 	private $augur = false;
+	private $queries;
 	private $recording;
 	private $user;
 	private $lang_iso;
@@ -33,6 +34,15 @@ class TracesHandler{
 		$this->notif = new Notification(false);
 		require_once('./languages/language.fn.php');
 		$this->messages = get_messages($this->user->get_lang(), $this->db);
+		$this->reinit_queries();
+	}
+
+	public function reinit_queries(){
+		$this->queries = array();
+	}
+
+	public function add_query($query){
+		array_push($this->queries, $query);
 	}
 
 	public function oracle_see_card($card, $gameLevel){
@@ -43,28 +53,28 @@ class TracesHandler{
 			throw new Exception("$lang ne semble pas être une langue…");
 		}
 		//once a card is seen it is stored in db for score and next play
-		$queries = array();
+		$this->reinit_queries();
 		$stakes = array("V" => $this->sv->get_stake($gameLevel, $card->get_level(), $user_level, true),
 							 "D" => $this->sv->get_stake($gameLevel, $card->get_level(), $user_level, false));
 			//create recording
-		array_push($queries, "INSERT INTO `enregistrement` (`idOracle`, `OracleLang`, `carteID`, `nivcarte`, `nivpartie`, `validation`, `miseD`, `miseV`)
+		$this->add_query("INSERT INTO `enregistrement` (`idOracle`, `OracleLang`, `carteID`, `nivcarte`, `nivpartie`, `validation`, `miseD`, `miseV`)
 					 VALUES ('".$this->user->id."','".
 									$lang."', '".
 									$card->get_id()."', '".
 									$card->get_level()."', '".
 									$gameLevel."','given up', '".$stakes['D']."', '".$stakes['V']."');");
 		//score
-		array_push($queries, "SET @recording_id = LAST_INSERT_ID();");
-		array_push($queries, "UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`=@recording_id), `nbAbandons_oracle`=`nbAbandons_oracle`+1, `nbJeux_oracle`=`nbJeux_oracle`+1 WHERE `userid`='".$this->user->id."' AND `langue`='$lang';");
+		$this->add_query("SET @recording_id = LAST_INSERT_ID();");
+		$this->add_query("UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`=@recording_id), `nbAbandons_oracle`=`nbAbandons_oracle`+1, `nbJeux_oracle`=`nbJeux_oracle`+1 WHERE `userid`='".$this->user->id."' AND `langue`='$lang';");
 		//notification
-		array_push($queries, $this->notif->addNotifGAME(
+		$this->add_query($this->notif->addNotifGAME(
 				$this->user->id,$this->messages['Oracle_started'].$stakes["V"]." pts.",
 				$this->messages['img_oracle'],
 				$this->messages['notif']['Oracle_started']
 			));
-		if(!$this->db->transaction($queries)){
+		if(!$this->db->transaction($this->queries)){
 			$res = false;
-			throw new Exception("“".print_r($queries,true)."” could not be performed.\n".$this->db->get_error());
+			throw new Exception("“".print_r($this->queries,true)."” could not be performed.\n".$this->db->get_error());
 		}
 		else{
 			$res = true;
@@ -73,27 +83,27 @@ class TracesHandler{
 	}
 
 	public function post_record($cardId, $rec_path, $rec_length){
-		$queries = array();
+		$this->reinit_queries();
 		//update recording
 			//prepare score
-		array_push($queries, "SELECT @previous_recording_score := ".$this->sv->get_recording_score_sql_formula().", @recording_id := `enregistrementID`, @lang := `OracleLang` FROM `enregistrement` WHERE `enregistrement`.`idOracle` = ".$this->user->id." AND `enregistrement`.`carteID`='$cardId';");
+		$this->add_query("SELECT @previous_recording_score := ".$this->sv->get_recording_score_sql_formula().", @recording_id := `enregistrementID`, @lang := `OracleLang` FROM `enregistrement` WHERE `enregistrement`.`idOracle` = ".$this->user->id." AND `enregistrement`.`carteID`='$cardId';");
 			//actual recording update
-		array_push($queries, "UPDATE `enregistrement` SET `cheminEnregistrement` = '$rec_path', `duration`='$rec_length', `tpsEnregistrement`=CURRENT_TIMESTAMP, `validation` = 'limbo' WHERE  `enregistrementID`=@recording_id;");
+		$this->add_query("UPDATE `enregistrement` SET `cheminEnregistrement` = '$rec_path', `duration`='$rec_length', `tpsEnregistrement`=CURRENT_TIMESTAMP, `validation` = 'limbo' WHERE  `enregistrementID`=@recording_id;");
 		//score update
-		array_push($queries, "UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`=@recording_id)-(@previous_recording_score), `nbAbandons_oracle`=`nbAbandons_oracle`-1, `nbEnregistrements_oracle`=`nbEnregistrements_oracle`+1 WHERE `userid`='".$this->user->id."' AND `langue`=@lang;");
+		$this->add_query("UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`=@recording_id)-(@previous_recording_score), `nbAbandons_oracle`=`nbAbandons_oracle`-1, `nbEnregistrements_oracle`=`nbEnregistrements_oracle`+1 WHERE `userid`='".$this->user->id."' AND `langue`=@lang;");
 		//notifications
-		array_push($queries, $this->notif->cancelLastNotifOfType(
+		$this->add_query($this->notif->cancelLastNotifOfType(
 			$this->user->id,
 			$this->messages['notif']['Oracle_started']));
-		array_push($queries, $this->notif->addNotifGAME(
+		$this->add_query($this->notif->addNotifGAME(
 			$this->user->id,
 			$this->messages['Oracle_posted'],
 			$this->messages['img_oracle'],
 			$this->messages['notif']['Oracle_posted']
 		));
-		if(!$this->db->transaction($queries)){
+		if(!$this->db->transaction($this->queries)){
 			$res = false;
-			throw new Exception("“".print_r($queries,true)."” could not be performed.\n".$this->db->get_error());
+			throw new Exception("“".print_r($this->queries,true)."” could not be performed.\n".$this->db->get_error());
 		}
 		else{
 			$res = true;
@@ -102,27 +112,27 @@ class TracesHandler{
 	}
 
 	public function abort_record($recording_path){
-		$queries = array();
+		$this->reinit_queries();
 		//update recording
 			//prepare score
-		array_push($queries, "SELECT @previous_recording_score := ".$this->sv->get_recording_score_sql_formula().", @recording_id := `enregistrementID`, @lang := `OracleLang` FROM `enregistrement` WHERE `enregistrement`.`cheminEnregistrement` = '$recording_path';");
+		$this->add_query("SELECT @previous_recording_score := ".$this->sv->get_recording_score_sql_formula().", @recording_id := `enregistrementID`, @lang := `OracleLang` FROM `enregistrement` WHERE `enregistrement`.`cheminEnregistrement` = '$recording_path';");
 			//actual recording update
-		array_push($queries, "UPDATE `enregistrement` SET `validation` = 'given up', `tpsEnregistrement`=CURRENT_TIMESTAMP WHERE `enregistrement`.`cheminEnregistrement` = '$recording_path'; ");
+		$this->add_query("UPDATE `enregistrement` SET `validation` = 'given up', `tpsEnregistrement`=CURRENT_TIMESTAMP WHERE `enregistrement`.`cheminEnregistrement` = '$recording_path'; ");
 		//score update
-		array_push($queries, "UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`=@recording_id)-(@previous_recording_score), `nbAbandons_oracle`=`nbAbandons_oracle`+1, `nbEnregistrements_oracle`=`nbEnregistrements_oracle`-1 WHERE `userid`='".$this->user->id."' AND `langue`=@lang;");
+		$this->add_query("UPDATE `stats` SET `score_oracle`=`score_oracle`+(SELECT ".$this->sv->get_recording_score_sql_formula()." FROM `enregistrement` WHERE `enregistrementID`=@recording_id)-(@previous_recording_score), `nbAbandons_oracle`=`nbAbandons_oracle`+1, `nbEnregistrements_oracle`=`nbEnregistrements_oracle`-1 WHERE `userid`='".$this->user->id."' AND `langue`=@lang;");
 		//notifications
-		array_push($queries, $this->notif->cancelLastNotifOfType(
+		$this->add_query($this->notif->cancelLastNotifOfType(
 			$this->user->id,
 			$this->messages['notif']['Oracle_posted']));
-		array_push($queries, $this->notif->addNotifGAME(
+		$this->add_query($this->notif->addNotifGAME(
 			$this->user->id,
 			$this->messages['Oracle_abort'],
 			$this->messages['img_oracle'],
 			$this->messages['notif']['Oracle_abort']
 		));
-		if(!$this->db->transaction($queries)){
+		if(!$this->db->transaction($this->queries)){
 			$res = false;
-			throw new Exception("“".print_r($queries,true)."” could not be performed.\n".$this->db->get_error());
+			throw new Exception("“".print_r($this->queries,true)."” could not be performed.\n".$this->db->get_error());
 		}
 		else{
 			$res = true;
@@ -131,25 +141,25 @@ class TracesHandler{
 	}
 
 	public function druid_validate($recordingID, $validate=true, $revoke=false){
-		$queries = array();
+		$this->reinit_queries();
 		//insert new arbitrage
-		array_push($queries, "INSERT INTO `arbitrage` (`enregistrementID`, `idDruide` , `validation`) VALUES(
+		$this->add_query("INSERT INTO `arbitrage` (`enregistrementID`, `idDruide` , `validation`) VALUES(
 			'$recordingID',
 			'".$this->user->id."',
 			'".$this->sv->get_druid_string($validate)."');");
 		if($revoke){
-			array_push($queries, "SET @arbitrage_id = LAST_INSERT_ID();");
+			$this->add_query("SET @arbitrage_id = LAST_INSERT_ID();");
 		}
 
 		//update recording
 			//previous score and variables
-		array_push($queries, "SELECT @previous_recording_score := ".$this->sv->get_recording_score_sql_formula().", @lang:=`OracleLang`, @oracle_id:= `idOracle` FROM `enregistrement` WHERE `enregistrementID`='$recordingID';");
+		$this->add_query("SELECT @previous_recording_score := ".$this->sv->get_recording_score_sql_formula().", @lang:=`OracleLang`, @oracle_id:= `idOracle` FROM `enregistrement` WHERE `enregistrementID`='$recordingID';");
 			//new recording validation
-		array_push($queries, "UPDATE `enregistrement` SET `validation` =  '".
+		$this->add_query("UPDATE `enregistrement` SET `validation` =  '".
 			$this->sv->get_druid_string($validate)."' WHERE `enregistrementID`='$recordingID';");
 		//update oracle score
 			//the score itself
-		array_push($queries, "SELECT @recording_score_diff :=  ".$this->sv->get_recording_score_sql_formula()."-(@previous_recording_score) FROM `enregistrement` WHERE `enregistrementID`='$recordingID';");
+		$this->add_query("SELECT @recording_score_diff :=  ".$this->sv->get_recording_score_sql_formula()."-(@previous_recording_score) FROM `enregistrement` WHERE `enregistrementID`='$recordingID';");
 		$nb_err = "";
 		if($revoke){
 			if($validate){
@@ -162,19 +172,19 @@ class TracesHandler{
 		elseif (!$validate) {
 			$nb_err = ", `nbErreurs_oracle` = `nbErreurs_oracle` + 1";
 		}
-		array_push($queries, "UPDATE `stats` SET `score_oracle`=`score_oracle`+@recording_score_diff$nb_err WHERE `userid`=@oracle_id AND `langue`=@lang;");
+		$this->add_query("UPDATE `stats` SET `score_oracle`=`score_oracle`+@recording_score_diff$nb_err WHERE `userid`=@oracle_id AND `langue`=@lang;");
 
 		//update druid score
-		array_push($queries, "UPDATE `stats` SET `nbArbitrages_druide` = `nbArbitrages_druide`+1, `score_druide` = `score_druide`+".$this->sv->get_druid_verification_score()." WHERE `stats`.`userid` = '".$this->user->id."' AND `stats`.`langue` = @lang;");
+		$this->add_query("UPDATE `stats` SET `nbArbitrages_druide` = `nbArbitrages_druide`+1, `score_druide` = `score_druide`+".$this->sv->get_druid_verification_score()." WHERE `stats`.`userid` = '".$this->user->id."' AND `stats`.`langue` = @lang;");
 		//update former druids score
 		if($revoke){
-			array_push($queries, "UPDATE `stats` SET `nbErrArbitrage_druide` = `nbErrArbitrage_druide`+1, `score_druide` = IF(`score_druide`-".$this->sv->get_druid_verification_error_score()." WHERE `stats`.`langue` = @lang AND `stats`.`userid` IN (SELECT `idDruide` FROM `arbitrage` WHERE `enregistrementID`='$recordingID' AND `arbitrageID` < @arbitrage_id AND 'validation'!='".
+			$this->add_query("UPDATE `stats` SET `nbErrArbitrage_druide` = `nbErrArbitrage_druide`+1, `score_druide` = IF(`score_druide`-".$this->sv->get_druid_verification_error_score()." WHERE `stats`.`langue` = @lang AND `stats`.`userid` IN (SELECT `idDruide` FROM `arbitrage` WHERE `enregistrementID`='$recordingID' AND `arbitrageID` < @arbitrage_id AND 'validation'!='".
 				$this->sv->get_druid_string($validate).");");
-			array_push($queries, "UPDATE `stats` SET `nbErrArbitrage_druide` = `nbErrArbitrage_druide`+1, `score_druide` = IF(`score_druide`+".$this->sv->get_druid_verification_error_score()." WHERE `stats`.`langue` = @lang AND `stats`.`userid` IN (SELECT `idDruide` FROM `arbitrage` WHERE `enregistrementID`='$recordingID' AND `arbitrageID` < @arbitrage_id AND 'validation'='".
+			$this->add_query("UPDATE `stats` SET `nbErrArbitrage_druide` = `nbErrArbitrage_druide`+1, `score_druide` = IF(`score_druide`+".$this->sv->get_druid_verification_error_score()." WHERE `stats`.`langue` = @lang AND `stats`.`userid` IN (SELECT `idDruide` FROM `arbitrage` WHERE `enregistrementID`='$recordingID' AND `arbitrageID` < @arbitrage_id AND 'validation'='".
 				$this->sv->get_druid_string($validate)."');");
 		}
 		//the notifications
-		array_push($queries, $this->notif->addNotif(
+		$this->add_query($this->notif->addNotif(
 			"@oracle_id",
 			"CONCAT('".$this->user->username.$this->messages['Oracle_verif'][$validate]."',
 				' (', @recording_score_diff,' pts)')",
@@ -182,23 +192,40 @@ class TracesHandler{
 			$this->messages['notif']['Oracle_verif'][$validate],
 			false
 		));
-		array_push($queries, $this->notif->addNotif(
+		$this->add_query($this->notif->addNotif(
 			$this->user->id,
 			"'".$this->messages['Rec_verified']."'",
 			"@oracle_id",
 			$this->messages['notif']['Rec_verified'],
 			false
 		));
-		//TODO, il faudrait des notifications de réhabilitation / révocation, mais je vais pas m'en sortir si je les fais maintenant…
+		//TODO, il faudrait des notifications de réhabilitation / révocation, mais de toute façon il y a pas vraiment la fonctionnalité…
 		/**/require_once("debug.php");
-		/**/myLog("<h2>Druid action</h2><pre>".print_r($queries, true)."</pre>");
-		if(!$this->db->transaction($queries)){
+		/**/myLog("<h2>Druid action</h2><pre>".print_r($this->queries, true)."</pre>");
+		if(!$this->db->transaction($this->queries)){
 			$res = false;
-			throw new Exception("“".print_r($queries,true)."” could not be performed.\n".$this->db->get_error());
+			throw new Exception("“".print_r($this->queries,true)."” could not be performed.\n".$this->db->get_error());
 		}
 		else{
 			$res = true;
 		}
 		return $res;
+	}
+
+	//so that if the augur reloads to give up without loss there's a penalty
+	//and not for oracle
+	public function augur_start_play(){
+
+	}
+
+	//don't find (end timer, either by giving up or not)
+	//augur & oracle
+	public function augur_loss(){
+
+	}
+
+	//augur (and oracle) win
+	public function augur_win(){
+
 	}
 }?>

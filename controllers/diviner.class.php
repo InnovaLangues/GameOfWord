@@ -132,6 +132,7 @@ class diviner_game
 	private function selectpartie(){
 		$res = false;
 		try{
+			/**/include_once("debug.php");
 			$recordingFactory = new ItemFactory($this->diviner,$this->user->langGame);
 			$this->raisin = $recordingFactory->get_recording(ItemFactory::VALID_RECORDING_NOT_ME);
 			if(is_object($this->raisin)){
@@ -160,7 +161,7 @@ class diviner_game
 							$res=true;
 						}
 						else{
-							throw new Exception("Pas pu récupérer le nom de l'auteur '$this->raisin->idOracle'");
+							throw new Exception("Pas pu récupérer le nom de l'auteur '".print_r($this->raisin,true)."'");
 						}
 					}
 					else{
