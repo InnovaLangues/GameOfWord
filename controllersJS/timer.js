@@ -13,6 +13,8 @@ function MyTimer(render, duration, callback, pressure, pressuriser, onStart){
 	this.render = render;
 	this.timer = {};
 	this.running = false;
+	this.startTime = 0;
+	this.endTime = 0;
 
 	if(isNaN(pressure)){
 		this.pressure = 0;
@@ -70,6 +72,7 @@ function MyTimer(render, duration, callback, pressure, pressuriser, onStart){
 		}
 		self.nextClick = false;
 		self.running = true ;
+		self.startTime = Date.now();
 		if( self.clickDuration % self.clickUnderPressureDuration === 0){
 			self.secondPassed();
 		}
@@ -79,8 +82,18 @@ function MyTimer(render, duration, callback, pressure, pressuriser, onStart){
 	};
 
 	this.stop = function(){
+		self.endTime = Date.now();
 		self.running = false;
 		window.clearTimeout(self.timer);
 		self.callback();
 	};
+
+	this.getElapsedTime = function(){
+		if(!self.running){
+			return self.endTime - self.startTime;
+		}
+		else{
+			return Date.now() - self.startTime;
+		}
+	}
 }
