@@ -3,28 +3,21 @@ $title = 'Information';
 include('./views/page.header.html');
 ?>
 <div id="main-container">
+		<script type="text/javascript" src="./controllersJS/tabs.js"></script>
 		<script type="text/javascript">
-		function change_onglet(name){
-			let listeNoms = ['rules','niouzes','about'];
-			for(let i=0;i<listeNoms.length;i++){
-				if(listeNoms[i] == name){
-					document.getElementById('onglet_'+name).className = 'onglet_1 onglet active';
-					document.getElementById('contenu_onglet_'+name).style.display = 'block';
-				}
-				else{
-					document.getElementById('onglet_'+listeNoms[i]).className = 'onglet_0 onglet';
-					document.getElementById('contenu_onglet_'+listeNoms[i]).style.display = 'none';
-				}
-			}
+		var tabs = new TabMenu(
+			['rules','about','niouzes'],
+			["<?php echo $lang['rules']; ?>",
+			 "<?php echo $lang['about']; ?>",
+			 "<?php echo $lang['niouzes']; ?>"]
+		);
+		window.onload = function(){
+			tabs.init('onglets');
+			tabs.switchTo('niouzes');
 		}
 		</script>
 		<div id="infos-container">
 			<div id="onglets">
-				<ul class="nav nav-tabs">
-					<li role="presentation" class="onglet_0 onglet" id="onglet_rules" onclick="javascript:change_onglet('rules');"><a><?php echo $lang['rules']; ?></a></li>
-					<li role="presentation" class="onglet_0 onglet" id="onglet_about" onclick="javascript:change_onglet('about');"><a><?php echo $lang['about']; ?></a></li>
-					<li role="presentation" class="onglet_0 onglet" id="onglet_niouzes" onclick="javascript:change_onglet('niouzes');"><a><?php echo $lang['niouzes']; ?></a></li>
-				</ul>
 			</div>
 			<div id="contenu-onglets">
 				<div class="contenu_onglet" id="contenu_onglet_rules">
@@ -50,9 +43,6 @@ include('./views/page.header.html');
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript">
-		change_onglet('niouzes');
-		</script>
 </div>
 <?php
 include('./views/page.footer.html');
