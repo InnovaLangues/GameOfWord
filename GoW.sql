@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `parties` (
 
 CREATE TABLE IF NOT EXISTS `stats` (
   `userid` int(11) NOT NULL,
-  `langue` varchar(20) NOT NULL,
+  `langue` varchar(3) NOT NULL,
   `nbJeux_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre de parties',
   `nbAbandons_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''abandons',
   `nbEnregistrements_oracle` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Nombre d''enregistrements envoyés',
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `stats` (
   `score_druide` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score (peut être calculé uniquement avec les données de la table)',
   `nbEnregistrements_devin` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombre d''enregistrements écoutés',
   `nbMotsTrouves_devin` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'nombres de mots associés aux enregistrements trouvés',
-  `sommeMises_devin` mediumint(8) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'La somme des mises des parties jouées en tant que devin',
+  `sommeMises_devin` mediumint(8) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'La somme des mises des parties gagnées en tant que devin',
   `score_devin` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score de devin (pas calculable avec les données de la table)',
   PRIMARY KEY (`userid`,`langue`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques et scores des joueurs';

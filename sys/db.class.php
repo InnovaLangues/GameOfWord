@@ -58,15 +58,23 @@ class db
 		return $this->result;
 	}
 
-	public function transaction($query_array){
+	public function transaction($query_array, $abort_on_0 = true){
 		$this->handler->begin_transaction();
 		$i=1;
 		foreach ($query_array as $query) {
 			$this->query($query);
-			if(!$this->result){
+			if(!$this->result
+				|| ($abort_on_0 && $this->touched_rows() === 0 )
+			){
 				$commit = false;
 				$this->handler->rollback();
-				throw new Exception("Error “".$this->handler->error."” in “".$query."” (query #".$i.").");
+				if(!$this->result){
+					$message = "Error “".$this->handler->error."”";
+				}
+				else{
+					$message = "No affected rows";
+				}
+				throw new Exception("$message in “".$query."” (query #".$i.").");
 			}
 			$i++;
 		}
@@ -99,7 +107,7 @@ class db
 
 	public function affected_rows()
 	{
-		return $this->handler->affected_rows;
+		return isset($this->handler->affected_rows) ? $this->handler->affected_rows : 0;
 	}
 
 	public function has_result(){
@@ -109,9 +117,13 @@ class db
 	public function num_rows(){
 		$res = 0;
 		if($this->has_result()){
-			$res = $this->result->num_rows;
+			$res = isset($this->result->num_rows) ? $this->result->num_rows : 0;
 		}
 		return $res;
+	}
+
+	public function touched_rows(){
+		return $this->num_rows() + $this->affected_rows();
 	}
 
 	public function get_result(){
