@@ -52,8 +52,6 @@ class diviner_result
 		require_once("./controllers/traces.handler.class.php");
 		$th = new TracesHandler();
 		$th->augur_win($this->recording_id, $this->duration);
-		//for dynamic notification don't want to take the time to understand them…
-		$_SESSION["notif"]["notification_error"]["Devin"] = 'diviner_timeout';
 		//used in view
 		$tmpRecording  = new Recording($this->recording_id);
 		$this->oracle  = $tmpRecording->get_oracle_id();
@@ -68,7 +66,7 @@ class diviner_result
 	private function display()
 	{
 		//for dynamic notification don't want to take the time to understand them…
-		$_SESSION["notif"]["notification_done"]["Devin"] = 'points';
+		$_SESSION["notif"]["notification_done"]["devin"] = 'points';
 		include('./views/diviner.result.html');
 		return true;
 	}

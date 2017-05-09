@@ -59,7 +59,7 @@ class oracle_alea_exist
 		else{
 			array_push($this->errors,'noCardBD');
 			//for dynamic notification don't want to take the time to understand them…
-			$_SESSION["notif"]["notification_error"]["Oracle"] = 'noCardBD';
+			$_SESSION["notif"]["notification_error"]["oracle"] = 'noCardBD';
 			$res = false;
 		}
 		return $res;

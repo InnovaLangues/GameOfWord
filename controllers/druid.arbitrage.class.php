@@ -137,7 +137,7 @@ class druid_arbitrage
 			//could change $this->invalidate to validate…
 			$th->druid_validate($this->enregistrement, !$this->invalidate(), $this->revoke);
 			//for dynamic notification don't want to take the time to understand them…
-			$_SESSION["notif"]["notification_done"]["Druide"] = 'pointsDruide';
+			$_SESSION["notif"]["notification_done"]["druide"] = 'pointsDruide';
 			header('Location: index.php?page.home.html');
 		}
 		return true;

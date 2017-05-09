@@ -80,7 +80,7 @@ class diviner_timeout
 		}
 		$th->augur_loss($this->partieID, $this->rec->get_id(), $duration);
 		//for dynamic notification don't want to take the time to understand them…
-		$_SESSION["notif"]["notification_error"]["Devin"] = 'diviner_timeout';
+		$_SESSION["notif"]["notification_error"]["devin"] = 'diviner_timeout';
 		return false;
 	}
 

@@ -45,11 +45,11 @@ class oracle_result
 		{
 			if ( isset($_POST['submit_form']) )
 			{  //for dynamic notification don't want to take the time to understand them…
-				$_SESSION["notif"]["notification_done"]["Oracle"] = 'pointsOracle';
+				$_SESSION["notif"]["notification_done"]["oracle"] = 'pointsOracle';
 			}
 			else{
 					//for dynamic notification don't want to take the time to understand them…
-					$_SESSION["notif"]["notification_error"]["Oracle"] = 'giveUpOracle';
+					$_SESSION["notif"]["notification_error"]["oracle"] = 'giveUpOracle';
 			}
 			return true;
 

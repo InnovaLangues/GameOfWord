@@ -12,14 +12,17 @@
 			$langue = $_SESSION["langDevin"];
 		}
 
-		$roleUt = "score".$role;
+		$roleUt = "score_".$role;
 
-		$sql = 'SELECT '.$roleUt.' FROM `score` WHERE `userid`="'.$user->id.'" AND langue="'.$lang_iso->french_for($langue).'"';
+		$sql = 'SELECT `'.$roleUt.'` FROM `stats` WHERE `userid`="'.$user->id.'" AND langue="'.$lang_iso->french_for($langue).'"';
 
-		$res = $db->query($sql);
-		$resultat = mysqli_fetch_assoc($res);
+		$resultat = 'err';
+		if($db->query($sql)){
+			$resultat = $db->fetch_assoc($res);
+			$resultat = $resultat[$roleUt];
+		}
 
-		return $resultat[$roleUt];
+		return $resultat;
 
 	}
 ?>
