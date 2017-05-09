@@ -38,40 +38,31 @@ class diviner_result
 		$this->devin = $this->user->id;
 		$this->devinName = $this->user->username;
 		$this->lang = $_SESSION["langDevin"];
-		return true;
+		if(isset($_GET['recording_id'])){
+			$this->recording_id=$_GET['recording_id'];
+			if(isset($_GET['duration'])){
+				$this->duration=$_GET['duration'];
+				return true;
+			}
+		}
+		return false;
 	}
 
-	private function score()
-	{
-		if(!isset($_SESSION["motDeviner"]))
-		{
-			$lang_iso = new IsoLang();
-			//Récupération des infos nécessaires
-			$db = db::getInstance();
-			$query = "SET @id_enr = NULL;
-				UPDATE `parties` SET  `reussie`=".$db->escape((string) $this->reussie).", `enregistrementID` = (SELECT @id_enr := `enregistrementID`) WHERE idDevin='".$this->devin."' ORDER BY tpsDevin DESC LIMIT 1;
-				SELECT @id_enr;";
-			$db->multi_query_last_result($query);
-			$this->record_id = $db->fetch_assoc()["@id_enr"];
-			$tmpRecording  = new Recording($this->record_id);
-			$this->oracle  = $tmpRecording->get_oracle_id();
-			$this->rec_level = $tmpRecording->get_level();
+	private function score(){
+		require_once("./controllers/traces.handler.class.php");
+		$th = new TracesHandler();
+		$th->augur_win($this->recording_id, $this->duration);
+		//for dynamic notification don't want to take the time to understand them…
+		$_SESSION["notif"]["notification_error"]["Devin"] = 'diviner_timeout';
+		//used in view
+		$tmpRecording  = new Recording($this->recording_id);
+		$this->oracle  = $tmpRecording->get_oracle_id();
+		$this->rec_level = $tmpRecording->get_level();
 
-			//mise à jour des scores
-			require_once('./controllers/update_score_coeff.php');
-			$sh = new ScoreHandler($this->devin, ScoreHandler::AUGUR, $tmpRecording);
-			$sh->update_scores(true); //because they won…
-
-			// récupération du contenu de la carte avec carteID
-			require_once("./models/card.class.php");
-			$this->carte = new Card($tmpRecording->get_card_id());
-			$_SESSION["motDeviner"] = true;//pour éviter de s'ajouter des points à l'infini avec des refresh
-			return true;
-		}
-		else{
-			header('Location: index.php?page.home.html');
-			return false;
-		}
+		// récupération du contenu de la carte avec carteID
+		require_once("./models/card.class.php");
+		$this->carte = new Card($tmpRecording->get_card_id());
+		return true;
 	}
 
 	private function display()

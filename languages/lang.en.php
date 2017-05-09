@@ -217,12 +217,12 @@ $lang['Oracle_verif'][false] = " verified your recording and thinks you used for
 $lang['Oracle_started'] = "Oracle game started, if you give up the recording you'll lose ";
 $lang['Oracle_posted'] = "You took the risk of posting your description, you, brave Oracle!";
 $lang['Oracle_abort'] = "Recording deleted. Small penalty, but nothing like the one you would have got with forbidden words…";
-$lang['Oracle_devin'][false] = " listened to your recording and didn't find the word…";
+$lang['Oracle_devin'][false] = " listened to your recording and did not find the word…";
 $lang['Oracle_devin'][true] = " listened to your recording and found the word!";
 $lang['Augur_playing']="You are listening to a recording, if you do not finish this, you will fall alone…";
-$lang['Devin_played'] = "You listened to a recording by ";
-$lang['Devin_oracle'][true] = "And you found the word!";
-$lang['Devin_oracle'][false] = "And you did not find the word…";
+$lang['Devin_played'] = "You listened to a recording ";
+$lang['Devin_oracle'][true] = "and found the word!";
+$lang['Devin_oracle'][false] = "and you did not find the word…";
 
 $lang['druidNotReady'] = "All the required variables for a Druid decision have not been set…";
 $lang['page_errors'] = "Error in processing query";

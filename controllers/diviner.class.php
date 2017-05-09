@@ -3,7 +3,6 @@ require_once("./models/item.factory.class.php");
 require_once("./models/card.class.php");
 require_once("./models/userlvl.class.php");
 require_once("./controllers/traces.handler.class.php");
-/**/include_once("debug.php");
 
 class diviner_game
 {
@@ -11,7 +10,6 @@ class diviner_game
 
 	private $errors = array();
 	private $lang = array();
-	private $motadeviner='';
 	private $nivcarte = '';
 	private $th ;
 

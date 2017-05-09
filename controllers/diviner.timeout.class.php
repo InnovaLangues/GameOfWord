@@ -5,6 +5,8 @@ class diviner_timeout
 {
 	private $mode = '';
 
+	private $partieID;
+
 	private $user = '';
 	private $diviner = '';
 	private $devinName='';
@@ -19,13 +21,16 @@ class diviner_timeout
 		$this->mode = $mode;
 	}
 
-	public function process()
-	{
-		if ( $this->init() )
-		{
-			$this->carte_et_scoreOracle();
-			$this->updateparties();
-			return $this->display();
+	public function process(){
+		try{
+			if ( $this->init() ){
+				$this->init_card_and_recording();
+				$this->update_score();
+				return $this->display();
+			}
+		}
+		catch(Exception $e){
+			header('Location: index.php');
 		}
 		return false;
 	}
@@ -39,49 +44,43 @@ class diviner_timeout
 		return true;
 	}
 
-	private function carte_et_scoreOracle()
-	{
+	private function init_card_and_recording(){
+		$res = false;
 		require_once('./sys/load_iso.php');
 		$lang_iso = new IsoLang();
-
-		if(!isset($_SESSION["timeOutOracle"])){
-			// récupération d'enregistrementID pour récupérer l'id de l'Oracle et l'id de la carte
-			//connexion à la BD
-			$db = db::getInstance();
-
-			//Récupération de enregistrementID
-			$sql = 'SELECT `enregistrementID` FROM `parties` WHERE `idDevin`="'.$this->diviner.'" ORDER BY `tpsDevin` DESC LIMIT 1 ';
-			$db->query($sql);
+		// récupération d'enregistrementID pour récupérer l'id de l'Oracle et l'id de la carte
+		//connexion à la BD
+		$db = db::getInstance();
+		//Récupération de enregistrementID
+		$sql = "SELECT `enregistrementID`, `partieID` FROM `parties` WHERE `idDevin`='$this->diviner' AND `reussite`='en cours' ORDER BY `tpsDevin` DESC LIMIT 1 ";
+		if($db->query($sql)){
 			require_once("./models/recording.class.php");
-			$this->rec= new Recording($db->fetch_assoc()['enregistrementID']);
-
-			//mise à jour des scores
-			require_once('./controllers/update_score_coeff.php');
-			$sh = new ScoreHandler($this->diviner, ScoreHandler::AUGUR, $this->rec);
-			$sh->update_scores(false); //because they lost…
+			$tmpTable = $db->fetch_assoc();
+			$this->partieID = $tmpTable['partieID'];
+			$this->rec= new Recording($tmpTable['enregistrementID']);
 
 			// récupération du contenu de la carte avec carteID
 			$this->carte = new Card($this->rec->get_card_id());
-			$_SESSION["timeOutOracle"]=true;
-
-			return false;
+			$res = true;
 		}
 		else{
-			header('Location: index.php?page.home.html');
-			return false;
+			throw new Exception($query."yielded no result, there's a problem in the consistance of the db, maybe the user toyed with the url…");
 		}
+		return $res;
 	}
 
-	private function updateparties()
-	{
-		// Requête de mise à jour de la table partie
-			$db = db::getInstance();
-			$sql = 'UPDATE parties
-					SET  reussie='.$db->escape((string) $this->reussie).'
-					WHERE idDevin='.$this->diviner.' ORDER BY tpsDevin DESC LIMIT 1 ';
-			$db->query($sql);
-			//for dynamic notification don't want to take the time to understand them…
-			$_SESSION["notif"]["notification_error"]["Devin"] = 'diviner_timeout';
+	private function update_score(){
+		require_once("./controllers/traces.handler.class.php");
+		$th = new TracesHandler();
+		if(isset($_GET['duration'])){
+			$duration = $_GET['duration'];
+		}
+		else{
+			$duration = false;
+		}
+		$th->augur_loss($this->partieID, $this->rec->get_id(), $duration);
+		//for dynamic notification don't want to take the time to understand them…
+		$_SESSION["notif"]["notification_error"]["Devin"] = 'diviner_timeout';
 		return false;
 	}
 

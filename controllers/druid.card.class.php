@@ -132,11 +132,11 @@ class druid_card
         {
 			require_once('./sys/load_iso.php');
 			$lang_iso = new IsoLang();
-			require_once('./controllers/update_score_coeff.php');
 
 			//Requête de modification du score du Druide l'accomplissement de son fastidieux travail de création de carte
-			$sh = new ScoreHandler($this->createur, $this->userlang);
-			$sh->update_scores();
+			require_once("./controllers/traces.handler.class.php");
+			$th = new TracesHandler();
+			$th->druid_create_card($this->userlang);
 			$_SESSION["CreateCard"]=true;
 
 			//affichage de l'aperçu de la carte avec son identifiant

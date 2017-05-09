@@ -211,12 +211,12 @@ $lang['Oracle_verif'][false] = " a vérifié votre enregistrement et pense que v
 $lang['Oracle_started'] = "Partie “Oracle” commencée, sans dépôt du fichier, vous perdrez ";
 $lang['Oracle_posted'] = "Vous avez osé valider votre description, courageux…";
 $lang['Oracle_abort'] = "Enregistrement supprimé. Petite pénalité, mais moins lourde qu'en envoyant un enregistrement avec mots interdits…";
-$lang['Oracle_devin'][false] = " a écouté votre enregistrement et n'a pas trouvé le mot…";
+$lang['Oracle_devin'][false] = " a écouté votre enregistrement et n\'a pas trouvé le mot…";
 $lang['Oracle_devin'][true] = ' a écouté votre enregistrement et a trouvé&nbsp;!';
 $lang['Augur_playing']="Vous écoutez un enregistrement, si vous ne terminez pas cette activité, vous perdrez seul…";
-$lang['Devin_played'] = 'Vous avez écouté un enregistrement de ';
-$lang['Devin_oracle'][true] = 'Et vous avez trouvé&nbsp;!';
-$lang['Devin_oracle'][false] = "Mais vous n'avez pas trouvé…";
+$lang['Devin_played'] = 'Vous avez écouté un enregistrement ';
+$lang['Devin_oracle'][true] = 'et vous avez trouvé&nbsp;!';
+$lang['Devin_oracle'][false] = "mais vous n\'avez pas trouvé…";
 
 $lang['druidNotReady'] = "Tous les paramètres nécessaires à la gestion d'une décision n'ont pas été spécifiés…";
 $lang['page_errors'] = "Erreur durant le traitement de la requête";

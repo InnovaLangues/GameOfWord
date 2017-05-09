@@ -5,7 +5,7 @@ include('./views/page.header.html');
 ?>
 <script>
 // Timer
-
+var given_up = false;
 //Initialisation du chrono
 function renders(minutes, seconds){
 	if(seconds == Math.floor(seconds)){
@@ -20,7 +20,11 @@ function pressurise(){
 }
 
 function finChrono(){
-	document.location.href="index.php?mode=diviner.timeout&duration="+monChrono.getElapsedTime();
+	var newLocation = "index.php?mode=diviner.timeout";
+	if(given_up){
+		newLocation += "&duration="+monChrono.getElapsedTime();
+	}
+	document.location.href=newLocation;
 	if(!monChrono.isRunning()){
 		$('#countdown').css('background-color', 'white');
 		$('#countdown').html("Buzz Buzz");
@@ -30,6 +34,7 @@ function finChrono(){
 var monChrono = new MyTimer(renders, <?php echo $this->time; ?>, finChrono, 10,pressurise);
 
 function give_up(){
+	given_up=true;
 	monChrono.stop();
 }
 
@@ -75,10 +80,9 @@ function give_up(){
 					</dl>
 					<dl>
 						<dt><label for="mot"><?php echo $lang['guess'];?></label></dt>
-						<dd><input type="text" id="mot" name="mot" value="<?php echo htmlspecialchars($this->motadeviner); ?>" /></dd>
+						<dd><input type="text" id="mot" name="mot"/></dd>
 					</dl>
 					<div id="form-cmd">
-					<!--	<input class="btn btn-lg btn-primary btn-block" type="submit" id="submit_form" name="submit_form" value="<?php// echo $lang['validate']; ?>" class="submit_buttons" /> -->
 						<input class="btn btn-lg btn-primary btn-block" type="button" id="valide" onclick="validate()" value="<?php echo $lang['validate']; ?>" />
 						<input type="hidden" name="mode" value="<?php echo $this->mode; ?>"/>
 						<input type="hidden" id='motadeviner' value="<?php echo $this->card->get_word(); ?>"/>
@@ -104,7 +108,7 @@ function give_up(){
 
 	//if (document.getElementById('motadeviner').value == document.getElementById('mot').value ) {
 		if (motentre == motadeviner) {
-				document.location.href="index.php?mode=diviner.result&duration="+monChrono.getElapsedTime();
+				document.location.href="index.php?mode=diviner.result&recording_id=<?php echo $this->raisin->enregistrementID ;?>&duration="+monChrono.getElapsedTime();
 			}
 	// Si le devin donne une réponse fausse, on vide la zone de texte
 		else {

@@ -13,9 +13,9 @@ include('./views/page.header.html');
 					$this->carte->set_forbidden_count($sv->get_forbidden_count($this->rec_level));
 					echo $this->carte;
 					$_SESSION["idCard"] = $this->carte->get_id();
-					$_SESSION["idEnregistrement"] = $this->record_id;
+					$_SESSION["idEnregistrement"] = $this->recording_id;
 				?>
-				<input type="hidden" name="enregistrement1" value="<?php echo $this->record_id; ?>" />
+				<input type="hidden" name="enregistrement1" value="<?php echo $this->recording_id; ?>" />
 				<input type="hidden" name="invalidate" value="et oué, gros" />
 				<input type="hidden" name="mode" value="druid.arbitrage" />
 				<input type="hidden" name="oracle" value="<?php echo $this->oracle; ?>" />

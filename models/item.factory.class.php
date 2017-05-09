@@ -72,6 +72,9 @@ class ItemFactory //a quick and dirty class…
 
 				break;
 			case self::VALID_RECORDING_NOT_ME:
+				//timestamp used because the recording is by default in limbo
+				//lets the user 2 minutes to give up before someone listens to it
+				//TODO error handling if session is longer than 120s and druid before cancel
 				$this->query = "SELECT `enregistrement`.* FROM `enregistrement`,`cartes`
 						WHERE `cartes`.`idEraser` IS NULL
 						AND   `cartes`.`langue`='$this->lang'
@@ -79,6 +82,7 @@ class ItemFactory //a quick and dirty class…
 						AND   `cartes`.`idDruide` != '$this->user_id'
 						AND   `enregistrement`.`validation` = 'valid'
 						AND   `enregistrement`.`idOracle` != '$this->user_id'
+						AND   UNIX_TIMESTAMP(CURRENT_TIMESTAMP) - UNIX_TIMESTAMP(`enregistrement`.`tpsEnregistrement`) > 120
 						AND   `enregistrement`.`carteID` NOT IN (
 							SELECT `enregistrement`.`carteID` as`cardId` FROM `arbitrage`,`enregistrement` WHERE `arbitrage`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `arbitrage`.`idDruide`='$this->user_id'
 							UNION SELECT `enregistrement`.`carteID` as`cardId` FROM `parties`,`enregistrement` WHERE `parties`.`enregistrementID` = `enregistrement`.`enregistrementID` AND `parties`.`idDevin`='$this->user_id'

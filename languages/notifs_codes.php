@@ -16,7 +16,12 @@ if(isset($lang)){
 	$lang['notif']['Oracle_posted'] = 14;
 	$lang['notif']['Oracle_abort'] = 15;
 	$lang['notif']['Rec_verified'] = 16;
-	$lang['notif']['Augur_playing']=17;
+	$lang['notif']['Augur_playing'] = 17;
+	$lang['Devin_oracle'][true] = 18;
+	$lang['Devin_oracle'][false] = 19;
+	$lang['notif']['Oracle_devin'][true] = 20;
+	$lang['notif']['Oracle_devin'][false] = 21;
+	$lang['notif']['Card_created'] = 22;
 
 
 	//images
