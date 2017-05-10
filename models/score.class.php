@@ -337,19 +337,19 @@ class GlobalScoreTable extends ScoreTable{
 			//we have not yet run that method
 			$query =
 				"SELECT
-					`stats`.`nbAbandons_oracle` as `o_a`,
-					`stats`.`nbErreurs_oracle` as `o_er`,
-					`stats`.`nbEnregistrements_oracle` as `o_en`,
-					ROUND(`stats`.`nbSucces_oracle`*100/GREATEST(1,`stats`.`nbLectures_oracle`)) as `o_wl`,
-					`stats`.`score_oracle` as `o`,
-					`stats`.`nbArbitrages_druide` as `d_a`,
-					`stats`.`nbErrArbitrage_druide` as `d_er`,
-					`stats`.`nbCartes_druide` as `d_c`,
-					`stats`.`score_druide` as `d`,
-					`stats`.`nbEnregistrements_devin` as `a_en`,
-					ROUND(`stats`.`nbMotsTrouves_devin`*100/GREATEST(1,`stats`.`nbEnregistrements_devin`)) as `a_wl`,
-					`stats`.`score_devin` as `a`,
-					(`stats`.`score_devin`+`stats`.`score_druide`+`stats`.`score_oracle`) as `g`,
+					SUM(`stats`.`nbAbandons_oracle`) as `o_a`,
+					SUM(`stats`.`nbErreurs_oracle`) as `o_er`,
+					SUM(`stats`.`nbEnregistrements_oracle`) as `o_en`,
+					ROUND(SUM(`stats`.`nbSucces_oracle`)*100/GREATEST(1,SUM(`stats`.`nbLectures_oracle`))) as `o_wl`,
+					SUM(`stats`.`score_oracle`) as `o`,
+					SUM(`stats`.`nbArbitrages_druide`) as `d_a`,
+					SUM(`stats`.`nbErrArbitrage_druide`) as `d_er`,
+					SUM(`stats`.`nbCartes_druide`) as `d_c`,
+					SUM(`stats`.`score_druide`) as `d`,
+					SUM(`stats`.`nbEnregistrements_devin`) as `a_en`,
+					ROUND(SUM(`stats`.`nbMotsTrouves_devin`)*100/GREATEST(1,SUM(`stats`.`nbEnregistrements_devin`))) as `a_wl`,
+					SUM(`stats`.`score_devin`) as `a`,
+					(SUM(`stats`.`score_devin`)+SUM(`stats`.`score_druide`)+SUM(`stats`.`score_oracle`)) as `g`,
 					`user`.`username` as `name`,
 					GROUP_CONCAT(`stats`.`langue` SEPARATOR '+') as `l`
 				FROM `stats`,`user`

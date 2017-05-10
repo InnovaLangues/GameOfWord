@@ -49,7 +49,7 @@ class ScoreValues{
 				)
 			)
 		)";
-	const AUGUR_SCORE_FORMULA = "ROUND(`sommeMises_devin`*(`nbMotsTrouves_devin`+(`nbMotsTrouves_devin`/`nbEnregistrements_devin`))";
+	const AUGUR_SCORE_FORMULA = "ROUND(`sommeMises_devin`*(`nbMotsTrouves_devin`+(`nbMotsTrouves_devin`/`nbEnregistrements_devin`)))";
 	private static $DRUID_STRINGS = array(0 => 'invalid',
 												1 => 'valid');
 

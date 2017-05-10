@@ -18,7 +18,7 @@
 
 		$resultat = 'err';
 		if($db->query($sql)){
-			$resultat = $db->fetch_assoc($res);
+			$resultat = $db->fetch_assoc();
 			$resultat = $resultat[$roleUt];
 		}
 

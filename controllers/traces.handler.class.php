@@ -238,7 +238,7 @@ class TracesHandler{
 		//update stats
 			//two queries (update score needs up to date stats)
 		$this->add_query("UPDATE `stats` SET `nbEnregistrements_devin` = `nbEnregistrements_devin`+1 WHERE `langue`='$rec_lang' AND `userid`='".$this->user->id."';");
-		$this->add_query("UPDATE `stats` SET `score_devin`='".$this->sv->get_augur_score_formula()."' WHERE `langue`='$rec_lang' AND `userid`='".$this->user->id."';");
+		$this->add_query("UPDATE `stats` SET `score_devin`=".$this->sv->get_augur_score_formula()." WHERE `langue`='$rec_lang' AND `userid`='".$this->user->id."';");
 		$this->add_query($this->notif->addNotifGAME($this->user->id,
 		$this->messages['Augur_playing'],
 		$this->messages['img_oracle'],
@@ -325,7 +325,8 @@ class TracesHandler{
 		$this->add_query("UPDATE `stats` SET `nbLectures_oracle` = `nbLectures_oracle` + 1 , `nbSucces_oracle` = `nbSucces_oracle` + 1 ,  `score_oracle` = `score_oracle` + @recording_score_diff WHERE `userid`=@oracle_id AND `langue`=@lang;");
 		//end update Augur
 			//update stats :
-		$this->add_query("UPDATE `stats` SET `nbMotsTrouves_devin`=`nbMotsTrouves_devin`+1, `sommeMises_devin`=`sommeMises_devin`+@mise WHERE `userid`=".$this->user->id." AND `langue`=@lang;");
+		$this->add_query("UPDATE `stats` SET `nbMotsTrouves_devin`=`nbMotsTrouves_devin`+1, `sommeMises_devin`=`sommeMises_devin`+@mise WHERE `userid`='".$this->user->id."' AND `langue`=@lang;");
+		$this->add_query("UPDATE `stats` SET `score_devin`=".$this->sv->get_augur_score_formula()." WHERE `langue`=@lang AND `userid`='".$this->user->id."';");
 
 		//notifications
 			//augur
