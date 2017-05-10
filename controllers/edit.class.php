@@ -15,6 +15,7 @@ class edit
 	 private $niveau='';
 	 private $photo ='';
 	 private $userlvl = '';
+	 private $lang_iso;
 
 	 private $userlang_game = '';
 	 private $userlang_interface = '';
@@ -37,7 +38,7 @@ class edit
 
 	 private function init(){
 		require_once('./sys/load_iso.php');
-		$lang_iso = new IsoLang();
+		$this->lang_iso = new IsoLang();
 		$db = db::getInstance();
 		$user = user::getInstance();
 		$this->userlang = $user->get_lang();
@@ -128,7 +129,7 @@ class edit
 
 		  }
 
-		 $this->userlang_game = isset($_POST['lang_game']) ? $lang_iso->language_code_for(trim($_POST['lang_game'])) : '';
+		 $this->userlang_game = isset($_POST['lang_game']) ? $this->lang_iso->language_code_for(trim($_POST['lang_game'])) : '';
 		// $this->userlang_interface = isset($_POST['userlang_interface']) ? trim($_POST['userlang_interface']) : '';
 				//$this->spoken_lang = isset($_POST['userlang_spoken']) ? trim($_POST['userlang_spoken']) : '';
 		 //echo $this->spoken_lang;
@@ -228,13 +229,14 @@ class edit
 		  for ($i=1; $i<=10; $i++) {
 					 if(isset($_POST['choix_langs_'.$i]) && $_POST['choix_langs_'.$i]!=""){
 						  $sql = 'SELECT *
-								FROM score
+								FROM stats
 								WHERE userid = ' . intval($this->userid).' AND langue="'.$_POST["choix_langs_".$i].'"';
 						  $result = $db->query($sql);
 							 if (!($result->num_rows > 0)) {
 									$score = 0;
-									 $sql = 'INSERT INTO `score`(`userid`, `scoreGlobal`, `scoreOracle`, `scoreDruide`, `scoreDevin`, `langue`) VALUES ('.$this->userid.','.$score.','.$score.','.$score.','.$score.',"'.$_POST["choix_langs_".$i].'")';
-								  $db->query($sql);
+									$sql = "INSERT INTO `stats` (`userid`, `langue`)
+					 					VALUES('".$this->userid."',".$db->escape($this->lang_iso->any_to_iso($_POST["choix_langs_".$i])).");";
+									$db->query($sql);
 								}
 					  }
 			}

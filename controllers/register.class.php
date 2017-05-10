@@ -163,8 +163,6 @@ class register
 		$spoken_langg = explode(';',$this->spoken_lang);
 		foreach ($spoken_langg as $key){
 			if($key!=""){
-				array_push($sql, 'INSERT INTO `score` (`userid`, `langue`)'.
-						"VALUES(@USER_ID,".$db->escape((string) $key).");");
 				array_push($sql, "INSERT INTO `stats` (`userid`, `langue`)
 					VALUES(@USER_ID,".$db->escape($this->lang_iso->any_to_iso($key)).");");
 			}
