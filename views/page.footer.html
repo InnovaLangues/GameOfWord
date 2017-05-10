@@ -1,4 +1,13 @@
 		</div>
-		<footer>Nous vous remercions de tester notre jeu&nbsp;! Afin que nous puissions l'améliorer, vous pouvez nous donner votre avis en remplissant ce <a href="http://gamer.innovalangues.net/enquetes/index.php/395388/lang-fr">questionnaire</a>.</footer>
+		<footer><?php
+			require_once('./languages/language.php');
+			if(isset($lang)){
+				echo $lang["page_footer"];
+			}
+			else{
+				echo "Nous vous remercions de tester notre jeu&nbsp;! Afin que nous puissions l'améliorer, n'hésitez pas à nous faire part de vos idées d'amélioration ou bugs en ajoutant des «&nbsp;<i>issues</i>&nbsp;» <a href='https://github.com/InnovaLangues/GameOfWord/issues'>ici</a>.";
+			}
+			?>
+		</footer>
 	</body>
 </html>

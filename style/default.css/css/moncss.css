@@ -198,10 +198,17 @@ footer{
 	 padding-right:1em;
 	 padding-top:0.3em;
 	 padding-bottom:0.5em;
+	 line-height: 1.33em;
+	 max-height:100px;
+	 overflow-y: auto;
+}
+
+img[src$="druidelogo.png"]{
+	max-height: 300px;
 }
 
 body{
-	margin-bottom:150px;
+	margin-bottom:120px;
 }
 
 .info{

@@ -40,6 +40,8 @@ $lang['register'] = 'Register';
 $lang['rules'] = 'Rules and information';
 $lang['about'] = 'About';
 $lang['niouzes'] = 'News and disclaimer';
+$lang['page_footer'] = "Thank you for testing our game! To help us improve it, please tell us about your expectations (or the bugs you might detect) by adding an issue <a href='https://github.com/InnovaLangues/GameOfWord/issues'>here</a>.<br />Make sure you read the “<a href='index.php?mode=infos'>informations</a>” page, you'll find the rules but also our data management policy and special events…";
+
 
 //Page d'accueil: menu, home, page.header.html
 $lang['menu_profile'] = 'Profile';

@@ -38,6 +38,7 @@ $lang['register'] = 'Enregistrer';
 $lang['rules'] = 'Règles et informations';
 $lang['about'] = 'À propos';
 $lang['niouzes'] = "Actualités et notices d'information";
+$lang['page_footer'] = "Nous vous remercions de tester notre jeu&nbsp;! Afin que nous puissions l'améliorer, n'hésitez pas à nous faire part de vos idées d'amélioration ou bugs en ajoutant des «&nbsp;<i>issues</i>&nbsp;» <a href='https://github.com/InnovaLangues/GameOfWord/issues'>ici</a>.<br />Pensez absolument à consulter la page « <a href='index.php?mode=infos'>informations</a> », vous y trouverez non seulement les règles mais aussi notre politique de gestion des données et les éventuels événements…";
 
 //Page d'accueil: menu, home, page.header.html
 $lang['menu_profile'] = 'Profil';
