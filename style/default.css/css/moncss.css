@@ -215,9 +215,18 @@ body{
 	cursor:pointer;
 }
 
+.header{
+	color:white;
+	font-size:larger;
+}
+
 .highlight{
 	background-color: black;
 	color:white;
+}
+.highlight:hover{
+	color:black;
+	font-style: italic;
 }
 .onglet_0{
 	cursor:pointer;

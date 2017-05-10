@@ -153,6 +153,17 @@ $lang['score_global'] = 'Score global';
 $lang['userName'] = 'Joueur';
 $lang['global_score'] = 'Classement général';
 $lang['scores_by_language'] = 'Scores par langue';
+$lang['abandons']='Forfaits';
+$lang['erreurs']='Err.';
+$lang['enr_deposes']='Desc.';
+$lang['w-l-perc']='%&nbsp;Gains';
+$lang['score']='Score';
+$lang['carte_crees']='Cartes créées';
+$lang['arbitrages']='Arbitrages';
+$lang['err_arb']='Err. arbitrage';
+$lang['parties']='Parties';
+
+
 
 // Timeout
 $lang['diviner_timeout'] = 'Tu n\'as pas fourni de réponse dans le temps imparti';

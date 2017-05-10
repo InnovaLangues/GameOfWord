@@ -6,10 +6,10 @@ else{
 	$class = "";
 }
 if($scoreLine->isGlobal()){
-	$width = 7;
+	$width = 16;
 }
 else{
-	$width = 6;
+	$width = 15;
 }
 $res = "<tr$class><td colspan='$width'>…</td></tr>";
 ?>

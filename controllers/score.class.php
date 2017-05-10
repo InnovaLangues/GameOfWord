@@ -15,20 +15,20 @@ class Score{
 		include_once('./sys/load_iso.php');
 		$this->lang_iso = new IsoLang();
 
-		$sql = "SELECT DISTINCT `langue` FROM `score` WHERE `score`.`userid` = '".$this->user->id."'";
+		$sql = "SELECT DISTINCT `langue` FROM `stats` WHERE `stats`.`userid` = '".$this->user->id."'";
 		$this->db->query($sql);
 		if($this->db->has_result()){
 			while($tempObj = $this->db->fetch_object()){
 				$this->languages[$tempObj->langue] = $tempObj->langue;
-				//new ScoreTable creates ather database queries, so we separate both processes
+				//new ScoreTable creates other database queries, so we separate both processes
 			}
 			foreach($this->languages as $lang){
 				$this->languages[$lang] = new ScoreTable($this->user, $lang);
-				$this->languages[$lang]->get_score_table(false);
+				$this->languages[$lang]->get_score_table(true);
 			}
 			$this->languages[GlobalScoreTable::ALL_LANG] =
 				new GlobalScoreTable($this->user);
-			$this->languages[GlobalScoreTable::ALL_LANG]->get_score_table(false);
+			$this->languages[GlobalScoreTable::ALL_LANG]->get_score_table(true);
 		}
 	}
 

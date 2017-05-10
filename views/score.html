@@ -6,20 +6,53 @@ $title = $lang['scores'];
 include('./views/page.header.html');
 ?>
 <script type="text/javascript" src="./sys/sorttable.js"></script>
+<script type="text/javascript" src="./controllersJS/tabs.js"></script>
 <div id="main-container">
-	<h2><?php echo $lang['global_score']; ?></h2>
-	<?php
-		echo $theScore->languages[GlobalScoreTable::ALL_LANG];
-	?>
-	<h2><?php echo $lang['scores_by_language']; ?></h2>
-	<?php foreach($theScore->languages as $langue => $table){
-			if($langue !== GlobalScoreTable::ALL_LANG){
-				echo "<h3>".$theScore->lang_iso->any_to_french($langue)."</h3>\n".$table;
+	<div id="infos-container">
+		<div id="onglets">
+		</div>
+		<div id="contenu-onglets">
+<!-- Score global -->
+		<div class="contenu_onglet" id="contenu_onglet_global">
+			<div class="row">
+				<div class="col-md-9" role="main">
+			<?php echo $theScore->languages[GlobalScoreTable::ALL_LANG];?>
+				</div>
+			</div>
+		</div>
+		<?php
+			$ids = "'global'";
+			$titles = "\"".$lang['global_score']."\"";
+			foreach($theScore->languages as $langue => $table){
+				if($langue !== GlobalScoreTable::ALL_LANG){
+					$id = $theScore->lang_iso->any_to_iso($langue);
+					?>
+		<div class="contenu_onglet" id="contenu_onglet_<?php echo $id; ?>">
+			<div class="row">
+				<div class="col-md-9" role="main">
+					<?php
+						$ids .= ",'$id'";
+						$titles .= ",\"".$theScore->lang_iso->any_to_french($langue)."\"";
+						echo $table;
+					?>
+				</div>
+			</div>
+		</div>
+		<?php
+				}
 			}
-		}
-	?>
+		?>
 </div>
-
+<script type="text/javascript">
+var tabs = new TabMenu(
+	[<?php echo $ids; ?>],
+	[<?php echo $titles; ?>]
+);
+window.onload = function(){
+	tabs.init('onglets');
+	tabs.switchTo('niouzes');
+}
+</script>
 <?php
 include('./views/page.footer.html');
 ?>

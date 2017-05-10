@@ -34,23 +34,75 @@ class ScoreLine extends EmptyScoreLine {
 	protected $augur;
 	protected $global;
 	protected $position;
+	protected $o_wl;
+	protected $o_en;
+	protected $o_er;
+	protected $d_a;
+	protected $d_er;
+	protected $d_c;
+	protected $a_en;
+	protected $a_wl;
+	protected $o_a;
+
 	protected $view = './views/score_line.table.display.php';
 
-	public function __construct($un, $o, $d, $a, $g, $p, $h=false, $v=false, $is_global = false){
+	//see create_scoring_table() for $compositeObject structure
+	public function __construct($compositeObject, $p, $h=false, $v=false, $is_global = false){
 		parent::__construct($h, $v, $is_global);
-		$this->user_name = $un;
-		$this->oracle = $o;
-		$this->druid = $d;
-		$this->augur = $a;
-		$this->global = $g;
+		$this->user_name = $compositeObject->name;
+		$this->oracle = $compositeObject->o;
+		$this->druid = $compositeObject->d;
+		$this->augur = $compositeObject->a;
+		$this->global = $compositeObject->g;
 		$this->position = $p;
+		//oracle stats
+		$this->o_wl = $compositeObject->o_wl;
+		$this->o_er = $compositeObject->o_er;
+		$this->o_en = $compositeObject->o_en;
+		$this->d_a = $compositeObject->d_a;
+		$this->d_er = $compositeObject->d_er;
+		$this->d_c = $compositeObject->d_c;
+		$this->a_en = $compositeObject->a_en;
+		$this->a_wl = $compositeObject->a_wl;
+		$this->o_a = $compositeObject->o_a;
 	}
 
+	public function get_oracle_recordings(){
+		return $this->o_en;
+	}
+	public function get_oracle_errors(){
+		return $this->o_er;
+	}
+	public function get_oracle_perc(){
+		return $this->o_wl;
+	}
+	public function get_oracle_forfeits(){
+		return $this->o_a;
+	}
+	public function get_druid_arbitration(){
+		return $this->d_a;
+	}
+	public function get_druid_arbitration_err(){
+		return $this->d_er;
+	}
+	public function get_druid_cards(){
+		return $this->d_c;
+	}
+	public function get_augur_recordings(){
+		return $this->a_en;
+	}
+	public function get_augur_perc(){
+		return $this->a_wl;
+	}
+
+//stats
+
+//position
 	public function get_position(){
 		return $this->position;
 	}
 
-
+//scores
 	public function get_user_name(){
 		return $this->user_name;
 	}
@@ -80,9 +132,9 @@ class GlobalScoreLine extends ScoreLine{
 	protected $language_list;
 	protected $view = "./views/global_score_line.table.display.php";
 	//string containing the list of languages used…
-	public function __construct($un, $o, $d, $a, $g, $p, $ll, $h=false, $v=false){
-		parent::__construct($un, $o, $d, $a, $g, $p, $h, $v, true);
-		$this->language_list = $ll;
+	public function __construct($compositeObject, $p, $h=false, $v=false){
+		parent::__construct($compositeObject, $p, $h, $v, true);
+		$this->language_list = $compositeObject->l;
 	}
 
 	public function get_language_list(){
@@ -161,6 +213,10 @@ class ScoreTable{
 		return $this->language;
 	}
 
+	public function get_iso_language(){
+		return $this->lang_iso->any_to_iso($this->language);
+	}
+
 	public function is_built(){
 		return (count($this->scores)>0);
 	}
@@ -172,15 +228,25 @@ class ScoreTable{
 	private function create_scoring_table(){
 		if(!$this->is_built()){
 			//we have not yet run that method
-			$query = "SELECT `score`.`scoreOracle` as `o`,
-								  `score`.`scoreDruide` as `d`,
-								  `score`.`scoreDevin` as `a`,
-								  `score`.`scoreGlobal` as `g`,
-								  `user`.`username` as `name`
-						FROM `score`,`user`
-						WHERE `score`.`langue`='".$this->language.
-							"'AND `user`.`userid`=`score`.`userid`
-						ORDER BY `scoreGlobal` DESC";
+			$query = "SELECT
+					`stats`.`nbAbandons_oracle` as `o_a`,
+					`stats`.`nbErreurs_oracle` as `o_er`,
+					`stats`.`nbEnregistrements_oracle` as `o_en`,
+					ROUND(`stats`.`nbSucces_oracle`*100/GREATEST(1,`stats`.`nbLectures_oracle`)) as `o_wl`,
+					`stats`.`score_oracle` as `o`,
+					`stats`.`nbArbitrages_druide` as `d_a`,
+					`stats`.`nbErrArbitrage_druide` as `d_er`,
+					`stats`.`nbCartes_druide` as `d_c`,
+					`stats`.`score_druide` as `d`,
+					`stats`.`nbEnregistrements_devin` as `a_en`,
+					ROUND(`stats`.`nbMotsTrouves_devin`*100/GREATEST(1,`stats`.`nbEnregistrements_devin`)) as `a_wl`,
+					`stats`.`score_devin` as `a`,
+					(`stats`.`score_devin`+`stats`.`score_druide`+`stats`.`score_oracle`) as `g`,
+					`user`.`username` as `name`
+				FROM  `stats`,`user`
+				WHERE `stats`.`langue`='".$this->get_iso_language()."'".
+				" AND `user`.`userid`=`stats`.`userid`
+				ORDER BY `g` DESC";
 			$this->db->query($query);
 			if($this->db->affected_rows() > 0){
 				$this->scores=array();
@@ -192,8 +258,7 @@ class ScoreTable{
 						$this->usr_pos = $pos;
 					}
 					array_push($this->scores,
-						new ScoreLine($tmpObj->name,
-							$tmpObj->o, $tmpObj->d, $tmpObj->a, $tmpObj->g, $pos, $highlight, $this->line_view));
+						new ScoreLine($tmpObj, $pos, $highlight, $this->line_view));
 					$pos++;
 				}
 				$this->make_incomplete();
@@ -270,16 +335,28 @@ class GlobalScoreTable extends ScoreTable{
 	protected function create_scoring_table(){
 		if(!$this->is_built()){
 			//we have not yet run that method
-			$query = "SELECT SUM(`score`.`scoreOracle`) as `o`,
-								  SUM(`score`.`scoreDruide`) as `d`,
-								  SUM(`score`.`scoreDevin`)  as `a`,
-								  SUM(`score`.`scoreGlobal`) as `g`,
-								  `user`.`username` as `name`,
-								  GROUP_CONCAT(`score`.`langue` SEPARATOR '+') as `l`
-						FROM `score`,`user`
-						WHERE `user`.`userid`=`score`.`userid`
-						GROUP BY `name`
-						ORDER BY `g` DESC" ;
+			$query =
+				"SELECT
+					`stats`.`nbAbandons_oracle` as `o_a`,
+					`stats`.`nbErreurs_oracle` as `o_er`,
+					`stats`.`nbEnregistrements_oracle` as `o_en`,
+					ROUND(`stats`.`nbSucces_oracle`*100/GREATEST(1,`stats`.`nbLectures_oracle`)) as `o_wl`,
+					`stats`.`score_oracle` as `o`,
+					`stats`.`nbArbitrages_druide` as `d_a`,
+					`stats`.`nbErrArbitrage_druide` as `d_er`,
+					`stats`.`nbCartes_druide` as `d_c`,
+					`stats`.`score_druide` as `d`,
+					`stats`.`nbEnregistrements_devin` as `a_en`,
+					ROUND(`stats`.`nbMotsTrouves_devin`*100/GREATEST(1,`stats`.`nbEnregistrements_devin`)) as `a_wl`,
+					`stats`.`score_devin` as `a`,
+					(`stats`.`score_devin`+`stats`.`score_druide`+`stats`.`score_oracle`) as `g`,
+					`user`.`username` as `name`,
+					GROUP_CONCAT(`stats`.`langue` SEPARATOR '+') as `l`
+				FROM `stats`,`user`
+				WHERE `user`.`userid`=`stats`.`userid`
+				GROUP BY `name`
+				ORDER BY `g` DESC" ;
+
 			$this->db->query($query);
 			if($this->db->has_result()){
 				$this->scores=array();
@@ -291,8 +368,7 @@ class GlobalScoreTable extends ScoreTable{
 						$this->usr_pos = $pos;
 					}
 					array_push($this->scores,
-						new GlobalScoreLine($tmpObj->name,
-							$tmpObj->o, $tmpObj->d, $tmpObj->a, $tmpObj->g, $pos, $tmpObj->l,
+						new GlobalScoreLine($tmpObj, $pos,
 							$highlight, $this->line_view));
 					$pos++;
 				}

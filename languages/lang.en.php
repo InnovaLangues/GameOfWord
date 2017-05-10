@@ -158,6 +158,15 @@ $lang['score_diviner']= 'Augur Score';
 $lang['score_global']= 'Global score';
 $lang['global_score'] = 'Global rankings';
 $lang['scores_by_language'] = "Rankings by language";
+$lang['abandons']='Forfeits';
+$lang['erreurs']='Err.';
+$lang['enr_deposes']='Desc.';
+$lang['w-l-perc']='Win&nbsp;%';
+$lang['score']='Score';
+$lang['carte_crees']='Created cards';
+$lang['arbitrages']='Arbitrations';
+$lang['err_arb']='Arbitration err.';
+$lang['parties']='Games';
 
 // Timeout
 $lang['diviner_timeout'] = 'You did not give an anwser in time';

@@ -5,12 +5,21 @@ if(!isset($lang)){
 $res = "<table class='table table-hover sortable' id='Score".$scoreTable->get_language()."'>
 	<thead>
 		<tr>
-			<th>".$lang['classement']."</th>
-			<th>".$lang['userName']."</th>
-			<th>".$lang['score_global']."</th>
-			<th>".$lang['score_oracle']."</th>
-			<th>".$lang['score_druid']."</th>
-			<th>".$lang['score_diviner']."</th>
+			<th class='header'>".$lang['classement']."</th>
+			<th class='header'>".$lang['userName']."</th>
+			<th><span class='header'>".$lang['score_oracle']."</span><br /><br />".$lang['abandons']."</th>
+			<th>".$lang['erreurs']."</th>
+			<th>".$lang['enr_deposes']."</th>
+			<th>".$lang['w-l-perc']."</th>
+			<th>".$lang['score']."</th>
+			<th><span class='header'>".$lang['score_druid']."</span><br /><br />".$lang['arbitrages']."</th>
+			<th>".$lang['err_arb']."</th>
+			<th>".$lang['carte_crees']."</th>
+			<th>".$lang['score']."</th>
+			<th><span class='header'>".$lang['score_diviner']."</span><br /><br />".$lang['parties']."</th>
+			<th>".$lang['w-l-perc']."</th>
+			<th>".$lang['score']."</th>
+			<th class='header'>".$lang['score_global']."</th>
 		</tr>
 	</thead>
 	<tbody>";
