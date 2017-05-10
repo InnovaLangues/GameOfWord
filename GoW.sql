@@ -43,12 +43,12 @@ CREATE TABLE IF NOT EXISTS `arbitrage` (
 --
 
 CREATE TABLE IF NOT EXISTS `cartes` (
-  `idCarte` int(16) unsigned NOT NULL AUTO_INCREMENT COMMENT 'identifiant',
+  `idCarte` int(16) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'identifiant',
   `langue` varchar(3) NOT NULL COMMENT 'la langue de la carte (ISO 639)',
   `extLangue` varchar(16) DEFAULT NULL COMMENT 'extension de langue (IETF)',
   `niveau` enum('A1','A1.1','A1.2','A2','B1','B2','C1','C2') NOT NULL COMMENT 'Niveau CECRL',
   `categorie` enum('nom','nom propre','pronom','adjectif','adverbe','verbe','expression idiomatique') DEFAULT NULL COMMENT 'Une catégorie qui pourra être une aide',
-  `idDruide` int(16) unsigned NOT NULL COMMENT 'auteur',
+  `idDruide` int(16) UNSIGNED NOT NULL COMMENT 'auteur',
   `mot` varchar(128) NOT NULL,
   `dateCreation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dateSuppression` timestamp NULL DEFAULT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `enregistrement` (
   `idOracle` int(30) NOT NULL,
   `OracleLang` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `carteID` int(11) NOT NULL,
-  `nivcarte` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `nivcarte` enum('A1','A1.1','A1.2','A2','B1','B2','C1','C2') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'B1',
   `nivpartie` enum('easy','medium','hard') NOT NULL DEFAULT 'easy' COMMENT 'niveau de la partie oracle',
   `tpsEnregistrement` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `validation` enum('valid','invalid','limbo','given up') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'limbo',
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `enregistrement` (
   PRIMARY KEY (`enregistrementID`),
   UNIQUE KEY `no_replay` (`OracleLang`,`carteID`,`idOracle`) USING BTREE,
   UNIQUE KEY `cheminEnregistrement` (`cheminEnregistrement`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
 -- --------------------------------------------------------
@@ -129,6 +129,8 @@ CREATE TABLE IF NOT EXISTS `parties` (
   `partieID` int(11) NOT NULL AUTO_INCREMENT,
   `enregistrementID` int(11) NOT NULL,
   `idDevin` int(11) NOT NULL,
+  `nivPartie` enum('easy','medium','hard') NOT NULL DEFAULT 'medium',
+  `nivCarte` enum('A1','A1.1','A1.2','A2','B1','B2','C1','C2') NOT NULL DEFAULT 'B1',
   `tpsDevin` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'heure de début de la partie',
   `duree_Partie` tinyint(4) DEFAULT NULL COMMENT 'Au bout de combien de temps le joueur a trouvé (ou abandonné)',
   `reussite` enum('en cours','non','oui') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en cours',
@@ -163,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `stats` (
   `sommeMises_devin` mediumint(8) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'La somme des mises des parties gagnées en tant que devin',
   `score_devin` mediumint(9) NOT NULL DEFAULT '0' COMMENT 'score de devin (pas calculable avec les données de la table)',
   PRIMARY KEY (`userid`,`langue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Statistiques et scores des joueurs';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Statistiques et scores des joueurs';
 
 
 -- --------------------------------------------------------
@@ -207,8 +209,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `userlang_game` varchar(100) NOT NULL,
   `photo` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `userlvl` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`userid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `useremail` (`useremail`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -234,11 +238,8 @@ INSERT INTO `user` (`userid`, `username`, `useremail`, `userpass`, `userlang`, `
 (1, 'admin', 'your.email@mail.you', '21232f297a57a5a743894a0e4a801fc3', 'fr', '', 'fr', '', 'easy');
 INSERT INTO `user_niveau` (`id`, `userid`, `spoken_lang`, `niveau`) VALUES
 (1, 1, 'Français;', 'Natif;');
-INSERT INTO `score` (`scoreID`, `userid`, `scoreGlobal`, `scoreOracle`, `scoreDruide`, `scoreDevin`, `langue`, `first_game_time`) VALUES
-(1, 1, 0, 0, 0, 0, 'Français', CURRENT_TIMESTAMP);
-INSERT INTO `stats_devin` (`userid`, `langue`, `nbEnregistrements`, `nbMotsTrouves`, `score`) VALUES ('1', 'Français', '0', '0', '0');
-INSERT INTO `stats_druide` (`userid`, `langue`, `nbCartes`, `nbArbitrages`, `nbErrArbitrage`, `score`) VALUES ('1', 'Français', '0', '0', '0', '0');
-INSERT INTO `stats_oracle` (`userid`, `langue`, `nbJeux`, `nbAbandons`, `nbEnregistrements`, `nbErreurs`, `nbLectures`, `nbSucces`, `score`) VALUES ('1', 'Français', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `stats` (`userid`, `langue`, `nbJeux_oracle`, `nbAbandons_oracle`, `nbEnregistrements_oracle`, `nbErreurs_oracle`, `nbLectures_oracle`, `nbSucces_oracle`, `score_oracle`, `nbCartes_druide`, `nbArbitrages_druide`, `nbErrArbitrage_druide`, `score_druide`, `nbEnregistrements_devin`, `nbMotsTrouves_devin`, `sommeMises_devin`, `score_devin`) VALUES
+(1, 'fr', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
