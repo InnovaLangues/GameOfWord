@@ -21,8 +21,8 @@
 	background-color:#CFFFCD;
 	border-radius:15px;
 	text-align:center;
-
 }
+
 #card {
 	box-shadow: 10px 10px 5px #888888;
 }
@@ -37,11 +37,11 @@
 	padding-right:40px;
 	background-color:#FF5757;
 }
+
 .messageUtil{
 	font-family: playball;
 	font-size : 20px;
 }
-
 
 /*Notification*/
 .top-bar
@@ -139,7 +139,6 @@
   	 font-size: 15px;
 	 height:64px;
 	 font-size:small;
-
 }
 #Img{
 	top:0;
