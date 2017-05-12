@@ -42,9 +42,20 @@ Contributors
     * Arnaud Bey
     * Benjamin Abrial
     * Mathieu Loiseau
-* Typos
+* Text and typos
   * Yoann Goudin
   * Haydée Silva
+* Game “cards”
+  * Cristina De Girolamo
+  * John Kenwright
+  * Triscia Biagiotti
+  * Elena Tea
+  * Pauline Ballot
+  * Racha Hallal
+  * Ada Gazidedja
+  * Nadia Yassine-Diab
+  * Mayra Alejandra Siordia García
+* If you've been forgotten, please tell us…
 
 Credits
 --------
