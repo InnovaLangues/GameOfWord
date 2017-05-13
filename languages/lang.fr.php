@@ -254,3 +254,5 @@ $lang["AJAX_noquery"] = "Pas de requête, en fait…";
 
 //Administration cartes
 $lang['admin'] = 'Administration&nbsp;: Cliquer sur la croix pour supprimer la carte';
+$lang['export'] = "Export de code, à exécuter pour réimporter les cartes";
+$lang['export_disclaimer'] = "Le contenu ci-dessous sera écrit dans  «&nbsp;./enregistrements/exported_cards.php&nbsp;». Il sera exécuté quand vous chargerez «&nbsp;./import.php&nbsp;». Ça ne devrait rien casser, mais on ne sait jamais, faites attention.";

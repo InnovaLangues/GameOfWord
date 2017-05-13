@@ -207,5 +207,5 @@ foreach($sql_query as $sql){
     echo $i++."<br />";
     $db->query($sql) or die('error in query: '.$sql);
 }
-//include_once('provided_cards.php');
+//include_once('import.php');
 ?>

@@ -148,8 +148,8 @@ class Card
 	 */
 	public function store($prompt=false){
 		if($prompt){
-	   		$this->db->query("SELECT `idCarte` FROM `cartes` WHERE `mot`='".$this->guessWord."';");
-	   		$nb = $this->db->affected_rows ;
+	   		$this->db->query("SELECT `idCarte` FROM `cartes` WHERE `mot`='".$this->guessWord."' AND `langue`='".$this->lang."';");
+	   		$nb = $this->db->num_rows() ;
 	   		if($nb > 0){
 	   			//TODO : better compare with actual objects
 	   			//and check the forbidden words and all…

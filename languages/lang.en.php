@@ -260,4 +260,6 @@ $lang["AJAX_noquery"] = "No query, actually…";
 
 //Administration cartes
 $lang['admin'] = "Administration: Press cross to delete card";
+$lang['export'] = "Export code to be run when you want to import those cards";
+$lang['export_disclaimer'] = "The following content will be written in “./enregistrements/exported_cards.php”. It will be executed when you run “./import.php”. It should not break anything, but it might, so be careful.";
 ?>

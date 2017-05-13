@@ -6,6 +6,7 @@ class ItemFactory //a quick and dirty class…
 {	//…to encapsulate some "complicated" frequent queries
 	const ANY = 1;
 	const ALL_CARDS = 6;
+	const ALL_UG_CARDS = 7;//User generated means not created by admin user…
 	const CARD_NOT_ME = 2;
 	const CARD_FROM_LEXICON = 5;
 	const VALID_RECORDING_NOT_ME = 3;
@@ -108,10 +109,11 @@ class ItemFactory //a quick and dirty class…
 				}
 				break;
 			case self::ALL_CARDS:
-				//partir sur cette piste ce serait peut être mieux : SELECT `cartes`.*, GROUP_CONCAT(`mots_interdits`.`mot` SEPARATOR '|') as `interdits` FROM `cartes`,`mots_interdits` WHERE `cartes`.`idCarte`=`mots_interdits`.`idCarte` GROUP BY `mots_interdits`.`idCarte` ORDER BY `cartes`.`langue`, `cartes`.`idCarte`
-				//mais c'est un peu fatiguant…
 				$this->query = "SELECT `idCarte` as `zeId` FROM `cartes` WHERE `cartes`.`idEraser` IS NULL ORDER BY `langue`, `idCarte` $forOne";//le forOne servira pas, pour la cohérence
 				break;
+			case self::ALL_UG_CARDS:
+				$this->query = "SELECT `idCarte` as `zeId` FROM `cartes` WHERE `cartes`.`idDruide`!='1' AND `cartes`.`idEraser` IS NULL ORDER BY `langue`, `idCarte` $forOne";//le forOne servira pas, pour la cohérence
+					break;
 			default:
 				$res = false;
 				break;
