@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `arbitrage` (
   `enregistrementID` int(11) NOT NULL,
   `idDruide` int(11) NOT NULL,
   `tpsArbitrage` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `validation` enum('valid','invalid') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `validation` enum('valid','invalid') NOT NULL,
   PRIMARY KEY (`arbitrageID`),
   KEY `validation` (`validation`),
   KEY `enregistrementID` (`enregistrementID`),
@@ -67,15 +67,15 @@ CREATE TABLE IF NOT EXISTS `cartes` (
 
 CREATE TABLE IF NOT EXISTS `enregistrement` (
   `enregistrementID` int(11) NOT NULL AUTO_INCREMENT,
-  `cheminEnregistrement` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cheminEnregistrement` varchar(100) DEFAULT NULL,
   `duration` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'the length in seconds of the recording (max 255 sec)',
   `idOracle` int(30) NOT NULL,
-  `OracleLang` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `OracleLang` varchar(3) NOT NULL,
   `carteID` int(11) NOT NULL,
-  `nivcarte` enum('A1','A1.1','A1.2','A2','B1','B2','C1','C2') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'B1',
+  `nivcarte` enum('A1','A1.1','A1.2','A2','B1','B2','C1','C2') NOT NULL DEFAULT 'B1',
   `nivpartie` enum('easy','medium','hard') NOT NULL DEFAULT 'easy' COMMENT 'niveau de la partie oracle',
   `tpsEnregistrement` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `validation` enum('valid','invalid','limbo','given up') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'limbo',
+  `validation` enum('valid','invalid','limbo','given up') NOT NULL DEFAULT 'limbo',
   `nbSucces` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a permis de trouver le mot',
   `nbTentatives` smallint(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Combien de fois l''enregistrement a été passé à un devin',
   `miseD` tinyint(4) UNSIGNED NOT NULL DEFAULT '1' COMMENT 'La mise en cas de défaite calculée en fonction du niveau de la carte du joueur et de la difficulté choisie',
@@ -109,11 +109,11 @@ CREATE TABLE IF NOT EXISTS `mots_interdits` (
 CREATE TABLE IF NOT EXISTS `notif` (
   `userid` int(11) NOT NULL,
   `type` tinyint(3) UNSIGNED DEFAULT NULL COMMENT 'type of the message',
-  `message` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `message` varchar(200) NOT NULL,
   `emetteur` int(11) NOT NULL DEFAULT '0',
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` int(11) NOT NULL,
-  `game` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `game` varchar(20) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `type` (`type`)
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `parties` (
   `nivCarte` enum('A1','A1.1','A1.2','A2','B1','B2','C1','C2') NOT NULL DEFAULT 'B1',
   `tpsDevin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'heure de début de la partie',
   `duree_Partie` tinyint(4) DEFAULT NULL COMMENT 'Au bout de combien de temps le joueur a trouvé (ou abandonné)',
-  `reussite` enum('en cours','non','oui') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'en cours',
+  `reussite` enum('en cours','non','oui') NOT NULL DEFAULT 'en cours',
   `mise` tinyint(3) UNSIGNED NOT NULL COMMENT 'la mise de la partie (pas de miseV/miseD)',
   PRIMARY KEY (`partieID`),
   UNIQUE KEY `un_enr_par_joueur` (`idDevin`,`enregistrementID`) USING BTREE
@@ -202,13 +202,13 @@ CREATE TABLE IF NOT EXISTS `themes_cartes` (
 CREATE TABLE IF NOT EXISTS `user` (
   `userid` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
-  `useremail` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `userpass` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `useremail` varchar(100) NOT NULL,
+  `userpass` varchar(32) NOT NULL,
   `userlang` varchar(32) NOT NULL,
-  `valkey` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `valkey` varchar(100) NOT NULL,
   `userlang_game` varchar(100) NOT NULL,
-  `photo` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `userlvl` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `photo` varchar(100) NOT NULL,
+  `userlvl` varchar(40) NOT NULL,
   PRIMARY KEY (`userid`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `useremail` (`useremail`)
@@ -248,9 +248,9 @@ INSERT INTO `stats` (`userid`, `langue`, `nbJeux_oracle`, `nbAbandons_oracle`, `
 --
 
 CREATE TABLE IF NOT EXISTS `langues` (
-  `iso_code` varchar(3) CHARACTER SET utf8 NOT NULL COMMENT 'iso language code',
-  `french` varchar(16) CHARACTER SET utf8 NOT NULL COMMENT 'nom de la langue en FR',
-  `english` varchar(16) CHARACTER SET utf8 DEFAULT NULL COMMENT 'language name in English',
+  `iso_code` varchar(3) NOT NULL COMMENT 'iso language code',
+  `french` varchar(16) NOT NULL COMMENT 'nom de la langue en FR',
+  `english` varchar(16) DEFAULT NULL COMMENT 'language name in English',
   PRIMARY KEY (`iso_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

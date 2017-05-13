@@ -44,8 +44,6 @@
 			$tmpObj->store(true);$nb++;
 		$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Attorney", array("Law","Justice","Court","Defend","Represent","Appeal"), array("Profession"));
 			$tmpObj->store(true);$nb++;
-		$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Judge", array("Law","Justice","Court","Lawyer","Judgment","Verdict"), array("Profession"));
-			$tmpObj->store(true);$nb++;
 		$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Police officer", array("Police","Criminals","Handcuffs","Arrest","Law"), array("Profession"));
 			$tmpObj->store(true);$nb++;
 		$tmpObj = new Card("en", NULL, "B1", "Nom", "1", "Translator", array("Language","Interpreter","Sworn","Translate"), array("Profession"));
@@ -509,8 +507,6 @@
 			$tmpObj->store(true);$nb++;
 		$tmpObj = new Card("it", NULL, "A1", "Nom", "1", "olio", array("vergine","oliva","condimento","insalata","sale"), array("Alimentation"));
 			$tmpObj->store(true);$nb++;
-		$tmpObj = new Card("it", NULL, "A1", "Nom", "1", "vino", array("bianco","rosso","alcolico","bevanda","bottiglia"), array("Alimentation"));
-			$tmpObj->store(true);$nb++;
 		$tmpObj = new Card("it", NULL, "A1", "Nom", "1", "avvocato", array("legge","difesa","tribunale"), array("Profession"));
 			$tmpObj->store(true);$nb++;
 		$tmpObj = new Card("it", NULL, "A1", "Nom", "1", "dottoressa", array("medico","salute","malattia","ospedale","donna"), array("Profession"));
@@ -543,5 +539,3 @@
 	}
 	echo "<p><strong>$nb</strong> carte importate ;)</p>";
 ?>
-	</body>
-</html>
