@@ -61,10 +61,10 @@ $notif->readNotif();
 <?php
 	if ( $GLOBALS['userlogged'] ) { ?>
 
-			<li><a href="?mode=profile" title="<?php echo htmlspecialchars($GLOBALS['user']->username); ?>"><?php echo $lang['menu_profile']; ?></a></li>
-			<li><a href="?mode=score" title="score"><?php echo $lang['scores']; ?></a></li>
-			<li><a  class="active" href="?mode=infos" title="rules"><?php echo $lang['rules']; ?></a></li>
-			<li><a href="?mode=logout" title="logout"><?php echo $lang['logout']; ?></a></li>
+			<li><a href="index.php?mode=profile" title="<?php echo htmlspecialchars($GLOBALS['user']->username); ?>"><?php echo $lang['menu_profile']; ?></a></li>
+			<li><a href="index.php?mode=score" title="score"><?php echo $lang['scores']; ?></a></li>
+			<li><a href="index.php?mode=infos" title="rules"><?php echo $lang['rules']; ?></a></li>
+			<li><a href="index.php?mode=logout" title="logout"><?php echo $lang['logout']; ?></a></li>
 			<li id="notification_li">
 				<span id="notification_count" ></span>
 				<a href="#" id="notificationLink"><img src="style/default.css/imgs/info.svg" style="width:25px;height:25px;"></a>

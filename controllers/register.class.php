@@ -169,7 +169,7 @@ class register
 		}
 		array_push($sql, "SELECT @USER_ID as `id`;");
 		try{
-			if($db->transaction($sql)){
+			if($db->transaction($sql,false)){
 				$this->userid = $db->fetch_object()->id;
 				redirect('');
 			}
