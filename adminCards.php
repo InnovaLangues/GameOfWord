@@ -40,15 +40,17 @@ else{
 		$export_txt = "&lt;?php echo \"&lt;h2&gt;User created cards&lt;/h2&gt;\";\n";
 		$export_txt .= "\$nb=0;\ntry{\n";
 	}
-	foreach ($card_ids as $card_id){
-		$card = new Card($card_id);
-		if($admin){
-			$card->set_view("./views/card.inline.admin.display.php");
-			echo $card;
-		}
-		if($export){
-			$card->set_view("./views/card.export.php");
-			$export_txt .= $card;
+	if($card_ids){
+		foreach ($card_ids as $card_id){
+			$card = new Card($card_id);
+			if($admin){
+				$card->set_view("./views/card.inline.admin.display.php");
+				echo $card;
+			}
+			if($export){
+				$card->set_view("./views/card.export.php");
+				$export_txt .= $card;
+			}
 		}
 	}
 	if($export){
