@@ -149,23 +149,22 @@ class Card
 	public function store($prompt=false){
 		if($prompt){
 	   		$this->db->query("SELECT `idCarte` FROM `cartes` WHERE `mot`='".$this->guessWord."' AND `langue`='".$this->lang."';");
-	   		$nb = $this->db->num_rows() ;
+				$nb = $this->db->num_rows() ;
 	   		if($nb > 0){
 	   			//TODO : better compare with actual objects
 	   			//and check the forbidden words and all…
-	   			$msg="(";
+	   			$msg="";
 	   			while($row = $this->db->fetch_object()){
-	   				if($msg!="("){
+	   				if($msg!=""){
 	   					$msg .= ", " ;
 	   				}
 	   				$msg .= $row->idCarte;
 	   			}
-	   			$msg.=")";
-	   			throw new Exception("Il y a déjà $nb cartes associées à “".$this->guessWord."” $msg.");
+	   			throw new Exception("Il y a déjà $nb carte(s) associée(s) à “".$this->guessWord."” (carte(s) $msg).");
 	   		}
 		}
 		if($this->id){
-			throw new Exception("Le programme ne sait pas encore mettre à jour les cartes…");//TODO
+			throw new Exception("Le programme ne sait pas encore mettre à jour les cartes… (carte $this->id)");//TODO
 		}
 		else{//Normal situation
 	//Handling the card base
